@@ -1,1 +1,1 @@
--- CREATE DATABASE galega_burguer;
+CREATE DATABASE galega_burguer;
