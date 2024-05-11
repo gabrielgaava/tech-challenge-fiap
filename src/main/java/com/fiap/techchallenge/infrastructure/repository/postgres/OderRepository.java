@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Repository("PGOrderRepository")
 public class OderRepository implements IOrderRepository {
 
     private JdbcTemplate jdbcTemplate;

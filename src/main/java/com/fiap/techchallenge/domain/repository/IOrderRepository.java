@@ -8,6 +8,8 @@ import java.util.List;
 @Repository
 public interface IOrderRepository {
 
-    List<Order> getOrders();
+    List<Order> getAll();
+
+    int create(Order order);
 
 }
