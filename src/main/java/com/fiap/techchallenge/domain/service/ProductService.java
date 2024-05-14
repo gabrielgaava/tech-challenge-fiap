@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductService implements IProductUseCase {
@@ -18,7 +19,12 @@ public class ProductService implements IProductUseCase {
 
     @Override
     public Product createProduct(Product product) {
-        return null;
+        product.setId(UUID.randomUUID());
+
+        if(productRepository.create(product) == 1)
+            return product;
+
+        else return null;
     }
 
     @Override
