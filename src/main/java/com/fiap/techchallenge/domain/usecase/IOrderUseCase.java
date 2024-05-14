@@ -9,6 +9,6 @@ public interface IOrderUseCase {
 
     List<Order> getOrders();
 
-    Order createOrder();
+    Order createOrder(CreateOrderDTO dto);
 
 }

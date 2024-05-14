@@ -24,9 +24,25 @@ public class OderRepository implements IOrderRepository {
     }
 
     @Override
-    public List<Order> getOrders() {
+    public List<Order> getAll() {
         String sql = "select * from \"order\"";
         return jdbcTemplate.query(sql, OrderMapper.listMapper);
+    }
+
+    @Override
+    public int create(Order order) {
+        String sql = "INSERT INTO \"order\" " +
+                "(\"order_number\", \"customer_id\", \"created_at\", \"amount\", \"status\") " +
+                "VALUES (?, ?, ?, ?, ?)";
+
+        return jdbcTemplate.update(
+            sql,
+            order.getOrderNumber(),
+            order.getCostumerId(),
+            order.getCreatedAt(),
+            order.getAmount(),
+            order.getStatus().toString()
+        );
     }
 
 }

@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.domain.service;
 
+import com.fiap.techchallenge.adapters.in.rest.dto.CreateOrderDTO;
 import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
 import com.fiap.techchallenge.domain.repository.IOrderRepository;
@@ -25,20 +26,25 @@ public class OrderService implements IOrderUseCase {
     }
 
     @Override
-    public Order createOrder() {
+    public Order createOrder(CreateOrderDTO dto) {
+
+        UUID costumerId = dto.getCostumerId() != null
+                ? UUID.fromString(dto.getCostumerId())
+                : null;
 
         var order = Order.builder()
             .id(UUID.randomUUID())
-            .costumerId(UUID.fromString(""))
-            .orderNumber("123")
-            .amount(Float.parseFloat("123.99"))
+            .costumerId(costumerId)
+            .orderNumber("123") //TODO: Como criar esse numero ?
+            .amount(dto.getAmount())
             .status(OrderStatus.RECEIVED)
             .createdAt(LocalDateTime.now())
             .build();
 
-        IOrderRepository.create(order);
+        if(IOrderRepository.create(order) == 1)
+            return order;
 
-        return order;
+        else return null;
     }
 
 }
