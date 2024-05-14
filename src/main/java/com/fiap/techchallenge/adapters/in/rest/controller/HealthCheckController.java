@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.adapters.in.rest;
+package com.fiap.techchallenge.adapters.in.rest.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
