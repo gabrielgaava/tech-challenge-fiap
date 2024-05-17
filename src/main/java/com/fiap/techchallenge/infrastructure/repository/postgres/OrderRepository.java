@@ -8,9 +8,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository("PGOrderRepository")
-public class OderRepository implements IOrderRepository {
+public class OrderRepository implements IOrderRepository {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -27,6 +28,12 @@ public class OderRepository implements IOrderRepository {
     public List<Order> getAll() {
         String sql = "select * from \"order\"";
         return jdbcTemplate.query(sql, OrderMapper.listMapper);
+    }
+
+    @Override
+    public Order getOrder(UUID orderId) {
+        String sql = "SELECT * FROM \"order\" WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, OrderMapper.listMapper, orderId);
     }
 
     @Override

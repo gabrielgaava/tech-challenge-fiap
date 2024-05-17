@@ -5,11 +5,12 @@ public enum OrderStatus {
     RECEIVED ("RECEIVED"),
     IN_PREPARATION ("IN_PREPARATION"),
     READY_TO_DELIVERY ("READY_TO_DELIVERY"),
+    PAID ("PAID"),
     FINISHED ("FINISHED");
 
     private final String status;
 
-    private OrderStatus(String status){
+    OrderStatus(String status){
         this.status = status;
     }
 
