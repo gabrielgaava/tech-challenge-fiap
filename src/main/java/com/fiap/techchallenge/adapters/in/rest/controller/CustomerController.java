@@ -3,13 +3,10 @@ package com.fiap.techchallenge.adapters.in.rest.controller;
 import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.service.CustomerService;
-import com.fiap.techchallenge.domain.usecase.ICustomerUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -45,9 +42,10 @@ public class CustomerController {
     }
 
     @PutMapping("/{cpf}")
-    public ResponseEntity<PutCustomerDTO> updateCustomerByCpf(@RequestBody PutCustomerDTO customerDTO, @PathVariable String cpf) {
+    public ResponseEntity<List<Customer>> updateCustomerByCpf(@RequestBody PutCustomerDTO customerDTO, @PathVariable String cpf) {
         if(customerService.updateCustomer(customerDTO, cpf) != null) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(customerDTO);
+            var getCustomer = customerService.getCustomerByCpf(cpf);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(getCustomer);
         } else return ResponseEntity.badRequest().build();
     }
 }

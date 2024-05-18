@@ -1,4 +1,5 @@
 package com.fiap.techchallenge.domain.service;
+
 import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.usecase.ICustomerUseCase;
@@ -34,6 +35,7 @@ public class CustomerService implements ICustomerUseCase {
         return customerRepository.getAll();
     }
 
+    @Override
     public PutCustomerDTO updateCustomer(PutCustomerDTO customer, String cpf) {
         if(customerRepository.update(customer, cpf) == 1) return customer;
         return null;

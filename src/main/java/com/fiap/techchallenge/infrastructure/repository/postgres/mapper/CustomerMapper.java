@@ -1,4 +1,5 @@
 package com.fiap.techchallenge.infrastructure.repository.postgres.mapper;
+
 import com.fiap.techchallenge.domain.entity.Customer;
 import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
