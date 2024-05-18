@@ -17,5 +17,6 @@ public class OrderFilters {
     private OrderStatus status;
     private OrderSortFields orderBy;
     private SortDirection direction;
+    private Boolean expandProducts;
 
 }

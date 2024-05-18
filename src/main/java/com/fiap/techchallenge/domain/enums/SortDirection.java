@@ -1,5 +1,8 @@
 package com.fiap.techchallenge.domain.enums;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "SortDirection")
 public enum SortDirection {
 
     ASC("ASC"),

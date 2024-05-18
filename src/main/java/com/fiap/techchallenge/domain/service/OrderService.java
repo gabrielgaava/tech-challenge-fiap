@@ -3,6 +3,7 @@ package com.fiap.techchallenge.domain.service;
 import com.fiap.techchallenge.adapters.in.rest.dto.CreateOrderDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.OrderProductDTO;
 import com.fiap.techchallenge.domain.entity.OrderFilters;
+import com.fiap.techchallenge.domain.entity.OrderHistory;
 import com.fiap.techchallenge.domain.entity.ProductAndQuantity;
 import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
@@ -36,18 +37,29 @@ public class OrderService implements IOrderUseCase {
     @Qualifier("PGProductRepository")
     IProductRepository IProductRepository;
 
+    /**
+     * Gets ALL orders stored at the database
+     * @param filters: database filter queries
+     * @return: the filtered list of orders
+     */
     @Override
     public List<Order> getOrders(OrderFilters filters) {
         var orders = IOrderRepository.getAll(filters);
 
         for(Order order : orders) {
-            var waitTime = calculateWaitTime(order.getCreatedAt());
+            var waitTime = calculateWaitTime(order);
             order.setWaitingTimeInSeconds(waitTime);
         }
 
         return orders;
     }
 
+    /**
+     * Get all the data from an order, with products and history
+     * @param id: the oder ID
+     * @return: The order found in database
+     * @throws EntityNotFound
+     */
     @Override
     public Order getOrder(UUID id) throws EntityNotFound {
         var order = IOrderRepository.getByIdWithProducts(id);
@@ -56,12 +68,17 @@ public class OrderService implements IOrderUseCase {
 
         var history = IOrderRepository.getOrderHistoryByOrderId(id);
 
-        order.setWaitingTimeInSeconds(calculateWaitTime(order.getCreatedAt()));
+        order.setWaitingTimeInSeconds(calculateWaitTime(order));
         order.setHistory(history);
 
         return order;
     }
 
+    /**
+     * Create a new order with RECEIVED status
+     * @param dto The body request of api
+     * @return the created order object
+     */
     @Override
     public Order createOrder(CreateOrderDTO dto) {
 
@@ -103,6 +120,27 @@ public class OrderService implements IOrderUseCase {
         else return null;
     }
 
+    /**
+     * Gets all the order's history, with status changes registers
+     * @param id
+     * @return
+     * @throws EntityNotFound
+     */
+    @Override
+    public List<OrderHistory> getOrderHistory(UUID id) throws EntityNotFound {
+        var history = IOrderRepository.getOrderHistoryByOrderId(id);
+        if(history == null) throw new EntityNotFound("Order", id);
+
+        return history;
+    }
+
+    /**
+     * Updates the order's status
+     * @param id The order ID
+     * @param status The new order Status
+     * @return true if updated successfully, false otherwise
+     * @throws OrderAlreadyWithStatus
+     */
     @Override
     public boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatus {
         var order = IOrderRepository.getById(id);
@@ -113,7 +151,13 @@ public class OrderService implements IOrderUseCase {
         return IOrderRepository.updateStatus(id, status, order.getStatus()) == 2;
     }
 
-    private long calculateWaitTime(LocalDateTime orderMoment) {
-        return Duration.between(orderMoment, LocalDateTime.now()).toSeconds();
+    /**
+     * Calculate the total of time in seconds that the order was created until now
+     * @param order: The Oder that will have the time waiting calculated
+     * @return the time of wait in seconds
+     */
+    private long calculateWaitTime(Order order) {
+        if(order.getStatus().equals(OrderStatus.FINISHED)) return 0;
+        return Duration.between(order.getCreatedAt(), LocalDateTime.now()).toSeconds();
     }
 }

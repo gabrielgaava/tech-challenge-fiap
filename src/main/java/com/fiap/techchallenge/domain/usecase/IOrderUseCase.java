@@ -3,6 +3,7 @@ package com.fiap.techchallenge.domain.usecase;
 import com.fiap.techchallenge.adapters.in.rest.dto.CreateOrderDTO;
 import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.entity.OrderFilters;
+import com.fiap.techchallenge.domain.entity.OrderHistory;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
 import com.fiap.techchallenge.domain.exception.EntityNotFound;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatus;
@@ -17,6 +18,8 @@ public interface IOrderUseCase {
     Order getOrder(UUID id) throws EntityNotFound;
 
     Order createOrder(CreateOrderDTO dto);
+
+    List<OrderHistory> getOrderHistory(UUID id) throws EntityNotFound;
 
     boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatus;
 

@@ -3,13 +3,14 @@ package com.fiap.techchallenge.adapters.in.rest.controller;
 import com.fiap.techchallenge.domain.entity.Product;
 import com.fiap.techchallenge.domain.enums.ProductCategory;
 import com.fiap.techchallenge.domain.service.ProductService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Tag(name = "Product Controller")
 @RestController
 @RequestMapping("/products")
 public class ProductController {
