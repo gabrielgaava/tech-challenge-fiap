@@ -2,9 +2,12 @@ package com.fiap.techchallenge.infrastructure.repository.postgres;
 
 import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.repository.ICustomerRepository;
+import com.fiap.techchallenge.infrastructure.repository.postgres.mapper.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository("PGCustomerRepository")
 public class CustomerRepository implements ICustomerRepository {
@@ -34,5 +37,14 @@ public class CustomerRepository implements ICustomerRepository {
                 customer.getName(),
                 customer.getEmail()
         );
+    }
+
+    public List<Customer> getAll(String cpf) {
+        String sql = "SELECT * FROM customer";
+
+        if(cpf != null && !cpf.isEmpty()) {
+            sql += " WHERE cpf = ?";
+            return jdbcTemplate.query(sql, CustomerMapper.listMapper, cpf);
+        }   return jdbcTemplate.query(sql, CustomerMapper.listMapper);
     }
 }

@@ -1,12 +1,11 @@
 package com.fiap.techchallenge.domain.service;
-
 import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.usecase.ICustomerUseCase;
 import com.fiap.techchallenge.infrastructure.repository.postgres.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,4 +23,8 @@ public class CustomerService implements ICustomerUseCase {
         return null;
     }
 
+    @Override
+    public List<Customer> getAllCustomers(String cpf) {
+        return customerRepository.getAll(cpf);
+    }
 }
