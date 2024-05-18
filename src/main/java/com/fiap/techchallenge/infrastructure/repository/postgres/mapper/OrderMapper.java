@@ -1,11 +1,18 @@
 package com.fiap.techchallenge.infrastructure.repository.postgres.mapper;
 
 import com.fiap.techchallenge.domain.entity.Order;
+import com.fiap.techchallenge.domain.entity.OrderHistory;
+import com.fiap.techchallenge.domain.entity.Product;
+import com.fiap.techchallenge.domain.entity.ProductAndQuantity;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
+import com.fiap.techchallenge.domain.enums.ProductCategory;
 import org.springframework.jdbc.core.RowMapper;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -14,16 +21,56 @@ public abstract class OrderMapper {
     public static RowMapper<Order> listMapper = new RowMapper<Order>() {
         @Override
         public Order mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Order order = new Order();
-            order.setId(UUID.fromString(rs.getString(1)));
-            order.setOrderNumber(rs.getString(2));
-            order.setCostumerId(UUID.fromString(rs.getString(3)));
-            order.setCreatedAt(rs.getTimestamp(4).toLocalDateTime());
-            order.setAmount(rs.getFloat(5));
-            order.setStatus(OrderStatus.fromString(rs.getString(6)));
-
+            var order = createOrder(rs);
+            order.setProducts(null);
             return order;
         }
     };
+
+    public static RowMapper<Order> listWithProducts = new RowMapper<Order>() {
+        @Override
+        public Order mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Order order = createOrder(rs);
+            List<ProductAndQuantity> products = new ArrayList<>();
+
+            do {
+                Product temp = new Product();
+                int quantity = rs.getInt("quantity");
+                temp.setId(UUID.fromString(rs.getString("product_id")));
+                temp.setName(rs.getString("name"));
+                temp.setCategory(ProductCategory.fromString(rs.getString("category")));
+                temp.setPrice(BigDecimal.valueOf(rs.getFloat("price")));
+                temp.setDescription(rs.getString("description"));
+                temp.setImageUrl(rs.getString("image_url"));
+                products.add(new ProductAndQuantity(temp, quantity));
+            } while (rs.next());
+
+            order.setProducts(products);
+            return order;
+        }
+    };
+
+    public static RowMapper<OrderHistory> historyMapper = new RowMapper<OrderHistory>() {
+        @Override
+        public OrderHistory mapRow(ResultSet rs, int rowNum) throws SQLException {
+            OrderHistory record = new OrderHistory();
+            record.setLastStatus(OrderStatus.fromString(rs.getString("new_status")));
+            record.setPreviousStatus(OrderStatus.fromString(rs.getString("previous_status")));
+            record.setMoment(rs.getTimestamp("moment").toLocalDateTime());
+
+            return record;
+        }
+    };
+
+    private static Order createOrder(ResultSet rs) throws SQLException {
+        Order order = new Order();
+        order.setId(UUID.fromString(rs.getString("order_id")));
+        order.setOrderNumber(rs.getString("order_number"));
+        order.setCostumerId(UUID.fromString(rs.getString("customer_id")));
+        order.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        order.setAmount(BigDecimal.valueOf(rs.getFloat("amount")));
+        order.setStatus(OrderStatus.fromString(rs.getString("status")));
+        return order;
+    }
 
 }
