@@ -36,9 +36,9 @@ public class OrderController {
                 .body(order);
     }
 
-    @PostMapping("/{order_id}/payment")
-    public ResponseEntity<Payment> payOrder(@PathVariable("id") UUID orderId) throws GalegaException {
-        var payment = iOrderUseCase.payOrder(orderId);
+    @PostMapping("/{order_number}/payment")
+    public ResponseEntity<Payment> payOrder(@PathVariable("order_number") String orderNumber) throws GalegaException {
+        var payment = iOrderUseCase.payOrder(orderNumber);
         if(payment == null) return ResponseEntity.badRequest().body(null);
 
         return ResponseEntity

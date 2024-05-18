@@ -34,16 +34,16 @@ public class OrderRepository implements IOrderRepository {
     }
 
     @Override
-    public Order getOrder(UUID orderId) {
-        String sql = "SELECT * FROM \"order\" WHERE id = ?";
-        return jdbcTemplate.queryForObject(sql, OrderMapper.listMapper, orderId);
+    public Order getOrder(String orderNumber) {
+        String sql = "SELECT * FROM \"order\" WHERE order_number = ?";
+        return jdbcTemplate.queryForObject(sql, OrderMapper.listMapper, orderNumber);
     }
 
     @Override
-    public void updateOrderStatus(UUID orderId, OrderStatus status) throws GalegaException {
-        String sql = "UPDATE \"order\" SET status = ? WHERE id = ?";
+    public void updateOrderStatus(String orderNumber, OrderStatus status) throws GalegaException {
+        String sql = "UPDATE \"order\" SET status = ? WHERE order_number = ?";
 
-        int rowsUpdated = jdbcTemplate.update(sql, status, orderId);
+        int rowsUpdated = jdbcTemplate.update(sql, status, orderNumber);
         if (rowsUpdated == 0) {
             throw new GalegaException(GalegaExceptionCodes.GAG_2);
         }

@@ -40,7 +40,7 @@ public class OrderService implements IOrderUseCase {
         var order = Order.builder()
             .id(UUID.randomUUID())
             .costumerId(costumerId)
-            .orderNumber("123") //TODO: Como criar esse numero ? -> Não podemos usar o ID?
+            .orderNumber("123") //TODO: Como criar esse numero ? -> Autoincrement
             .amount(dto.getAmount())
             .status(RECEIVED)
             .createdAt(LocalDateTime.now())
@@ -53,8 +53,8 @@ public class OrderService implements IOrderUseCase {
     }
 
     @Override
-    public Payment payOrder(UUID id) throws GalegaException {
-        var order = IOrderRepository.getOrder(id);
+    public Payment payOrder(String orderNumber) throws GalegaException {
+        var order = IOrderRepository.getOrder(orderNumber);
 
         if (order == null || order.getStatus() == null) {
             throw new GalegaException(GalegaExceptionCodes.GAG_2);
@@ -63,7 +63,7 @@ public class OrderService implements IOrderUseCase {
         if (order.getStatus() != RECEIVED){
             throw new GalegaException(GalegaExceptionCodes.GAG_3);
         }
-        IOrderRepository.updateOrderStatus(id, PAID);
+        IOrderRepository.updateOrderStatus(orderNumber, PAID);
 
         return Payment
                 .builder()

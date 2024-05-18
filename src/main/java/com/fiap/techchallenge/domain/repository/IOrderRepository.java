@@ -13,9 +13,9 @@ public interface IOrderRepository {
 
     List<Order> getAll();
 
-    Order getOrder(UUID orderId);
+    Order getOrder(String orderNumber);
 
-    void updateOrderStatus(UUID orderId, OrderStatus status) throws GalegaException;
+    void updateOrderStatus(String orderNumber, OrderStatus status) throws GalegaException;
 
     int create(Order order);
 
