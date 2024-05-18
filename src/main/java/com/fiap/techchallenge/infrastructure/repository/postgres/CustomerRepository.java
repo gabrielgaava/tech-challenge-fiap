@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.infrastructure.repository.postgres;
 
+import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.repository.ICustomerRepository;
 import com.fiap.techchallenge.infrastructure.repository.postgres.mapper.CustomerMapper;
@@ -39,13 +40,27 @@ public class CustomerRepository implements ICustomerRepository {
         );
     }
 
+    @Override
     public List<Customer> getByCpf(String cpf) {
         String sql = "SELECT * FROM customer WHERE cpf = ?";
         return jdbcTemplate.query(sql, CustomerMapper.listMapper, cpf);
     }
 
+    @Override
     public List<Customer> getAll() {
-        String sql = "SELECT * FROM customer";
+        String sql = "SELECT * FROM customer ORDER BY name";
         return jdbcTemplate.query(sql, CustomerMapper.listMapper);
+    }
+
+    @Override
+    public int update(PutCustomerDTO customer, String cpf) {
+        String sql = "UPDATE customer SET name = ?, email = ? WHERE cpf = ?";
+
+        return jdbcTemplate.update(
+                sql,
+                customer.getName(),
+                customer.getEmail(),
+                cpf
+        );
     }
 }

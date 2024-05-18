@@ -1,11 +1,15 @@
 package com.fiap.techchallenge.adapters.in.rest.controller;
 
+import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.service.CustomerService;
+import com.fiap.techchallenge.domain.usecase.ICustomerUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -37,6 +41,13 @@ public class CustomerController {
     public ResponseEntity<Customer> createCustomer (@RequestBody Customer customer) {
         if(customerService.createCustomer(customer) != null) {
           return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+        } else return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/{cpf}")
+    public ResponseEntity<PutCustomerDTO> updateCustomerByCpf(@RequestBody PutCustomerDTO customerDTO, @PathVariable String cpf) {
+        if(customerService.updateCustomer(customerDTO, cpf) != null) {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(customerDTO);
         } else return ResponseEntity.badRequest().build();
     }
 }

@@ -1,4 +1,5 @@
 package com.fiap.techchallenge.domain.service;
+import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.usecase.ICustomerUseCase;
 import com.fiap.techchallenge.infrastructure.repository.postgres.CustomerRepository;
@@ -16,7 +17,7 @@ public class CustomerService implements ICustomerUseCase {
     private CustomerRepository customerRepository;
 
     @Override
-    public Customer createCustomer (Customer customer) {
+    public Customer createCustomer(Customer customer) {
         customer.setId(UUID.randomUUID());
 
         if(customerRepository.create(customer) == 1) return customer;
@@ -31,5 +32,10 @@ public class CustomerService implements ICustomerUseCase {
     @Override
     public List<Customer> getAllCustomers() {
         return customerRepository.getAll();
+    }
+
+    public PutCustomerDTO updateCustomer(PutCustomerDTO customer, String cpf) {
+        if(customerRepository.update(customer, cpf) == 1) return customer;
+        return null;
     }
 }
