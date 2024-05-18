@@ -3,9 +3,9 @@ package com.fiap.techchallenge.domain.enums;
 public enum OrderStatus {
 
     RECEIVED ("RECEIVED"),
+    PAID ("PAID"),
     IN_PREPARATION ("IN_PREPARATION"),
     READY_TO_DELIVERY ("READY_TO_DELIVERY"),
-    PAID ("PAID"),
     FINISHED ("FINISHED");
 
     private final String status;
