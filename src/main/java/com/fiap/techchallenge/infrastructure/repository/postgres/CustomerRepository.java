@@ -39,12 +39,13 @@ public class CustomerRepository implements ICustomerRepository {
         );
     }
 
-    public List<Customer> getAll(String cpf) {
-        String sql = "SELECT * FROM customer";
+    public List<Customer> getByCpf(String cpf) {
+        String sql = "SELECT * FROM customer WHERE cpf = ?";
+        return jdbcTemplate.query(sql, CustomerMapper.listMapper, cpf);
+    }
 
-        if(cpf != null && !cpf.isEmpty()) {
-            sql += " WHERE cpf = ?";
-            return jdbcTemplate.query(sql, CustomerMapper.listMapper, cpf);
-        }   return jdbcTemplate.query(sql, CustomerMapper.listMapper);
+    public List<Customer> getAll() {
+        String sql = "SELECT * FROM customer";
+        return jdbcTemplate.query(sql, CustomerMapper.listMapper);
     }
 }

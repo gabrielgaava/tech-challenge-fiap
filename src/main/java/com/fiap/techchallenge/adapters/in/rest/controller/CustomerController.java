@@ -15,10 +15,18 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    //todo  Como retornar tudo nessa merda
     @GetMapping("/{cpf}")
-    public ResponseEntity<List<Customer>> getCustomer(@PathVariable String cpf) {
-        var customers = customerService.getAllCustomers(cpf);
+    public ResponseEntity<List<Customer>> getCustomerByCpf(@PathVariable String cpf) {
+        var customers = customerService.getCustomerByCpf(cpf);
+
+        if(customers.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }   return ResponseEntity.ok(customers);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Customer>> getAllCustomers() {
+        var customers = customerService.getAllCustomers();
 
         if(customers.isEmpty()) {
             return ResponseEntity.noContent().build();

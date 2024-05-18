@@ -8,5 +8,6 @@ public interface ICustomerRepository {
 
     int create (Customer customer);
 
-    List<Customer> getAll(String cpf);
+    List<Customer> getByCpf(String cpf);
+    List<Customer> getAll();
 }

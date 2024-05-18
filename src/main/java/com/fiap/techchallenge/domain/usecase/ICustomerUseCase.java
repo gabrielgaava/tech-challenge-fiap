@@ -8,5 +8,6 @@ public interface ICustomerUseCase {
 
     Customer createCustomer (Customer customer);
 
-    List<Customer> getAllCustomers (String cpf);
+    List<Customer> getCustomerByCpf (String cpf);
+    List<Customer> getAllCustomers();
 }

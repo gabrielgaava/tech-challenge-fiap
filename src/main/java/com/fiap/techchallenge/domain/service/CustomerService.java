@@ -24,7 +24,12 @@ public class CustomerService implements ICustomerUseCase {
     }
 
     @Override
-    public List<Customer> getAllCustomers(String cpf) {
-        return customerRepository.getAll(cpf);
+    public List<Customer> getCustomerByCpf(String cpf) {
+        return customerRepository.getByCpf(cpf);
+    }
+
+    @Override
+    public List<Customer> getAllCustomers() {
+        return customerRepository.getAll();
     }
 }
