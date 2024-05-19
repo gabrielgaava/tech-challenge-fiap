@@ -2,8 +2,9 @@ package com.fiap.techchallenge.adapters.in.rest.handler;
 
 
 import com.fiap.techchallenge.adapters.in.rest.dto.ErrorDTO;
-import com.fiap.techchallenge.domain.exception.EntityNotFound;
-import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatus;
+import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
+import com.fiap.techchallenge.domain.exception.MandatoryFieldException;
+import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,15 +18,21 @@ public class ExceptionHandlerController {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
-    @ExceptionHandler(OrderAlreadyWithStatus.class)
-    public ResponseEntity<ErrorDTO> handleOrderAlreadyWithStatus(OrderAlreadyWithStatus exception) {
+    @ExceptionHandler(OrderAlreadyWithStatusException.class)
+    public ResponseEntity<ErrorDTO> handleOrderAlreadyWithStatus(OrderAlreadyWithStatusException exception) {
         ErrorDTO errorResponse = new ErrorDTO(exception.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
-    @ExceptionHandler(EntityNotFound.class)
-    public ResponseEntity<ErrorDTO> handleOrderAlreadyWithStatus(EntityNotFound exception) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handleOrderAlreadyWithStatus(EntityNotFoundException exception) {
         return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(MandatoryFieldException.class)
+    public ResponseEntity<ErrorDTO> handleMandatoryField(MandatoryFieldException exception) {
+        ErrorDTO errorResponse = new ErrorDTO(exception.getMessage());
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 
 }

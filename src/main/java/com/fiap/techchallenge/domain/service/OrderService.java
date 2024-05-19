@@ -7,14 +7,13 @@ import com.fiap.techchallenge.domain.entity.OrderHistory;
 import com.fiap.techchallenge.domain.entity.ProductAndQuantity;
 import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
-import com.fiap.techchallenge.domain.exception.EntityNotFound;
-import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatus;
+import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
+import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.repository.IOrderRepository;
 import com.fiap.techchallenge.domain.repository.IProductRepository;
 import com.fiap.techchallenge.domain.usecase.IOrderUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -58,13 +57,13 @@ public class OrderService implements IOrderUseCase {
      * Get all the data from an order, with products and history
      * @param id: the oder ID
      * @return: The order found in database
-     * @throws EntityNotFound
+     * @throws EntityNotFoundException
      */
     @Override
-    public Order getOrder(UUID id) throws EntityNotFound {
+    public Order getOrder(UUID id) throws EntityNotFoundException {
         var order = IOrderRepository.getByIdWithProducts(id);
 
-        if(order == null) throw new EntityNotFound("Order", id);
+        if(order == null) throw new EntityNotFoundException("Order", id);
 
         var history = IOrderRepository.getOrderHistoryByOrderId(id);
 
@@ -77,10 +76,14 @@ public class OrderService implements IOrderUseCase {
     /**
      * Create a new order with RECEIVED status
      * @param dto The body request of api
-     * @return the created order object
+     * @return the created order object or null, in case of error
      */
     @Override
     public Order createOrder(CreateOrderDTO dto) {
+
+        // The order must have at least one product to be created
+        if(dto.getProducts() == null || dto.getProducts().isEmpty())
+            return null;
 
         UUID costumerId = dto.getCostumerId() != null
                 ? UUID.fromString(dto.getCostumerId())
@@ -122,14 +125,14 @@ public class OrderService implements IOrderUseCase {
 
     /**
      * Gets all the order's history, with status changes registers
-     * @param id
-     * @return
-     * @throws EntityNotFound
+     * @param id The Order's ID
+     * @return all order's history with status update
+     * @throws EntityNotFoundException
      */
     @Override
-    public List<OrderHistory> getOrderHistory(UUID id) throws EntityNotFound {
+    public List<OrderHistory> getOrderHistory(UUID id) throws EntityNotFoundException {
         var history = IOrderRepository.getOrderHistoryByOrderId(id);
-        if(history == null) throw new EntityNotFound("Order", id);
+        if(history == null) throw new EntityNotFoundException("Order", id);
 
         return history;
     }
@@ -139,14 +142,14 @@ public class OrderService implements IOrderUseCase {
      * @param id The order ID
      * @param status The new order Status
      * @return true if updated successfully, false otherwise
-     * @throws OrderAlreadyWithStatus
+     * @throws OrderAlreadyWithStatusException
      */
     @Override
-    public boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatus {
+    public boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException {
         var order = IOrderRepository.getById(id);
 
         if(order.getStatus().equals(status))
-            throw new OrderAlreadyWithStatus(id, status);
+            throw new OrderAlreadyWithStatusException(id, status);
 
         return IOrderRepository.updateStatus(id, status, order.getStatus()) == 2;
     }
@@ -154,7 +157,7 @@ public class OrderService implements IOrderUseCase {
     /**
      * Calculate the total of time in seconds that the order was created until now
      * @param order: The Oder that will have the time waiting calculated
-     * @return the time of wait in seconds
+     * @return the total time of wait in seconds
      */
     private long calculateWaitTime(Order order) {
         if(order.getStatus().equals(OrderStatus.FINISHED)) return 0;

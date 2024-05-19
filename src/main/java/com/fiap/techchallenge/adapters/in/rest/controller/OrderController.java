@@ -1,7 +1,6 @@
 package com.fiap.techchallenge.adapters.in.rest.controller;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.CreateOrderDTO;
-import com.fiap.techchallenge.adapters.in.rest.dto.ErrorDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.UpdateOrderStatusDTO;
 import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.entity.OrderFilters;
@@ -9,8 +8,8 @@ import com.fiap.techchallenge.domain.entity.OrderHistory;
 import com.fiap.techchallenge.domain.enums.OrderSortFields;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
 import com.fiap.techchallenge.domain.enums.SortDirection;
-import com.fiap.techchallenge.domain.exception.EntityNotFound;
-import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatus;
+import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
+import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.usecase.IOrderUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -63,13 +62,15 @@ public class OrderController {
 
     @Operation(summary = "Get all details of an order")
     @GetMapping("/{id}")
-    public Order getOrder(@PathVariable String id) throws EntityNotFound {
+    public Order getOrder(@PathVariable String id) throws EntityNotFoundException
+    {
         return iOrderUseCase.getOrder(UUID.fromString(id));
     }
 
     @Operation(summary = "Get the order's history with all status changes")
     @GetMapping("/{id}/history")
-    public List<OrderHistory> getOrderHistory(@PathVariable String id) throws EntityNotFound {
+    public List<OrderHistory> getOrderHistory(@PathVariable String id) throws EntityNotFoundException
+    {
         return iOrderUseCase.getOrderHistory(UUID.fromString(id));
     }
 
@@ -77,9 +78,11 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody CreateOrderDTO request)
     {
+
         var order = iOrderUseCase.createOrder(request);
 
-        if(order == null) return ResponseEntity.badRequest().body(null);
+        if(order == null)
+            return ResponseEntity.badRequest().body(null);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -91,7 +94,7 @@ public class OrderController {
     public ResponseEntity<?> updateStatus(
             @PathVariable String id, @Valid
             @RequestBody UpdateOrderStatusDTO request
-    ) throws OrderAlreadyWithStatus
+    ) throws OrderAlreadyWithStatusException
     {
         var oderId = UUID.fromString(id);
         var status = OrderStatus.fromString(request.getStatus().toUpperCase());

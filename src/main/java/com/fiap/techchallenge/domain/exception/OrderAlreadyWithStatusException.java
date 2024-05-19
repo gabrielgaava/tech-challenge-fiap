@@ -4,9 +4,9 @@ import com.fiap.techchallenge.domain.enums.OrderStatus;
 
 import java.util.UUID;
 
-public class OrderAlreadyWithStatus extends Exception {
+public class OrderAlreadyWithStatusException extends Exception {
 
-    public OrderAlreadyWithStatus(UUID orderId, OrderStatus status) {
+    public OrderAlreadyWithStatusException(UUID orderId, OrderStatus status) {
         super("The order " + orderId.toString() + " is already with the status " + status.toString());
     }
 

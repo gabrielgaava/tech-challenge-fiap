@@ -2,9 +2,9 @@ package com.fiap.techchallenge.domain.exception;
 
 import java.util.UUID;
 
-public class EntityNotFound extends Exception {
+public class EntityNotFoundException extends Exception {
 
-    public EntityNotFound(String entity, UUID id) {
+    public EntityNotFoundException(String entity, UUID id) {
         super("Entity " + entity + "with id " + id.toString() + "not found.");
     }
 

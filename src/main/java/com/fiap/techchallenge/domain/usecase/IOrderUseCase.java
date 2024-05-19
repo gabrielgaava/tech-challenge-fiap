@@ -5,8 +5,8 @@ import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.entity.OrderFilters;
 import com.fiap.techchallenge.domain.entity.OrderHistory;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
-import com.fiap.techchallenge.domain.exception.EntityNotFound;
-import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatus;
+import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
+import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,12 +15,12 @@ public interface IOrderUseCase {
 
     List<Order> getOrders(OrderFilters filters);
 
-    Order getOrder(UUID id) throws EntityNotFound;
+    Order getOrder(UUID id) throws EntityNotFoundException;
 
     Order createOrder(CreateOrderDTO dto);
 
-    List<OrderHistory> getOrderHistory(UUID id) throws EntityNotFound;
+    List<OrderHistory> getOrderHistory(UUID id) throws EntityNotFoundException;
 
-    boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatus;
+    boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException;
 
 }
