@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository("PGProductRepository")
 public class ProductRepository implements IProductRepository {
@@ -51,6 +52,18 @@ public class ProductRepository implements IProductRepository {
         }
 
         return jdbcTemplate.query(sql, ProductMapper.listMapper);
+    }
+
+    @Override
+    public Product getById(UUID id) {
+        if(id == null) return null;
+
+        String sql = "select * from product where id = ?";
+        List<Product> data = jdbcTemplate.query(sql, ProductMapper.listMapper, id);
+
+        if(data.isEmpty()) return null;
+
+        else return data.getFirst();
     }
 
 }
