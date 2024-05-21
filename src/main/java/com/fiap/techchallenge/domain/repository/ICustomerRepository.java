@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface ICustomerRepository {
     int create (Customer customer);
-    List<Customer> getByCpf(String cpf);
+    Customer getByCpf(String cpf);
     List<Customer> getAll();
     int update(PutCustomerDTO customer, String cpf);
+    int delete(String cpf);
 }

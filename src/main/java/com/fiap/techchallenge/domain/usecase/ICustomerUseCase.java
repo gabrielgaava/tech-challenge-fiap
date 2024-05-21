@@ -8,8 +8,11 @@ public interface ICustomerUseCase {
 
     Customer createCustomer(Customer customer);
 
-    List<Customer> getCustomerByCpf(String cpf);
+    Customer getCustomerByCpf(String cpf);
+
     List<Customer> getAllCustomers();
 
     PutCustomerDTO updateCustomer(PutCustomerDTO customer, String cpf);
+
+    Boolean deleteCustomer(String cpf);
 }

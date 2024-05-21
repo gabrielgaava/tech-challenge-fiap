@@ -26,7 +26,7 @@ public class CustomerService implements ICustomerUseCase {
     }
 
     @Override
-    public List<Customer> getCustomerByCpf(String cpf) {
+    public Customer getCustomerByCpf(String cpf) {
         return customerRepository.getByCpf(cpf);
     }
 
@@ -39,5 +39,11 @@ public class CustomerService implements ICustomerUseCase {
     public PutCustomerDTO updateCustomer(PutCustomerDTO customer, String cpf) {
         if(customerRepository.update(customer, cpf) == 1) return customer;
         return null;
+    }
+
+    @Override
+    public Boolean deleteCustomer(String cpf) {
+      int deleteFlag = customerRepository.delete(cpf);
+      return deleteFlag == 1;
     }
 }

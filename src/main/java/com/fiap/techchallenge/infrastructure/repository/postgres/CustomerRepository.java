@@ -36,9 +36,9 @@ public class CustomerRepository implements ICustomerRepository {
     }
 
     @Override
-    public List<Customer> getByCpf(String cpf) {
+    public Customer getByCpf(String cpf) {
         String sql = "SELECT * FROM customer WHERE cpf = ?";
-        return jdbcTemplate.query(
+        return jdbcTemplate.queryForObject(
                 sql,
                 CustomerMapper.listMapper,
                 cpf);
@@ -62,5 +62,11 @@ public class CustomerRepository implements ICustomerRepository {
                 customer.getEmail(),
                 cpf
         );
+    }
+
+    @Override
+    public int delete(String cpf) {
+        String sql = "DELETE FROM customer WHERE cpf = ?";
+        return jdbcTemplate.update(sql, cpf);
     }
 }
