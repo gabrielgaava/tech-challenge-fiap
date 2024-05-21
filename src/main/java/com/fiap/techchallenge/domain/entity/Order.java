@@ -21,7 +21,7 @@ public class Order {
 
     private UUID costumerId;
 
-    private String orderNumber;
+    private Integer orderNumber;
 
     private BigDecimal amount;
 

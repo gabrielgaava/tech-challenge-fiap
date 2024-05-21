@@ -7,6 +7,7 @@ import com.fiap.techchallenge.domain.entity.ProductAndQuantity;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
 import com.fiap.techchallenge.domain.enums.ProductCategory;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -65,12 +66,19 @@ public abstract class OrderMapper {
     private static Order createOrder(ResultSet rs) throws SQLException {
         Order order = new Order();
         order.setId(UUID.fromString(rs.getString("order_id")));
-        order.setOrderNumber(rs.getString("order_number"));
-        order.setCostumerId(UUID.fromString(rs.getString("customer_id")));
+        order.setOrderNumber(rs.getInt("order_number"));
+        order.setCostumerId(getUUID(rs.getString("customer_id")));
         order.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         order.setAmount(BigDecimal.valueOf(rs.getFloat("amount")));
         order.setStatus(OrderStatus.fromString(rs.getString("status")));
         return order;
+    }
+
+    private static UUID getUUID(String uuid) {
+        if (StringUtils.hasText(uuid))
+            return UUID.fromString(uuid);
+
+        return null;
     }
 
 }

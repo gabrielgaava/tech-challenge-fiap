@@ -18,7 +18,7 @@ CREATE TABLE product (
 
 CREATE TABLE "order" (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  order_number varchar,
+  order_number SERIAL UNIQUE,
   customer_id uuid ,
   created_at timestamp,
   amount float,

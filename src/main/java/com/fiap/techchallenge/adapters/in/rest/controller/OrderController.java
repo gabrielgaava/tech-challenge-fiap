@@ -2,14 +2,19 @@ package com.fiap.techchallenge.adapters.in.rest.controller;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.CreateOrderDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.UpdateOrderStatusDTO;
+import com.fiap.techchallenge.adapters.out.rest.exception.PaymentErrorException;
+import com.fiap.techchallenge.adapters.out.rest.service.MercadoPagoService;
 import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.entity.OrderFilters;
 import com.fiap.techchallenge.domain.entity.OrderHistory;
+import com.fiap.techchallenge.domain.entity.Payment;
 import com.fiap.techchallenge.domain.enums.OrderSortFields;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
 import com.fiap.techchallenge.domain.enums.SortDirection;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
+import com.fiap.techchallenge.domain.exception.MercadoPagoUnavailableException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
+import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
 import com.fiap.techchallenge.domain.usecase.IOrderUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -102,6 +107,22 @@ public class OrderController {
 
         if(updated) return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
+    }
+
+    @Operation(summary = "Pay the order with mercado pago")
+    @PostMapping("/{order_id}/payment")
+    public ResponseEntity<Payment> payOrder(@PathVariable("order_id") UUID orderId)
+        throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException
+    {
+        Payment payment = iOrderUseCase.payOrder(orderId);
+
+        if(payment == null)
+            return ResponseEntity.badRequest().body(null);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(payment);
+
     }
 
 

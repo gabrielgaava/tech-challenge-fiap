@@ -68,8 +68,8 @@ public class OderRepository implements IOrderRepository {
     @Override
     public int create(Order order) {
         String createOrderSQL = "INSERT INTO public.order " +
-                "(id, order_number, customer_id, created_at, amount, status) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+                "(id, customer_id, created_at, amount, status) " +
+                "VALUES (?, ?, ?, ?, ?)";
 
         String createOrderProductRelationSQL = "INSERT INTO public.order_products " +
                 "(order_id, product_id, quantity) " +
@@ -79,7 +79,6 @@ public class OderRepository implements IOrderRepository {
         int isOrderCreated = jdbcTemplate.update(
             createOrderSQL,
             order.getId(),
-            order.getOrderNumber(),
             order.getCostumerId(),
             order.getCreatedAt(),
             order.getAmount(),
