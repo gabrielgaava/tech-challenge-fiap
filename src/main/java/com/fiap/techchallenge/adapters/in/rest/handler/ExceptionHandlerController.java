@@ -2,10 +2,7 @@ package com.fiap.techchallenge.adapters.in.rest.handler;
 
 
 import com.fiap.techchallenge.adapters.in.rest.dto.ErrorDTO;
-import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
-import com.fiap.techchallenge.domain.exception.MandatoryFieldException;
-import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
-import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
+import com.fiap.techchallenge.domain.exception.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,6 +35,12 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(OrderNotReadyException.class)
     public ResponseEntity<ErrorDTO> handleOrderNotReady(OrderNotReadyException exception) {
+        ErrorDTO errorResponse = new ErrorDTO(exception.getMessage());
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
+    @ExceptionHandler(InvalidCpfException.class)
+    public ResponseEntity<ErrorDTO> handleInvalidCpf(InvalidCpfException exception) {
         ErrorDTO errorResponse = new ErrorDTO(exception.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
     }

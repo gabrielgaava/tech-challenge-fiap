@@ -3,6 +3,7 @@ package com.fiap.techchallenge.adapters.in.rest.controller;
 import com.fiap.techchallenge.adapters.in.rest.dto.CreateCustomerDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.domain.entity.Customer;
+import com.fiap.techchallenge.domain.exception.InvalidCpfException;
 import com.fiap.techchallenge.domain.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,7 +47,7 @@ public class CustomerController {
 
     @Operation(summary = "Create a new customers")
     @PostMapping
-    public ResponseEntity<Customer> createCustomer (@RequestBody CreateCustomerDTO request)
+    public ResponseEntity<Customer> createCustomer (@RequestBody CreateCustomerDTO request) throws InvalidCpfException
     {
         Customer customer = new Customer(null,request.getCpf(), request.getName(), request.getEmail());
 

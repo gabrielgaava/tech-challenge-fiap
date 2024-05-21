@@ -2,11 +2,13 @@ package com.fiap.techchallenge.domain.usecase;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.domain.entity.Customer;
+import com.fiap.techchallenge.domain.exception.InvalidCpfException;
+
 import java.util.List;
 
 public interface ICustomerUseCase {
 
-    Customer createCustomer(Customer customer);
+    Customer createCustomer(Customer customer) throws InvalidCpfException;
 
     Customer getCustomerByCpf(String cpf);
 
