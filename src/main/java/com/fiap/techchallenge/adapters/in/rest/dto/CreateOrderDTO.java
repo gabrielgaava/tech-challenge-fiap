@@ -17,8 +17,6 @@ public class CreateOrderDTO {
 
     String costumerId;
 
-    Float amount;
-
     List<OrderProductDTO> products;
 
 }

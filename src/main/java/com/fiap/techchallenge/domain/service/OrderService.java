@@ -2,14 +2,16 @@ package com.fiap.techchallenge.domain.service;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.CreateOrderDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.OrderProductDTO;
-import com.fiap.techchallenge.domain.entity.OrderFilters;
-import com.fiap.techchallenge.domain.entity.OrderHistory;
-import com.fiap.techchallenge.domain.entity.ProductAndQuantity;
-import com.fiap.techchallenge.domain.entity.Order;
+import com.fiap.techchallenge.adapters.out.rest.exception.PaymentErrorException;
+import com.fiap.techchallenge.adapters.out.rest.service.MercadoPagoService;
+import com.fiap.techchallenge.domain.entity.*;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
+import com.fiap.techchallenge.domain.exception.MercadoPagoUnavailableException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
+import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
 import com.fiap.techchallenge.domain.repository.IOrderRepository;
+import com.fiap.techchallenge.domain.repository.IPaymentRepository;
 import com.fiap.techchallenge.domain.repository.IProductRepository;
 import com.fiap.techchallenge.domain.usecase.IOrderUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static com.fiap.techchallenge.domain.enums.OrderStatus.PAID;
+import static com.fiap.techchallenge.domain.enums.OrderStatus.RECEIVED;
 import static java.math.RoundingMode.HALF_EVEN;
 
 @Service
@@ -35,6 +39,13 @@ public class OrderService implements IOrderUseCase {
     @Autowired
     @Qualifier("PGProductRepository")
     IProductRepository IProductRepository;
+
+    @Autowired
+    @Qualifier("PGPaymentRepository")
+    IPaymentRepository IPaymentRepository;
+
+    @Autowired
+    MercadoPagoService mercadoPagoService;
 
     /**
      * Gets ALL orders stored at the database
@@ -109,9 +120,8 @@ public class OrderService implements IOrderUseCase {
         var order = Order.builder()
             .id(UUID.randomUUID())
             .costumerId(costumerId)
-            .orderNumber("123") //TODO: Como criar esse numero ?
             .amount(orderAmount)
-            .status(OrderStatus.RECEIVED)
+            .status(RECEIVED)
             .createdAt(LocalDateTime.now())
             .products(orderProducts)
             .build();
@@ -152,6 +162,39 @@ public class OrderService implements IOrderUseCase {
             throw new OrderAlreadyWithStatusException(id, status);
 
         return IOrderRepository.updateStatus(id, status, order.getStatus()) == 2;
+    }
+
+    /**
+     * Make payment with fake MercadoPago Checkout
+     * @param id Order ID to be paid
+     * @return Payment details
+     * @throws EntityNotFoundException
+     * @throws OrderNotReadyException
+     * @throws MercadoPagoUnavailableException
+     */
+    @Override
+    public Payment payOrder(UUID id) throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException {
+        var order = IOrderRepository.getById(id);
+
+        if (order == null || order.getStatus() == null) {
+            throw new EntityNotFoundException("Order", id);
+        }
+
+        if (order.getStatus() != RECEIVED){
+            throw new OrderNotReadyException();
+        }
+
+        try {
+            Payment payment = mercadoPagoService.pixPayment(order.getId().toString(), order.getAmount());
+            IOrderRepository.updateStatus(id, PAID, order.getStatus());
+            IPaymentRepository.create(payment);
+            return payment;
+        }
+
+        catch (PaymentErrorException e) {
+            throw new MercadoPagoUnavailableException();
+        }
+
     }
 
     /**
