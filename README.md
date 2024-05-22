@@ -19,16 +19,7 @@ Este projeto é uma aplicação Java usando Gradle para automação de builds e 
 
 ## Configuração e Execução do Projeto
 
-### Passo 1: Construir a Imagem Docker
-
-Antes de executar a aplicação, você precisa construir a imagem Docker da aplicação Java. 
-Com o Docker Desktop aberto (Windows) ou com serviço do Docker rodando (macOS/Linux), navegue até o diretório do projeto e execute:
-
-```sh
-docker compose build
-```
-
-### Passo 2: Iniciar os Serviços
+### Passo 1: Construir imagens e inciar serviços
 
 Depois de construir a imagem, você pode iniciar os serviços definidos no `docker-compose.yml`:
 
@@ -37,12 +28,12 @@ docker compose up -d
 ```
 _O "-d" significa "detached mode". Assim o docker compose inicia os contêineres em segundo plano._
 
-Este comando iniciará dois contêineres:
+Este comando criará e iniciará dois contêineres:
 
 - `postgres`: um contêiner rodando PostgreSQL.
 - `tech-challenge`: um contêiner rodando a aplicação Java.
 
-### Passo 3: Verificar a Aplicação
+### Passo 2: Verificar a Aplicação
 
 Após iniciar os serviços, você pode verificar se a aplicação está funcionando corretamente acessando a rota de HealthCheck em `http://localhost:8080/healthcheck`. A resposta esperada é:
 
