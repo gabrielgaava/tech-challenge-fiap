@@ -31,7 +31,7 @@ public class OrderDTO {
 
 	public OrderDTO(Order order) {
 		this.id = order.getId();
-		this.customerId = order.getCustomerId();  // Correcting the typo: costumerId to customerId
+		this.customerId = order.getCustomerId();
 		this.orderNumber = order.getOrderNumber();
 		this.amount = order.getAmount();
 		this.status = order.getStatus();

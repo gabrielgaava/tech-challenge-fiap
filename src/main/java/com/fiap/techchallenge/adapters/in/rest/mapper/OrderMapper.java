@@ -38,8 +38,8 @@ public abstract class OrderMapper {
 
     Order order = new Order();
 
-    if(!StringUtils.isEmpty(dto.getCostumerId())){
-      order.setCostumerId(UUID.fromString(dto.getCostumerId()));
+    if(!StringUtils.isEmpty(dto.getCustomerId())){
+      order.setCustomerId(UUID.fromString(dto.getCustomerId()));
     }
 
     order.setProducts(orderProducts);
