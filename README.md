@@ -37,7 +37,7 @@ Este comando criará e iniciará dois contêineres:
 Após iniciar os serviços, você pode verificar se a aplicação está funcionando corretamente acessando a rota de HealthCheck em `http://localhost:8080/healthcheck`. A resposta esperada é:
 
 ```plaintext
-A API está funcionando!
+API is up and running
 ```
 
 Você também pode verificar os logs para garantir que a aplicação e o banco de dados iniciaram corretamente:
