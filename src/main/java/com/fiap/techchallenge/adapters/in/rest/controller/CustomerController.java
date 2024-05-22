@@ -1,6 +1,7 @@
 package com.fiap.techchallenge.adapters.in.rest.controller;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.CreateCustomerDTO;
+import com.fiap.techchallenge.adapters.in.rest.dto.CustomerDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Tag(name = "Customer Controller")
@@ -24,36 +27,45 @@ public class CustomerController {
 
     @Operation(summary = "Search for a customer by ID")
     @GetMapping("/{cpf}")
-    public ResponseEntity<Customer> getCustomerByCpf(@PathVariable String cpf)
+    public ResponseEntity<CustomerDTO> getCustomerByCpf(@PathVariable String cpf)
     {
-        var customers = customerService.getCustomerByCpf(cpf);
+        var customer = customerService.getCustomerByCpf(cpf);
 
-        if(customers == null) {
+        if(customer == null) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(customers);
+        return ResponseEntity.ok(new CustomerDTO(customer));
     }
 
     @Operation(summary = "List all customers")
     @GetMapping
-    public ResponseEntity<List<Customer>> getAllCustomers()
+    public ResponseEntity<List<CustomerDTO>> getAllCustomers()
     {
         var customers = customerService.getAllCustomers();
 
         if(customers.isEmpty()) {
             return ResponseEntity.noContent().build();
-        }   return ResponseEntity.ok(customers);
+        }
+
+        List<CustomerDTO> customersDTO = new ArrayList<>();
+        customers.forEach((customer)->{
+            if (customer != null){
+                customersDTO.add(new CustomerDTO(customer));
+            }
+        });
+
+        return ResponseEntity.ok(customersDTO);
     }
 
     @Operation(summary = "Create a new customers")
     @PostMapping
-    public ResponseEntity<Customer> createCustomer (@Valid @RequestBody CreateCustomerDTO request) throws InvalidCpfException
+    public ResponseEntity<CustomerDTO> createCustomer (@Valid @RequestBody CreateCustomerDTO request) throws InvalidCpfException
     {
-        Customer customer = new Customer(null,request.getCpf(), request.getName(), request.getEmail());
+        Customer newCustomer = new Customer(null,request.getCpf(), request.getName(), request.getEmail());
 
-        if(customerService.createCustomer(customer) != null) {
-          return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+        if(customerService.createCustomer(newCustomer) != null) {
+          return ResponseEntity.status(HttpStatus.CREATED).body(new CustomerDTO(newCustomer));
         }
 
         return ResponseEntity.badRequest().build();
@@ -61,11 +73,13 @@ public class CustomerController {
 
     @Operation(summary = "Update customers data")
     @PutMapping("/{cpf}")
-    public ResponseEntity<Customer> updateCustomerByCpf(@Valid @RequestBody PutCustomerDTO customerDTO, @PathVariable String cpf)
+    public ResponseEntity<CustomerDTO> updateCustomerByCpf(@Valid @RequestBody PutCustomerDTO customerDTO, @PathVariable String cpf)
     {
         if(customerService.updateCustomer(customerDTO, cpf) != null) {
-            var getCustomer = customerService.getCustomerByCpf(cpf);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(getCustomer);
+            var retrievedCustomer = customerService.getCustomerByCpf(cpf);
+            if (retrievedCustomer != null){
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new CustomerDTO(retrievedCustomer));
+            }
         }
 
         return ResponseEntity.badRequest().build();

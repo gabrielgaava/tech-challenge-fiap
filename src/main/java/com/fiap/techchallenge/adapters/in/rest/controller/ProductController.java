@@ -1,9 +1,11 @@
 package com.fiap.techchallenge.adapters.in.rest.controller;
 
+import com.fiap.techchallenge.adapters.in.rest.dto.ProductDTO;
 import com.fiap.techchallenge.domain.entity.Product;
 import com.fiap.techchallenge.domain.enums.ProductCategory;
 import com.fiap.techchallenge.domain.service.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,9 +38,11 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        if(productService.createProduct(product) != null)
-            return ResponseEntity.status(HttpStatus.CREATED).body(product);
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductDTO productDTO) {
+        Product productRequest = new Product(productDTO);
+
+        if(productService.createProduct(productRequest) != null)
+            return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
 
         else return ResponseEntity.badRequest().build();
     }

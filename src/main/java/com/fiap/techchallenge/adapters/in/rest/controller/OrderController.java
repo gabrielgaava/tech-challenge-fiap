@@ -1,7 +1,6 @@
 package com.fiap.techchallenge.adapters.in.rest.controller;
 
-import com.fiap.techchallenge.adapters.in.rest.dto.CreateOrderDTO;
-import com.fiap.techchallenge.adapters.in.rest.dto.UpdateOrderStatusDTO;
+import com.fiap.techchallenge.adapters.in.rest.dto.*;
 import com.fiap.techchallenge.adapters.in.rest.mapper.OrderMapper;
 import com.fiap.techchallenge.adapters.out.rest.exception.PaymentErrorException;
 import com.fiap.techchallenge.adapters.out.rest.service.MercadoPagoService;
@@ -30,6 +29,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,7 +50,7 @@ public class OrderController {
         @Parameter(name = "expandProducts", schema = @Schema(implementation = Boolean.class), description = "Bring the list of products to each order")
     })
     @GetMapping
-    public ResponseEntity<List<Order>> getOrders(
+    public ResponseEntity<List<OrderDTO>> getOrders(
             @Valid @RequestParam(required = false) String status,
             @Valid @RequestParam(required = false) String orderBy,
             @Valid @RequestParam(required = false) String orderDirection,
@@ -65,27 +65,37 @@ public class OrderController {
         orderDirection = orderDirection == null ? "ASC" : orderDirection;
         filters.setDirection(SortDirection.fromString(orderDirection));
 
-        var response = iOrderUseCase.getOrders(filters);
-        return ResponseEntity.ok(response);
+        var ordersDTO = new ArrayList<OrderDTO>();
+        iOrderUseCase.getOrders(filters).forEach((order) ->{
+            if (order != null){
+                ordersDTO.add(new OrderDTO(order));
+            }
+        });
+        return ResponseEntity.ok(ordersDTO);
     }
 
     @Operation(summary = "Get all details of an order")
     @GetMapping("/{id}")
-    public Order getOrder(@PathVariable String id) throws EntityNotFoundException
+    public OrderDTO getOrder(@PathVariable String id) throws EntityNotFoundException
     {
-        return iOrderUseCase.getOrder(UUID.fromString(id));
+        var order = iOrderUseCase.getOrder(UUID.fromString(id));
+        return new OrderDTO(order);
     }
 
     @Operation(summary = "Get the order's history with all status changes")
     @GetMapping("/{id}/history")
-    public List<OrderHistory> getOrderHistory(@PathVariable String id) throws EntityNotFoundException
+    public List<OrderHistoryDTO> getOrderHistory(@PathVariable String id) throws EntityNotFoundException
     {
-        return iOrderUseCase.getOrderHistory(UUID.fromString(id));
+        var orderHistoryDTO = new ArrayList<OrderHistoryDTO>();
+        iOrderUseCase.getOrderHistory(UUID.fromString(id)).forEach(orderHistory -> {
+            orderHistoryDTO.add(new OrderHistoryDTO(orderHistory));
+        });
+        return orderHistoryDTO;
     }
 
     @Operation(summary = "Create a new Order")
     @PostMapping
-    public ResponseEntity<Order> createOrder(@Valid @RequestBody CreateOrderDTO request) throws EntityNotFoundException
+    public ResponseEntity<OrderDTO> createOrder(@Valid @RequestBody CreateOrderDTO request) throws EntityNotFoundException
     {
         Order order = OrderMapper.toDomain(request);
         Order createdOrder = iOrderUseCase.createOrder(order);
@@ -95,7 +105,7 @@ public class OrderController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(createdOrder);
+                .body(new OrderDTO(createdOrder));
     }
 
     @Operation(summary = "Update the oder's status")
@@ -115,7 +125,7 @@ public class OrderController {
 
     @Operation(summary = "Pay the order with mercado pago")
     @PostMapping("/{order_id}/payment")
-    public ResponseEntity<Payment> payOrder(@PathVariable("order_id") UUID orderId)
+    public ResponseEntity<PaymentDTO> payOrder(@PathVariable("order_id") UUID orderId)
         throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException
     {
         Payment payment = iOrderUseCase.payOrder(orderId);
@@ -125,7 +135,7 @@ public class OrderController {
 
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(payment);
+            .body(new PaymentDTO(payment));
 
     }
 
