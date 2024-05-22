@@ -21,8 +21,7 @@ Este projeto é uma aplicação Java usando Gradle para automação de builds e 
 
 ### Passo 1: Construir imagens e inciar serviços
 
-Depois de construir a imagem, você pode iniciar os serviços definidos no `docker-compose.yml`:
-
+Basta rodar o seguinte comando, que lerá o conteúdo do `docker-compose.yml`:
 ```sh
 docker compose up -d
 ```
@@ -82,3 +81,8 @@ docker compose down -v
 ```
 
 Ou utilize o Docker Desktop.
+
+## Swagger
+
+Para acessar nossa documentação de API REST no padrão Swagger, basta acessar a seguinte URL no seu navegador:
+> [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
