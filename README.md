@@ -1,4 +1,4 @@
-# Tech Challenge FIAP - Galega Burger
+# Tech Challenge FIAP 2024 - Galega Burger
 Este projeto é uma aplicação Java 21 usando Gradle para automação de builds e Flyway para migração de banco de dados. Ele é configurado para rodar em um ambiente Docker, utilizando `docker compose` para orquestrar os contêineres do banco de dados PostgreSQL e da aplicação.
 
 ## Integrantes
