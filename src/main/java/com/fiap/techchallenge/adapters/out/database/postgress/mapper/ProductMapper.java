@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.infrastructure.repository.postgres.mapper;
+package com.fiap.techchallenge.adapters.out.database.postgress.mapper;
 
 import com.fiap.techchallenge.domain.entity.Product;
 import com.fiap.techchallenge.domain.enums.ProductCategory;

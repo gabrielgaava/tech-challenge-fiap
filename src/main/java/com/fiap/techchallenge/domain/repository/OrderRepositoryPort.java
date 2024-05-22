@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface IOrderRepository {
+public interface OrderRepositoryPort {
 
     List<Order> getAll(OrderFilters filters);
 

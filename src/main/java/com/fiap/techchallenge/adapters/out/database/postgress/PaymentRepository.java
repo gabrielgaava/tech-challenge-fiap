@@ -1,7 +1,7 @@
-package com.fiap.techchallenge.infrastructure.repository.postgres;
+package com.fiap.techchallenge.adapters.out.database.postgress;
 
 import com.fiap.techchallenge.domain.entity.Payment;
-import com.fiap.techchallenge.domain.repository.IPaymentRepository;
+import com.fiap.techchallenge.domain.repository.PaymentRepositoryPort;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Getter
 @Repository("PGPaymentRepository")
-public class PaymentRepository implements IPaymentRepository {
+public class PaymentRepository implements PaymentRepositoryPort {
 
   private JdbcTemplate jdbcTemplate;
 

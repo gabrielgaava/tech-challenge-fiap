@@ -1,9 +1,9 @@
-package com.fiap.techchallenge.adapters.out.rest.service;
+package com.fiap.techchallenge.adapters.out.restapi.mercadopago.service;
 
-import com.fiap.techchallenge.adapters.out.rest.dto.MercadoPagoPaymentResponseDTO;
-import com.fiap.techchallenge.adapters.out.rest.exception.PaymentErrorException;
+import com.fiap.techchallenge.adapters.out.restapi.mercadopago.dto.MercadoPagoPaymentResponseDTO;
+import com.fiap.techchallenge.adapters.out.restapi.mercadopago.exception.PaymentErrorException;
 import com.fiap.techchallenge.domain.entity.Payment;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fiap.techchallenge.domain.usecase.PaymentUseCase;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
-public class MercadoPagoService {
+public class MercadoPagoService implements PaymentUseCase {
 
   private final String SERVICE_BASE_URI = "https://jsonplaceholder.typicode.com";
 
@@ -22,7 +22,8 @@ public class MercadoPagoService {
     this.restTemplate = new RestTemplate();
   }
 
-  public Payment pixPayment(String orderId, BigDecimal amount) throws PaymentErrorException {
+  @Override
+  public Payment executePayment(String orderId, BigDecimal amount) throws PaymentErrorException {
     String URI = SERVICE_BASE_URI + "/todos/1/";
     MercadoPagoPaymentResponseDTO response = restTemplate.getForObject(URI, MercadoPagoPaymentResponseDTO.class);
 

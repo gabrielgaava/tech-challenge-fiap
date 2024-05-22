@@ -2,11 +2,8 @@ package com.fiap.techchallenge.adapters.in.rest.controller;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.*;
 import com.fiap.techchallenge.adapters.in.rest.mapper.OrderMapper;
-import com.fiap.techchallenge.adapters.out.rest.exception.PaymentErrorException;
-import com.fiap.techchallenge.adapters.out.rest.service.MercadoPagoService;
 import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.entity.OrderFilters;
-import com.fiap.techchallenge.domain.entity.OrderHistory;
 import com.fiap.techchallenge.domain.entity.Payment;
 import com.fiap.techchallenge.domain.enums.OrderSortFields;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
@@ -18,10 +15,7 @@ import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
 import com.fiap.techchallenge.domain.usecase.IOrderUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +45,10 @@ public class OrderController {
     })
     @GetMapping
     public ResponseEntity<List<OrderDTO>> getOrders(
-            @Valid @RequestParam(required = false) String status,
-            @Valid @RequestParam(required = false) String orderBy,
-            @Valid @RequestParam(required = false) String orderDirection,
-            @Valid @RequestParam(required = false) Boolean expandProducts
+        @Valid @RequestParam(required = false) String status,
+        @Valid @RequestParam(required = false) String orderBy,
+        @Valid @RequestParam(required = false) String orderDirection,
+        @Valid @RequestParam(required = false) Boolean expandProducts
     )
     {
         OrderFilters filters = new OrderFilters();

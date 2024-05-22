@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.adapters.out.rest.dto;
+package com.fiap.techchallenge.adapters.out.restapi.mercadopago.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

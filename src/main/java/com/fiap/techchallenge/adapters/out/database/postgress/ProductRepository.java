@@ -1,8 +1,8 @@
-package com.fiap.techchallenge.infrastructure.repository.postgres;
+package com.fiap.techchallenge.adapters.out.database.postgress;
 
 import com.fiap.techchallenge.domain.entity.Product;
-import com.fiap.techchallenge.domain.repository.IProductRepository;
-import com.fiap.techchallenge.infrastructure.repository.postgres.mapper.ProductMapper;
+import com.fiap.techchallenge.domain.repository.ProductRepositoryPort;
+import com.fiap.techchallenge.adapters.out.database.postgress.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository("PGProductRepository")
-public class ProductRepository implements IProductRepository {
+public class ProductRepository implements ProductRepositoryPort {
 
     private JdbcTemplate jdbcTemplate;
 

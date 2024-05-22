@@ -1,24 +1,22 @@
-package com.fiap.techchallenge.infrastructure.repository.postgres;
+package com.fiap.techchallenge.adapters.out.database.postgress;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.domain.entity.Customer;
-import com.fiap.techchallenge.domain.repository.ICustomerRepository;
-import com.fiap.techchallenge.infrastructure.repository.postgres.mapper.CustomerMapper;
+import com.fiap.techchallenge.domain.repository.CustomerRepositoryPort;
+import com.fiap.techchallenge.adapters.out.database.postgress.mapper.CustomerMapper;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
+@Getter
 @Repository("PGCustomerRepository")
-public class CustomerRepository implements ICustomerRepository {
+public class CustomerRepository implements CustomerRepositoryPort {
 
     private JdbcTemplate jdbcTemplate;
 
-    public JdbcTemplate getJdbcTemplate() {
-        return this.jdbcTemplate;
-    }
-
-    @Autowired
+  @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

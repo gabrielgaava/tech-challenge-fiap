@@ -5,7 +5,7 @@ import com.fiap.techchallenge.domain.entity.Product;
 import java.util.List;
 import java.util.UUID;
 
-public interface IProductRepository {
+public interface ProductRepositoryPort {
 
     int create(Product product);
 

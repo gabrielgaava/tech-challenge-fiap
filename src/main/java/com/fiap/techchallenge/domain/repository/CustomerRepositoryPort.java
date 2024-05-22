@@ -4,7 +4,7 @@ import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.domain.entity.Customer;
 import java.util.List;
 
-public interface ICustomerRepository {
+public interface CustomerRepositoryPort {
     int create (Customer customer);
     Customer getByCpf(String cpf);
     List<Customer> getAll();

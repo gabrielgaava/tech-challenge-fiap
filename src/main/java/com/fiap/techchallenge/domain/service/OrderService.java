@@ -1,18 +1,16 @@
 package com.fiap.techchallenge.domain.service;
 
-import com.fiap.techchallenge.adapters.in.rest.dto.CreateOrderDTO;
-import com.fiap.techchallenge.adapters.in.rest.dto.OrderProductDTO;
-import com.fiap.techchallenge.adapters.out.rest.exception.PaymentErrorException;
-import com.fiap.techchallenge.adapters.out.rest.service.MercadoPagoService;
+import com.fiap.techchallenge.adapters.out.restapi.mercadopago.exception.PaymentErrorException;
+import com.fiap.techchallenge.adapters.out.restapi.mercadopago.service.MercadoPagoService;
 import com.fiap.techchallenge.domain.entity.*;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.MercadoPagoUnavailableException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
-import com.fiap.techchallenge.domain.repository.IOrderRepository;
-import com.fiap.techchallenge.domain.repository.IPaymentRepository;
-import com.fiap.techchallenge.domain.repository.IProductRepository;
+import com.fiap.techchallenge.domain.repository.OrderRepositoryPort;
+import com.fiap.techchallenge.domain.repository.PaymentRepositoryPort;
+import com.fiap.techchallenge.domain.repository.ProductRepositoryPort;
 import com.fiap.techchallenge.domain.usecase.IOrderUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,15 +31,15 @@ public class OrderService implements IOrderUseCase {
 
     @Autowired
     @Qualifier("PGOrderRepository")
-    IOrderRepository IOrderRepository;
+    OrderRepositoryPort IOrderRepository;
 
     @Autowired
     @Qualifier("PGProductRepository")
-    IProductRepository IProductRepository;
+    ProductRepositoryPort IProductRepository;
 
     @Autowired
     @Qualifier("PGPaymentRepository")
-    IPaymentRepository IPaymentRepository;
+    PaymentRepositoryPort IPaymentRepository;
 
     @Autowired
     MercadoPagoService mercadoPagoService;
@@ -92,7 +89,8 @@ public class OrderService implements IOrderUseCase {
      * @return the created order object or null, in case of error
      */
     @Override
-    public Order createOrder(Order order) throws EntityNotFoundException {
+    public Order createOrder(Order order) throws EntityNotFoundException
+    {
 
         // The order must have at least one product to be created
         if(order.getProducts() == null || order.getProducts().isEmpty())
@@ -192,7 +190,7 @@ public class OrderService implements IOrderUseCase {
         }
 
         try {
-            Payment payment = mercadoPagoService.pixPayment(order.getId().toString(), order.getAmount());
+            Payment payment = mercadoPagoService.executePayment(order.getId().toString(), order.getAmount());
             IOrderRepository.updateStatus(id, PAID, order.getStatus());
             IPaymentRepository.create(payment);
             return payment;

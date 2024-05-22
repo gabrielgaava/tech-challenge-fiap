@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.adapters.out.rest.exception;
+package com.fiap.techchallenge.adapters.out.restapi.mercadopago.exception;
 
 public class PaymentErrorException extends Exception {
 
