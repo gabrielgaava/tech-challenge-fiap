@@ -1,12 +1,13 @@
 package com.fiap.techchallenge.adapters.in.rest.dto;
 
-import com.fiap.techchallenge.domain.entity.Product;
+import jakarta.annotation.Nullable;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -15,8 +16,11 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateOrderDTO {
 
+    @Nullable
+    @Size(min = 36, max = 36)
     String costumerId;
 
+    @Valid
     List<OrderProductDTO> products;
 
 }

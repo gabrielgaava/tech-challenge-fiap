@@ -27,6 +27,10 @@ public class Product {
 
     private ProductCategory category;
 
+    public Product(UUID id) {
+        this.id = id;
+    }
+
     @Setter
     @Getter
     @NoArgsConstructor

@@ -20,7 +20,7 @@ public interface IOrderUseCase {
 
     Order getOrder(UUID id) throws EntityNotFoundException;
 
-    Order createOrder(CreateOrderDTO dto);
+    Order createOrder(Order dto) throws EntityNotFoundException;
 
     List<OrderHistory> getOrderHistory(UUID id) throws EntityNotFoundException;
 

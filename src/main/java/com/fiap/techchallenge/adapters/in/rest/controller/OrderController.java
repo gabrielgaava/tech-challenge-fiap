@@ -2,6 +2,7 @@ package com.fiap.techchallenge.adapters.in.rest.controller;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.CreateOrderDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.UpdateOrderStatusDTO;
+import com.fiap.techchallenge.adapters.in.rest.mapper.OrderMapper;
 import com.fiap.techchallenge.adapters.out.rest.exception.PaymentErrorException;
 import com.fiap.techchallenge.adapters.out.rest.service.MercadoPagoService;
 import com.fiap.techchallenge.domain.entity.Order;
@@ -18,7 +19,10 @@ import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
 import com.fiap.techchallenge.domain.usecase.IOrderUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +51,10 @@ public class OrderController {
     })
     @GetMapping
     public ResponseEntity<List<Order>> getOrders(
-            @RequestParam(required = false) String status,
-            @RequestParam(required = false) String orderBy,
-            @RequestParam(required = false) String orderDirection,
-            @RequestParam(required = false) Boolean expandProducts
+            @Valid @RequestParam(required = false) String status,
+            @Valid @RequestParam(required = false) String orderBy,
+            @Valid @RequestParam(required = false) String orderDirection,
+            @Valid @RequestParam(required = false) Boolean expandProducts
     )
     {
         OrderFilters filters = new OrderFilters();
@@ -81,24 +85,24 @@ public class OrderController {
 
     @Operation(summary = "Create a new Order")
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody CreateOrderDTO request)
+    public ResponseEntity<Order> createOrder(@Valid @RequestBody CreateOrderDTO request) throws EntityNotFoundException
     {
+        Order order = OrderMapper.toDomain(request);
+        Order createdOrder = iOrderUseCase.createOrder(order);
 
-        var order = iOrderUseCase.createOrder(request);
-
-        if(order == null)
+        if(createdOrder == null)
             return ResponseEntity.badRequest().body(null);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(order);
+                .body(createdOrder);
     }
 
     @Operation(summary = "Update the oder's status")
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateStatus(
-            @PathVariable String id, @Valid
-            @RequestBody UpdateOrderStatusDTO request
+            @PathVariable String id,
+            @Valid @RequestBody UpdateOrderStatusDTO request
     ) throws OrderAlreadyWithStatusException
     {
         var oderId = UUID.fromString(id);

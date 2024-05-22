@@ -7,6 +7,7 @@ import com.fiap.techchallenge.domain.exception.InvalidCpfException;
 import com.fiap.techchallenge.domain.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,7 @@ public class CustomerController {
 
     @Operation(summary = "Create a new customers")
     @PostMapping
-    public ResponseEntity<Customer> createCustomer (@RequestBody CreateCustomerDTO request) throws InvalidCpfException
+    public ResponseEntity<Customer> createCustomer (@Valid @RequestBody CreateCustomerDTO request) throws InvalidCpfException
     {
         Customer customer = new Customer(null,request.getCpf(), request.getName(), request.getEmail());
 
@@ -60,7 +61,7 @@ public class CustomerController {
 
     @Operation(summary = "Update customers data")
     @PutMapping("/{cpf}")
-    public ResponseEntity<Customer> updateCustomerByCpf(@RequestBody PutCustomerDTO customerDTO, @PathVariable String cpf)
+    public ResponseEntity<Customer> updateCustomerByCpf(@Valid @RequestBody PutCustomerDTO customerDTO, @PathVariable String cpf)
     {
         if(customerService.updateCustomer(customerDTO, cpf) != null) {
             var getCustomer = customerService.getCustomerByCpf(cpf);

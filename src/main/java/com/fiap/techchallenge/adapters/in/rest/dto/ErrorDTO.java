@@ -13,5 +13,10 @@ import lombok.Setter;
 public class ErrorDTO {
 
     private String message;
+    private String details;
+
+    public ErrorDTO(String message) {
+        this.message = message;
+    }
 
 }

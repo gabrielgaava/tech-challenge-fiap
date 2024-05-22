@@ -53,7 +53,8 @@ public class OrderService implements IOrderUseCase {
      * @return: the filtered list of orders
      */
     @Override
-    public List<Order> getOrders(OrderFilters filters) {
+    public List<Order> getOrders(OrderFilters filters)
+    {
         var orders = IOrderRepository.getAll(filters);
 
         for(Order order : orders) {
@@ -71,7 +72,8 @@ public class OrderService implements IOrderUseCase {
      * @throws EntityNotFoundException
      */
     @Override
-    public Order getOrder(UUID id) throws EntityNotFoundException {
+    public Order getOrder(UUID id) throws EntityNotFoundException
+    {
         var order = IOrderRepository.getByIdWithProducts(id);
 
         if(order == null) throw new EntityNotFoundException("Order", id);
@@ -86,50 +88,49 @@ public class OrderService implements IOrderUseCase {
 
     /**
      * Create a new order with RECEIVED status
-     * @param dto The body request of api
+     * @param order The basic order data to create and storage at database
      * @return the created order object or null, in case of error
      */
     @Override
-    public Order createOrder(CreateOrderDTO dto) {
+    public Order createOrder(Order order) throws EntityNotFoundException {
 
         // The order must have at least one product to be created
-        if(dto.getProducts() == null || dto.getProducts().isEmpty())
-            return null;
+        if(order.getProducts() == null || order.getProducts().isEmpty())
+            throw new IllegalArgumentException("Order must have at least one product");
 
-        UUID costumerId = dto.getCostumerId() != null
-                ? UUID.fromString(dto.getCostumerId())
-                : null;
+        // Retrieve all Products from database from ID's list to verify if it exists
+        for(ProductAndQuantity item : order.getProducts()) {
 
-        List<ProductAndQuantity> orderProducts = new ArrayList<>();
+            if(item.getQuantity() <= 0)
+                throw new IllegalArgumentException("Quantity must be greater than zero");
 
-        // Retrieve all Products from database from ID's list
-        for(OrderProductDTO item : dto.getProducts()) {
-            var product = IProductRepository.getById(UUID.fromString(item.getId()));
-            if(product != null) {
-                orderProducts.add(new ProductAndQuantity(product, item.getQuantity()));
+            var product = IProductRepository.getById(item.getProduct().getId());
+
+            if(product == null) {
+                throw new EntityNotFoundException("Product", item.getProduct().getId());
             }
+
+            item.setProduct(product);
         }
 
         // Sum all products and multiply its quantities to generate the order amount
-        BigDecimal orderAmount = orderProducts
-                .stream()
-                .map(item -> item.getProduct().getPrice().multiply(new BigDecimal(item.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .setScale(2, HALF_EVEN);
+        BigDecimal orderAmount = order.getProducts()
+            .stream()
+            .map(item -> item.getProduct().getPrice().multiply(new BigDecimal(item.getQuantity())))
+            .reduce(BigDecimal.ZERO, BigDecimal::add)
+            .setScale(2, HALF_EVEN);
 
-        var order = Order.builder()
-            .id(UUID.randomUUID())
-            .costumerId(costumerId)
-            .amount(orderAmount)
-            .status(RECEIVED)
-            .createdAt(LocalDateTime.now())
-            .products(orderProducts)
-            .build();
+        // Create final order object
+        order.setId(UUID.randomUUID());
+        order.setAmount(orderAmount);
+        order.setStatus(RECEIVED);
+        order.setCreatedAt(LocalDateTime.now());
 
+        // Successfully created all data in database
         if(IOrderRepository.create(order) == 1)
             return order;
 
-
+        // Error trying to storage data
         else return null;
     }
 
@@ -140,7 +141,8 @@ public class OrderService implements IOrderUseCase {
      * @throws EntityNotFoundException
      */
     @Override
-    public List<OrderHistory> getOrderHistory(UUID id) throws EntityNotFoundException {
+    public List<OrderHistory> getOrderHistory(UUID id) throws EntityNotFoundException
+    {
         var history = IOrderRepository.getOrderHistoryByOrderId(id);
         if(history == null) throw new EntityNotFoundException("Order", id);
 
@@ -155,8 +157,12 @@ public class OrderService implements IOrderUseCase {
      * @throws OrderAlreadyWithStatusException
      */
     @Override
-    public boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException {
+    public boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException
+    {
         var order = IOrderRepository.getById(id);
+
+        if(status == null)
+            throw new IllegalArgumentException("Status cannot be null and have to be a valid status");
 
         if(order.getStatus().equals(status))
             throw new OrderAlreadyWithStatusException(id, status);
@@ -173,7 +179,8 @@ public class OrderService implements IOrderUseCase {
      * @throws MercadoPagoUnavailableException
      */
     @Override
-    public Payment payOrder(UUID id) throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException {
+    public Payment payOrder(UUID id) throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException
+    {
         var order = IOrderRepository.getById(id);
 
         if (order == null || order.getStatus() == null) {
@@ -202,7 +209,8 @@ public class OrderService implements IOrderUseCase {
      * @param order: The Oder that will have the time waiting calculated
      * @return the total time of wait in seconds
      */
-    private long calculateWaitTime(Order order) {
+    private long calculateWaitTime(Order order)
+    {
         if(order.getStatus().equals(OrderStatus.FINISHED)) return 0;
         return Duration.between(order.getCreatedAt(), LocalDateTime.now()).toSeconds();
     }

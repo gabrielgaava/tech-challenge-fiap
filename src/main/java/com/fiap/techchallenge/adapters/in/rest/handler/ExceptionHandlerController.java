@@ -12,7 +12,7 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorDTO> handleIllegalArgumentException(IllegalArgumentException exception) {
-        ErrorDTO errorResponse = new ErrorDTO("Parameters or request body is invalid");
+        ErrorDTO errorResponse = new ErrorDTO("Parameters or request body is invalid", exception.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
