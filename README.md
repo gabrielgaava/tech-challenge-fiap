@@ -20,7 +20,7 @@ Este projeto é uma aplicação Java usando Gradle para automação de builds e 
 ## Configuração e Execução do Projeto
 
 ### Passo 1: Construir imagens e inciar serviços
-Antes de executar a aplicação, você precisa construir a imagem Docker da aplicação Java. 
+Antes de executar a aplicação, você precisa construir as imagens e contêineres Docker. 
 Com o Docker Desktop aberto (Windows) ou com serviço do Docker rodando (macOS/Linux), navegue até o diretório do projeto e execute o seguinte comando:
 ```sh
 docker compose up -d
