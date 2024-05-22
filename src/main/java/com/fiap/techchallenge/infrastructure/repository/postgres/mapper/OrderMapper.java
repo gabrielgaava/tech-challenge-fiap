@@ -67,7 +67,7 @@ public abstract class OrderMapper {
         Order order = new Order();
         order.setId(UUID.fromString(rs.getString("order_id")));
         order.setOrderNumber(rs.getInt("order_number"));
-        order.setCostumerId(getUUID(rs.getString("customer_id")));
+        order.setCustomerId(getUUID(rs.getString("customer_id")));
         order.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         order.setAmount(BigDecimal.valueOf(rs.getFloat("amount")));
         order.setStatus(OrderStatus.fromString(rs.getString("status")));

@@ -19,7 +19,7 @@ public class Order {
 
     private UUID id;
 
-    private UUID costumerId;
+    private UUID customerId;
 
     private Integer orderNumber;
 

@@ -79,7 +79,6 @@ public class OderRepository implements IOrderRepository {
         int isOrderCreated = jdbcTemplate.update(
             createOrderSQL,
             order.getId(),
-            order.getCostumerId(),
             order.getCreatedAt(),
             order.getAmount(),
             order.getStatus().toString()

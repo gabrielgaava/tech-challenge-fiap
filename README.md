@@ -1,52 +1,88 @@
-# Tech Challenge - FIAP
+# Tech Challenge FIAP - Galega Burger
 
-Há uma lanchonete de bairro que está expandindo devido seu grande sucesso. Porém, com a expansão e sem um sistema de controle de pedidos, o atendimento aos clientes pode ser caótico e confuso. Por exemplo, imagine que um cliente faça um pedido complexo, como um hambúrguer personalizado com ingredientes específicos, acompanhado de batatas fritas e uma bebida. O atendente pode anotar o pedido em um papel e entregá-lo à cozinha, mas não há garantia de que o pedido será preparado corretamente.
+Este projeto é uma aplicação Java usando Gradle para automação de builds e Flyway para migração de banco de dados. Ele é configurado para rodar em um ambiente Docker, utilizando `docker compose` para orquestrar os contêineres do banco de dados PostgreSQL e da aplicação.
 
-Sem um sistema de controle de pedidos, pode haver confusão entre os atendentes e a cozinha, resultando em atrasos na preparação e entrega dos pedidos. Os pedidos podem ser perdidos, mal interpretados ou esquecidos, levando à insatisfação dos clientes e a perda de negócios.
+## Pré-requisitos
 
-Em resumo, um sistema de controle de pedidos é essencial para garantir que a lanchonete possa atender os clientes de maneira eficiente, gerenciando seus pedidos e estoques de forma adequada. Sem ele, expandir a lanchonete pode acabar não dando certo, resultando em clientes insatisfeitos e impactando os negócios de forma negativa.
+- Docker instalado
+- Docker Compose instalado
 
-Para solucionar o problema, a lanchonete irá investir em um sistema de autoatendimento de fast food, que é composto por uma série de dispositivos e interfaces que permitem aos clientes selecionar e fazer pedidos sem precisar interagir com um atendente, com as seguintes funcionalidades:
 
-## Pedido
+## Estrutura do Projeto
 
-Os clientes são apresentados a uma interface de seleção na qual podem optar por se identificarem via CPF, se cadastrarem com nome, e-mail ou não se identificar, podendo montar o combo na seguinte sequência, sendo todas elas opcionais:
+- `build.gradle` - Configuração do Gradle.
+- `settings.gradle` - Configuração dos projetos Gradle.
+- `src/main/java` - Código fonte da aplicação.
+- `src/main/resources` - Recursos da aplicação, incluindo scripts de migração Flyway.
+- `Dockerfile` - Instruções para criar a imagem Docker da aplicação.
+- `docker-compose.yml` - Configuração para iniciar os serviços Docker.
 
-- Lanche
-- Acompanhamento
-- Bebida
-- Sobremesa
+## Configuração e Execução do Projeto
 
-Em cada etapa, é exibido o nome, descrição e preço do produto.
+### Passo 1: Construir imagens e inciar serviços
 
-## Pagamento
+Basta rodar o seguinte comando, que lerá o conteúdo do `docker-compose.yml`:
+```sh
+docker compose up -d
+```
+_O "-d" significa "detached mode". Assim o docker compose inicia os contêineres em segundo plano._
 
-O sistema deverá possuir uma opção de pagamento integrada para MVP. A forma de pagamento oferecida será via QRCode do Mercado Pago.
+Este comando criará e iniciará dois contêineres:
 
-## Acompanhamento
+- `postgres`: um contêiner rodando PostgreSQL.
+- `tech-challenge`: um contêiner rodando a aplicação Java.
 
-Uma vez que o pedido é confirmado e pago, ele é enviado para a cozinha para ser preparado. Simultaneamente deve aparecer em um monitor para o cliente acompanhar o progresso do seu pedido com as seguintes etapas:
+### Passo 2: Verificar a Aplicação
 
-1. Recebido
-2. Em preparação
-3. Pronto
-4. Finalizado
+Após iniciar os serviços, você pode verificar se a aplicação está funcionando corretamente acessando a rota de HealthCheck em `http://localhost:8080/healthcheck`. A resposta esperada é:
 
-## Entrega
+```plaintext
+API is up and running
+```
 
-Quando o pedido estiver pronto, o sistema deverá notificar o cliente que ele está pronto para retirada. Ao ser retirado, o pedido deve ser atualizado para o status finalizado.
+Você também pode verificar os logs para garantir que a aplicação e o banco de dados iniciaram corretamente:
 
-Além das etapas do cliente, o estabelecimento precisa de um acesso administrativo
+```sh
+docker compose logs -f
+```
+Ou utilize o Docker Desktop.
 
-## Gerenciar clientes
+## Configurações
 
-Com a identificação dos clientes o estabelecimento pode trabalhar em campanhas promocionais.
+### Banco de Dados
 
-## Gerenciar produtos e categorias
+O banco de dados PostgreSQL está configurado com as seguintes credenciais (definidas no `docker-compose.yml`):
 
-Os produtos dispostos para escolha do cliente serão gerenciados pelo estabelecimento, definindo nome, categoria, preço, descrição e imagens. Para esse sistema teremos categorias fixas:
+- **Nome do Banco de Dados**: `galega_burguer`
+- **Usuário**: `postgres`
+- **Senha**: `postgres`
 
-- Lanche, Acompanhamento, Bebida e Sobremesa
+### Variáveis de Ambiente
 
-> Deve ser possível acompanhar os pedidos em andamento e tempo de espera de cada pedido.
-> As informações dispostas no sistema de pedidos precisarão ser gerenciadas pelo estabelecimento através de um painel administrativo.
+As variáveis de ambiente para a configuração da fonte de dados do Spring Boot estão definidas no `docker-compose.yml`:
+
+```yaml
+environment:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/galega_burguer
+  SPRING_DATASOURCE_USERNAME: postgres
+  SPRING_DATASOURCE_PASSWORD: postgres
+```
+
+### Flyway
+
+Os scripts de migração do Flyway devem ser colocados no diretório `src/main/resources/db/migration`. O Flyway irá automaticamente detectar esses scripts e aplicá-los ao banco de dados ao iniciar a aplicação.
+
+## Limpeza e Parada dos Serviços
+
+Para parar os serviços e remover os contêineres, volumes e redes criados pelo `docker compose`, execute:
+
+```sh
+docker compose down -v
+```
+
+Ou utilize o Docker Desktop.
+
+## Swagger
+
+Para acessar nossa documentação de API REST no padrão Swagger, basta acessar a seguinte URL no seu navegador:
+> [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
