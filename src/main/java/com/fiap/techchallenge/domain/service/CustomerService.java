@@ -48,10 +48,4 @@ public class CustomerService implements ICustomerUseCase {
         if(customerRepository.update(customer, cpf) == 1) return customer;
         return null;
     }
-
-    @Override
-    public Boolean deleteCustomer(String cpf) {
-      int deleteFlag = customerRepository.delete(cpf);
-      return deleteFlag == 1;
-    }
 }

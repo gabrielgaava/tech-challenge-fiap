@@ -70,16 +70,4 @@ public class CustomerController {
 
         return ResponseEntity.badRequest().build();
     }
-
-    @Operation(summary = "Delete a customers from database")
-    @DeleteMapping("/{cpf}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable String cpf)
-    {
-        if(customerService.deleteCustomer(cpf)) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.notFound().build();
-
-    }
 }

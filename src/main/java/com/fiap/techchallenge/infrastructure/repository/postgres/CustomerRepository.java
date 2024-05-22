@@ -63,10 +63,4 @@ public class CustomerRepository implements ICustomerRepository {
                 cpf
         );
     }
-
-    @Override
-    public int delete(String cpf) {
-        String sql = "DELETE FROM customer WHERE cpf = ?";
-        return jdbcTemplate.update(sql, cpf);
-    }
 }

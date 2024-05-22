@@ -15,6 +15,4 @@ public interface ICustomerUseCase {
     List<Customer> getAllCustomers();
 
     PutCustomerDTO updateCustomer(PutCustomerDTO customer, String cpf);
-
-    Boolean deleteCustomer(String cpf);
 }

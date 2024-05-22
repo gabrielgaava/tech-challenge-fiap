@@ -9,5 +9,4 @@ public interface ICustomerRepository {
     Customer getByCpf(String cpf);
     List<Customer> getAll();
     int update(PutCustomerDTO customer, String cpf);
-    int delete(String cpf);
 }
