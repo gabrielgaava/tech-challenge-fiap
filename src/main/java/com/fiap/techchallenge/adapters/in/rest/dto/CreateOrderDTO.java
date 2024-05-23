@@ -16,8 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateOrderDTO {
 
-    @Nullable
-    @Size(min = 36, max = 36)
     String customerId;
 
     @Valid

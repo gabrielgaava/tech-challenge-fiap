@@ -9,18 +9,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static com.fiap.techchallenge.adapters.in.rest.constants.FieldValidationConstants.NOT_NULL;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderProductDTO {
 
-    @NotNull
-    @Size(min = 36, max = 36)
+    @NotNull(message = NOT_NULL)
+    @Size(min = 36, max = 36, message = "must have 36 characters")
     private String id;
 
-    @NotNull
-    @Min(value = 1, message = "Quantity must be greater than zero")
+    @NotNull(message = NOT_NULL)
+    @Min(value = 1, message = "must be greater than zero")
     @Max(value = Integer.MAX_VALUE)
     private Integer quantity;
 
