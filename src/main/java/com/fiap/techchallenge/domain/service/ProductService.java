@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.domain.service;
 
+import com.fiap.techchallenge.adapters.in.rest.dto.CreateProductDTO;
 import com.fiap.techchallenge.domain.entity.Product;
 import com.fiap.techchallenge.domain.usecase.IProductUseCase;
 import com.fiap.techchallenge.adapters.out.database.postgress.ProductRepository;
@@ -18,7 +19,8 @@ public class ProductService implements IProductUseCase {
     private ProductRepository productRepository;
 
     @Override
-    public Product createProduct(Product product) {
+    public Product createProduct(CreateProductDTO createProductDTO) {
+        Product product = new Product(createProductDTO);
         product.setId(UUID.randomUUID());
 
         if(productRepository.create(product) == 1)
