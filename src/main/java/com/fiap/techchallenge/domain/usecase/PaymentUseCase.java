@@ -1,6 +1,6 @@
 package com.fiap.techchallenge.domain.usecase;
 
-import com.fiap.techchallenge.adapters.out.restapi.mercadopago.exception.PaymentErrorException;
+import com.fiap.techchallenge.adapters.out.rest.mercadopago.exception.PaymentErrorException;
 import com.fiap.techchallenge.domain.entity.Payment;
 
 import java.math.BigDecimal;

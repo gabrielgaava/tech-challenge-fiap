@@ -1,7 +1,7 @@
-package com.fiap.techchallenge.adapters.out.restapi.mercadopago.service;
+package com.fiap.techchallenge.adapters.out.rest.mercadopago.service;
 
-import com.fiap.techchallenge.adapters.out.restapi.mercadopago.dto.MercadoPagoPaymentResponseDTO;
-import com.fiap.techchallenge.adapters.out.restapi.mercadopago.exception.PaymentErrorException;
+import com.fiap.techchallenge.adapters.out.rest.mercadopago.dto.MercadoPagoPaymentResponseDTO;
+import com.fiap.techchallenge.adapters.out.rest.mercadopago.exception.PaymentErrorException;
 import com.fiap.techchallenge.domain.entity.Payment;
 import com.fiap.techchallenge.domain.usecase.PaymentUseCase;
 import org.springframework.stereotype.Service;

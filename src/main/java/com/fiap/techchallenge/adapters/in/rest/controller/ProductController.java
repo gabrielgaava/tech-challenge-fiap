@@ -2,6 +2,7 @@ package com.fiap.techchallenge.adapters.in.rest.controller;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.CreateProductDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.ProductDTO;
+import com.fiap.techchallenge.adapters.in.rest.mapper.ProductMapper;
 import com.fiap.techchallenge.domain.entity.Product;
 import com.fiap.techchallenge.domain.enums.ProductCategory;
 import com.fiap.techchallenge.domain.service.ProductService;
@@ -29,7 +30,8 @@ public class ProductController {
         summary = "List all storage products",
         parameters = {@Parameter(name = "category", schema = @Schema(implementation = ProductCategory.class))}
     )
-    public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) String category) {
+    public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) String category)
+    {
 
         ProductCategory productCategory = category != null
                 ? ProductCategory.valueOf(category.toUpperCase())
@@ -46,19 +48,25 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid CreateProductDTO createProductDTO) {
+    @Operation(summary = "Creates a new product")
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid CreateProductDTO createProductDTO)
+    {
 
-        Product product = productService.createProduct(new Product(createProductDTO));
+        Product product = ProductMapper.toDomain(createProductDTO);
+        Product createdProduct = productService.createProduct(product);
 
-        if(product != null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(new ProductDTO(product));
+        if(createdProduct != null){
+            ProductDTO response = ProductMapper.toDto(createdProduct);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }
+
         return ResponseEntity.badRequest().build();
     }
 
     @Operation(summary = "Delete a product from database")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct (@PathVariable String id) {
+    public ResponseEntity<?> deleteProduct (@PathVariable String id)
+    {
         if(productService.deleteProduct(id)) {
             return ResponseEntity.noContent().build();
         }

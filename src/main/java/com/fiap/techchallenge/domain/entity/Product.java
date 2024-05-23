@@ -33,14 +33,6 @@ public class Product {
         this.id = id;
     }
 
-    public Product(CreateProductDTO createProductDTO) {
-        this.name = createProductDTO.getName();
-        this.description = createProductDTO.getDescription();
-        this.imageUrl = createProductDTO.getImageUrl();
-        this.price = createProductDTO.getPrice();
-        this.category = createProductDTO.getCategory();
-    }
-
     @Setter
     @Getter
     @NoArgsConstructor

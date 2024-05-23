@@ -1,7 +1,7 @@
 package com.fiap.techchallenge.domain.service;
 
-import com.fiap.techchallenge.adapters.out.restapi.mercadopago.exception.PaymentErrorException;
-import com.fiap.techchallenge.adapters.out.restapi.mercadopago.service.MercadoPagoService;
+import com.fiap.techchallenge.adapters.out.rest.mercadopago.exception.PaymentErrorException;
+import com.fiap.techchallenge.adapters.out.rest.mercadopago.service.MercadoPagoService;
 import com.fiap.techchallenge.domain.entity.*;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
