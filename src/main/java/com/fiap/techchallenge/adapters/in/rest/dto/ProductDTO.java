@@ -15,7 +15,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
-	private UUID id;
 	private String name;
 	private String description;
 	private String imageUrl;
@@ -23,7 +22,6 @@ public class ProductDTO {
 	private ProductCategory category;
 
 	public ProductDTO(Product product) {
-		this.id = product.getId();
 		this.name = product.getName();
 		this.description = product.getDescription();
 		this.imageUrl = product.getImageUrl();

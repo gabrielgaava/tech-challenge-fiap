@@ -19,6 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDTO {
+	private UUID id;
 	private UUID customerId;
 	private Integer orderNumber;
 	private BigDecimal amount;
@@ -29,6 +30,7 @@ public class OrderDTO {
 	private List < OrderHistory > history;
 
 	public OrderDTO(Order order) {
+		this.id = order.getId();
 		this.customerId = order.getCustomerId();
 		this.orderNumber = order.getOrderNumber();
 		this.amount = order.getAmount();
