@@ -4,6 +4,9 @@ import com.fiap.techchallenge.adapters.in.rest.dto.ProductDTO;
 import com.fiap.techchallenge.domain.entity.Product;
 import com.fiap.techchallenge.domain.enums.ProductCategory;
 import com.fiap.techchallenge.domain.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,10 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
+    @Operation(
+        summary = "List all storage products",
+        parameters = {@Parameter(name = "category", schema = @Schema(implementation = ProductCategory.class))}
+    )
     public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) String category) {
 
         ProductCategory productCategory = category != null

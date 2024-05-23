@@ -79,6 +79,7 @@ public class OderRepository implements OrderRepositoryPort {
         int isOrderCreated = jdbcTemplate.update(
             createOrderSQL,
             order.getId(),
+            order.getCustomerId(),
             order.getCreatedAt(),
             order.getAmount(),
             order.getStatus().toString()
