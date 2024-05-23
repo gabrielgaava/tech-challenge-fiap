@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.domain.entity;
 
+import com.fiap.techchallenge.adapters.in.rest.dto.CreateProductDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.ProductDTO;
 import com.fiap.techchallenge.domain.enums.ProductCategory;
 import lombok.AllArgsConstructor;
@@ -32,13 +33,12 @@ public class Product {
         this.id = id;
     }
 
-    public Product(ProductDTO produtoDTO) {
-        this.id = produtoDTO.getId();
-        this.name = produtoDTO.getName();
-        this.description = produtoDTO.getDescription();
-        this.imageUrl = produtoDTO.getImageUrl();
-        this.price = produtoDTO.getPrice();
-        this.category = produtoDTO.getCategory();
+    public Product(CreateProductDTO createProductDTO) {
+        this.name = createProductDTO.getName();
+        this.description = createProductDTO.getDescription();
+        this.imageUrl = createProductDTO.getImageUrl();
+        this.price = createProductDTO.getPrice();
+        this.category = createProductDTO.getCategory();
     }
 
     @Setter

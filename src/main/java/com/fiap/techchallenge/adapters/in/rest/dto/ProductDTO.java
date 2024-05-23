@@ -14,13 +14,8 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDTO {
+public class ProductDTO extends CreateProductDTO {
 	private UUID id;
-	private String name;
-	private String description;
-	private String imageUrl;
-	private BigDecimal price;
-	private ProductCategory category;
 
 	public ProductDTO(Product product) {
 		this.id = product.getId();

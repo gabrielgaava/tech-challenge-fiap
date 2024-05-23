@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.adapters.in.rest.controller;
 
+import com.fiap.techchallenge.adapters.in.rest.dto.CreateProductDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.ProductDTO;
 import com.fiap.techchallenge.domain.entity.Product;
 import com.fiap.techchallenge.domain.enums.ProductCategory;
@@ -45,12 +46,23 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid ProductDTO productDTO) {
-        Product productRequest = new Product(productDTO);
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid CreateProductDTO createProductDTO) {
 
-        if(productService.createProduct(productRequest) != null)
-            return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
+        Product product = productService.createProduct(createProductDTO);
 
-        else return ResponseEntity.badRequest().build();
+        if(product != null){
+            return ResponseEntity.status(HttpStatus.CREATED).body(new ProductDTO(product));
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @Operation(summary = "Delete a product from database")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct (@PathVariable String id) {
+        if(productService.deleteProduct(id)) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
