@@ -22,6 +22,7 @@ WORKDIR /app
 # Copy the built JAR file from the builder stage
 COPY --from=builder /home/gradle/src/build/libs/tech-challenge-*.jar /app/tech-challenge.jar
 COPY src/main/resources /app/resources
+ENV JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
 
 # Specify the command to run the application
 CMD ["java", "-jar", "tech-challenge.jar"]

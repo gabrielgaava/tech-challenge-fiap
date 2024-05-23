@@ -19,8 +19,7 @@ public class ProductService implements IProductUseCase {
     private ProductRepository productRepository;
 
     @Override
-    public Product createProduct(CreateProductDTO createProductDTO) {
-        Product product = new Product(createProductDTO);
+    public Product createProduct(Product product) {
         product.setId(UUID.randomUUID());
 
         if(productRepository.create(product) == 1)

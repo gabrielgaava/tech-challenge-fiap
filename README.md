@@ -92,3 +92,7 @@ Ou utilize o Docker Desktop.
 
 Para acessar nossa documentação de API REST no padrão Swagger, basta acessar a seguinte URL no seu navegador:
 > [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
+## Debug
+Tanto o `Dockerfile` quanto o `docker-compose.yml` estão configurados para expor a porta **5005** para debug. Basta conectar o JVM debug de sua IDE em:
+>  **localhost:5005**

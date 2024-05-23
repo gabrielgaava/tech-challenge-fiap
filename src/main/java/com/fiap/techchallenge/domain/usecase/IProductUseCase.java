@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IProductUseCase {
 
-    Product createProduct(CreateProductDTO createProductDTO);
+    Product createProduct(Product product);
 
     List<Product> getAllProducts(Product.ProductFilters filters);
 
