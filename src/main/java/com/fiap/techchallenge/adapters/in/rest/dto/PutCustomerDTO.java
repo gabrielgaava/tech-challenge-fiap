@@ -15,9 +15,9 @@ import lombok.Setter;
 public class PutCustomerDTO {
 
     @NotNull
-    String name;
+    private String name;
 
     @NotNull
-    String email;
+    private String email;
 
 }

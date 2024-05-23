@@ -18,9 +18,9 @@ public class CreateOrderDTO {
 
     @Nullable
     @Size(min = 36, max = 36)
-    String customerId;
+    private String customerId;
 
     @Valid
-    List<OrderProductDTO> products;
+    private List<OrderProductDTO> products;
 
 }

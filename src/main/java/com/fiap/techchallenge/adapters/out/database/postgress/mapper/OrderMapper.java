@@ -40,7 +40,7 @@ public abstract class OrderMapper {
                 temp.setId(UUID.fromString(rs.getString("product_id")));
                 temp.setName(rs.getString("name"));
                 temp.setCategory(ProductCategory.fromString(rs.getString("category")));
-                temp.setPrice(BigDecimal.valueOf(rs.getFloat("price")));
+                temp.setPrice(rs.getBigDecimal("price"));
                 temp.setDescription(rs.getString("description"));
                 temp.setImageUrl(rs.getString("image_url"));
                 products.add(new ProductAndQuantity(temp, quantity));
