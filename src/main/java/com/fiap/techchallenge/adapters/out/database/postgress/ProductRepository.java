@@ -66,4 +66,9 @@ public class ProductRepository implements ProductRepositoryPort {
         else return data.getFirst();
     }
 
+    @Override
+    public int delete(String id) {
+        String sql = "DELETE FROM product WHERE id = ?";
+        return jdbcTemplate.update(sql, id);
+    }
 }

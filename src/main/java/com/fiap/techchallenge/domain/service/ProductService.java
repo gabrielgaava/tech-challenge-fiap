@@ -32,4 +32,9 @@ public class ProductService implements IProductUseCase {
         return productRepository.getAll(filters);
     }
 
+    @Override
+    public Boolean deleteProduct (String id) {
+        int deleteFlag = productRepository.delete(id);
+        return deleteFlag == 1;
+    }
 }
