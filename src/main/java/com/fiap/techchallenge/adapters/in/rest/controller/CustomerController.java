@@ -4,6 +4,7 @@ import com.fiap.techchallenge.adapters.in.rest.dto.CreateCustomerDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.CustomerDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.domain.entity.Customer;
+import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
 import com.fiap.techchallenge.domain.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,7 +61,7 @@ public class CustomerController {
 
     @Operation(summary = "Create a new customers")
     @PostMapping
-    public ResponseEntity<CustomerDTO> createCustomer (@Valid @RequestBody CreateCustomerDTO request) throws InvalidCpfException
+    public ResponseEntity<CustomerDTO> createCustomer (@Valid @RequestBody CreateCustomerDTO request) throws InvalidCpfException, EntityAlreadyExistException
     {
         Customer newCustomer = new Customer(null,request.getCpf(), request.getName(), request.getEmail());
 
@@ -73,8 +74,9 @@ public class CustomerController {
 
     @Operation(summary = "Update customers data")
     @PutMapping("/{cpf}")
-    public ResponseEntity<CustomerDTO> updateCustomerByCpf(@Valid @RequestBody PutCustomerDTO customerDTO, @PathVariable String cpf)
+    public ResponseEntity<CustomerDTO> updateCustomerByCpf(@Valid @RequestBody PutCustomerDTO customerDTO, @PathVariable String cpf) throws EntityAlreadyExistException
     {
+
         if(customerService.updateCustomer(customerDTO, cpf) != null) {
             var retrievedCustomer = customerService.getCustomerByCpf(cpf);
             if (retrievedCustomer != null){

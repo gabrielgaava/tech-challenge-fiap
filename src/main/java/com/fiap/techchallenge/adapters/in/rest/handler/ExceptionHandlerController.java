@@ -58,5 +58,12 @@ public class ExceptionHandlerController {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
+    @ExceptionHandler(EntityAlreadyExistException.class)
+    public ResponseEntity<ErrorDTO> handleEntityAlreadyExist(EntityAlreadyExistException exception) {
+        ErrorDTO errorResponse = new ErrorDTO("Duplicated data found", exception.getMessage());
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
+
 
 }

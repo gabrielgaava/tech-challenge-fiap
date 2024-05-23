@@ -2,6 +2,7 @@ package com.fiap.techchallenge.domain.service;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.domain.entity.Customer;
+import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
 import com.fiap.techchallenge.domain.usecase.ICustomerUseCase;
 import com.fiap.techchallenge.adapters.out.database.postgress.CustomerRepository;
@@ -20,11 +21,13 @@ public class CustomerService implements ICustomerUseCase {
     private CustomerRepository customerRepository;
 
     @Override
-    public Customer createCustomer(Customer customer) throws InvalidCpfException {
+    public Customer createCustomer(Customer customer) throws InvalidCpfException, EntityAlreadyExistException {
         customer.setId(UUID.randomUUID());
 
        if(Pattern.matches("\\d{11}", customer.getCpf())) {
-           if (customerRepository.create(customer) == 1) return customer;
+           int createFlag = customerRepository.create(customer);
+           if (createFlag == 1) return customer;
+           else if(createFlag == -1) throw new EntityAlreadyExistException("CPF or email already exist and must be unique");
        } else {
            throw new InvalidCpfException();
        }
@@ -43,8 +46,15 @@ public class CustomerService implements ICustomerUseCase {
     }
 
     @Override
-    public PutCustomerDTO updateCustomer(PutCustomerDTO customer, String cpf) {
-        if(customerRepository.update(customer, cpf) == 1) return customer;
+    public PutCustomerDTO updateCustomer(PutCustomerDTO customer, String cpf) throws EntityAlreadyExistException {
+        int updateFlag = customerRepository.update(customer, cpf);
+
+        if (updateFlag == 1)
+            return customer;
+
+        else if(updateFlag == -1)
+            throw new EntityAlreadyExistException("CPF or email already exist and must be unique");
+
         return null;
     }
 }

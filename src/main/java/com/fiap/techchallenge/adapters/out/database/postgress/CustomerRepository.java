@@ -6,6 +6,9 @@ import com.fiap.techchallenge.domain.repository.CustomerRepositoryPort;
 import com.fiap.techchallenge.adapters.out.database.postgress.mapper.CustomerMapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -24,22 +27,34 @@ public class CustomerRepository implements CustomerRepositoryPort {
     @Override
     public int create (Customer customer) {
         String sql = "INSERT INTO public.customer (id, cpf, name, email) VALUES (?, ?, ?, ?)";
-        return jdbcTemplate.update(
-                sql,
-                customer.getId(),
-                customer.getCpf(),
-                customer.getName(),
-                customer.getEmail()
-        );
+
+        try {
+          return jdbcTemplate.update(
+              sql,
+              customer.getId(),
+              customer.getCpf(),
+              customer.getName(),
+              customer.getEmail()
+          );
+        }
+        catch (DuplicateKeyException e) {
+          return -1;
+        }
     }
 
     @Override
     public Customer getByCpf(String cpf) {
         String sql = "SELECT * FROM customer WHERE cpf = ?";
-        return jdbcTemplate.queryForObject(
-                sql,
-                CustomerMapper.listMapper,
-                cpf);
+
+        try {
+          return jdbcTemplate.queryForObject(
+            sql,
+            CustomerMapper.listMapper,
+            cpf);
+        }
+        catch (EmptyResultDataAccessException e) {
+          return null;
+        }
     }
 
     @Override
@@ -54,11 +69,16 @@ public class CustomerRepository implements CustomerRepositoryPort {
     public int update(PutCustomerDTO customer, String cpf) {
         String sql = "UPDATE customer SET name = ?, email = ? WHERE cpf = ?";
 
-        return jdbcTemplate.update(
-                sql,
-                customer.getName(),
-                customer.getEmail(),
-                cpf
-        );
+        try {
+          return jdbcTemplate.update(
+              sql,
+              customer.getName(),
+              customer.getEmail(),
+              cpf
+          );
+        }
+        catch (DuplicateKeyException e) {
+          return -1;
+        }
     }
 }
