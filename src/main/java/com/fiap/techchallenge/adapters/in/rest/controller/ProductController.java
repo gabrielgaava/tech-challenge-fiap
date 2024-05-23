@@ -55,4 +55,14 @@ public class ProductController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @Operation(summary = "Delete a product from database")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct (@PathVariable String id) {
+        if(productService.deleteProduct(id)) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }

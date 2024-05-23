@@ -11,4 +11,5 @@ public interface IProductUseCase {
 
     List<Product> getAllProducts(Product.ProductFilters filters);
 
+    Boolean deleteProduct(String id);
 }

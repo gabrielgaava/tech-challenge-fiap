@@ -13,4 +13,5 @@ public interface ProductRepositoryPort {
 
     Product getById(UUID id);
 
+    int delete(String id);
 }
