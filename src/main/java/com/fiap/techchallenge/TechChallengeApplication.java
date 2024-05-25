@@ -1,6 +1,5 @@
 package com.fiap.techchallenge;
 
-import com.fiap.techchallenge.infrastructure.configuration.DatabaseConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;

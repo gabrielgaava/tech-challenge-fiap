@@ -1,12 +1,10 @@
 package com.fiap.techchallenge.adapters.out.database.postgress;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
+import com.fiap.techchallenge.adapters.out.database.postgress.mapper.CustomerMapper;
 import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.repository.CustomerRepositoryPort;
-import com.fiap.techchallenge.adapters.out.database.postgress.mapper.CustomerMapper;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

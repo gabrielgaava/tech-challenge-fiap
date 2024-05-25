@@ -1,6 +1,5 @@
 package com.fiap.techchallenge.domain.usecase;
 
-import com.fiap.techchallenge.adapters.in.rest.dto.CreateOrderDTO;
 import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.entity.OrderFilters;
 import com.fiap.techchallenge.domain.entity.OrderHistory;

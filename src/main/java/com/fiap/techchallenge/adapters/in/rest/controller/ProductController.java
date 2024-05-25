@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +53,7 @@ public class ProductController {
 
     @PostMapping
     @Operation(summary = "Creates a new product")
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody CreateProductDTO createProductDTO)
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid CreateProductDTO createProductDTO)
     {
 
         Product product = ProductMapper.toDomain(createProductDTO);

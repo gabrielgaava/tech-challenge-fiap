@@ -2,6 +2,7 @@ package com.fiap.techchallenge.adapters.out.database.postgress.mapper;
 
 import com.fiap.techchallenge.domain.entity.Customer;
 import org.springframework.jdbc.core.RowMapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;

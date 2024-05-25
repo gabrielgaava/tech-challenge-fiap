@@ -1,6 +1,5 @@
 package com.fiap.techchallenge.adapters.in.rest.dto;
 
-import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.entity.OrderHistory;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
 import lombok.AllArgsConstructor;

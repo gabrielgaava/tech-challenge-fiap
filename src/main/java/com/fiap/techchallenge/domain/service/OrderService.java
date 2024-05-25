@@ -15,9 +15,6 @@ import com.fiap.techchallenge.domain.repository.OrderRepositoryPort;
 import com.fiap.techchallenge.domain.repository.PaymentRepositoryPort;
 import com.fiap.techchallenge.domain.repository.ProductRepositoryPort;
 import com.fiap.techchallenge.domain.usecase.IOrderUseCase;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;

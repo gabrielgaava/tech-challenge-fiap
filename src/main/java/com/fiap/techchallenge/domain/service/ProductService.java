@@ -5,8 +5,9 @@ import com.fiap.techchallenge.domain.entity.Product;
 import com.fiap.techchallenge.domain.repository.ProductRepositoryPort;
 import com.fiap.techchallenge.domain.usecase.IProductUseCase;
 
-
 import javax.sql.DataSource;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +23,7 @@ public class ProductService implements IProductUseCase {
     public Product createProduct(Product product)
     {
         product.setId(UUID.randomUUID());
+        product.setPrice(formatToTwoDecimalPlaces(product.getPrice()));
 
         if(productRepository.create(product) == 1)
             return product;
@@ -40,5 +42,12 @@ public class ProductService implements IProductUseCase {
     {
         int deleteFlag = productRepository.delete(id);
         return deleteFlag == 1;
+    }
+
+    private BigDecimal formatToTwoDecimalPlaces(BigDecimal input) {
+        if (input == null) {
+            throw new IllegalArgumentException("Price cannot be null");
+        }
+        return input.setScale(2, RoundingMode.HALF_UP);
     }
 }

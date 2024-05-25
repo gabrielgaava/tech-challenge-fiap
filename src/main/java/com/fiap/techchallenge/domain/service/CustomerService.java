@@ -5,8 +5,8 @@ import com.fiap.techchallenge.adapters.out.database.postgress.CustomerRepository
 import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
-import com.fiap.techchallenge.domain.usecase.ICustomerUseCase;
 import com.fiap.techchallenge.domain.repository.CustomerRepositoryPort;
+import com.fiap.techchallenge.domain.usecase.ICustomerUseCase;
 
 import javax.sql.DataSource;
 import java.util.List;
