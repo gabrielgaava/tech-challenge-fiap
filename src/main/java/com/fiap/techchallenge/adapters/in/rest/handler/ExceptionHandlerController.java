@@ -4,6 +4,7 @@ package com.fiap.techchallenge.adapters.in.rest.handler;
 import com.fiap.techchallenge.adapters.in.rest.dto.ErrorDTO;
 import com.fiap.techchallenge.domain.exception.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -61,6 +62,12 @@ public class ExceptionHandlerController {
     @ExceptionHandler(EntityAlreadyExistException.class)
     public ResponseEntity<ErrorDTO> handleEntityAlreadyExist(EntityAlreadyExistException exception) {
         ErrorDTO errorResponse = new ErrorDTO("Duplicated data found", exception.getMessage());
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorDTO> handleHttpMessageNotReadable(HttpMessageNotReadableException exception) {
+        ErrorDTO errorResponse = new ErrorDTO("Invalid body", exception.getMessage());
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
