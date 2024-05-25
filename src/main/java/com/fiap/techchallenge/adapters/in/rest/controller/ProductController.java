@@ -17,16 +17,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.DataSource;
 import java.util.List;
 @Tag(name = "Product Controller")
 @RestController
 @RequestMapping("/products")
 public class ProductController {
 
-    @Autowired
-    private IProductUseCase productService;
+  private final IProductUseCase productService;
 
-    @GetMapping
+  public ProductController(DataSource dataSource) {
+    this.productService = new ProductService(dataSource);
+  }
+
+  @GetMapping
     @Operation(
         summary = "List all storage products",
         parameters = {@Parameter(name = "category", schema = @Schema(implementation = ProductCategory.class))}
@@ -50,7 +54,7 @@ public class ProductController {
 
     @PostMapping
     @Operation(summary = "Creates a new product")
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody @Valid CreateProductDTO createProductDTO)
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody CreateProductDTO createProductDTO)
     {
 
         Product product = ProductMapper.toDomain(createProductDTO);

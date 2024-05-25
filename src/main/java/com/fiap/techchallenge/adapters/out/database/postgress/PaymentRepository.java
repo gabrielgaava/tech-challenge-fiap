@@ -7,15 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
+
 @Getter
 @Repository("PGPaymentRepository")
 public class PaymentRepository implements PaymentRepositoryPort {
 
-  private JdbcTemplate jdbcTemplate;
+  private final JdbcTemplate jdbcTemplate;
 
   @Autowired
-  public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-    this.jdbcTemplate = jdbcTemplate;
+  public PaymentRepository(DataSource dataSource) {
+    this.jdbcTemplate = new JdbcTemplate(dataSource);
   }
 
   public int create(Payment payment) {

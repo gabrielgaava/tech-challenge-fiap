@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +25,11 @@ import java.util.List;
 @RequestMapping("/customer")
 public class CustomerController {
 
-    @Autowired
-    private ICustomerUseCase customerService;
+    private final ICustomerUseCase customerService;
+
+    public CustomerController(DataSource dataSource) {
+        this.customerService = new CustomerService(dataSource);
+    }
 
     @Operation(summary = "Search for a customer by ID")
     @GetMapping("/{cpf}")

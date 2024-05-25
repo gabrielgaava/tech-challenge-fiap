@@ -24,7 +24,7 @@ public interface IOrderUseCase {
 
     List<OrderHistory> getOrderHistory(UUID id) throws EntityNotFoundException;
 
-    boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException;
+    boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException, EntityNotFoundException;
 
     Payment payOrder(UUID orderId) throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException;
 }

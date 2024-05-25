@@ -12,6 +12,7 @@ import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.MercadoPagoUnavailableException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
+import com.fiap.techchallenge.domain.service.OrderService;
 import com.fiap.techchallenge.domain.usecase.IOrderUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -32,8 +34,11 @@ import java.util.UUID;
 @RequestMapping("/orders")
 public class OrderController {
 
-    @Autowired
     IOrderUseCase iOrderUseCase;
+
+    public OrderController(DataSource dataSource) {
+        this.iOrderUseCase = new OrderService(dataSource);
+    }
 
     @Operation(
       summary = "List all orders based on query filters",
@@ -107,8 +112,7 @@ public class OrderController {
     public ResponseEntity<?> updateStatus(
             @PathVariable String id,
             @Valid @RequestBody UpdateOrderStatusDTO request
-    ) throws OrderAlreadyWithStatusException
-    {
+    ) throws OrderAlreadyWithStatusException, EntityNotFoundException {
         var oderId = UUID.fromString(id);
         var status = OrderStatus.fromString(request.getStatus().toUpperCase());
         boolean updated = iOrderUseCase.updateOrderStatus(oderId, status);
