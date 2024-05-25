@@ -30,7 +30,7 @@ public class CustomerController {
         this.customerService = new CustomerService(dataSource);
     }
 
-    @Operation(summary = "Search for a customer by ID")
+    @Operation(summary = "Search for a customer by CPF")
     @GetMapping("/{cpf}")
     public ResponseEntity<CustomerDTO> getCustomerByCpf(@PathVariable String cpf)
     {
