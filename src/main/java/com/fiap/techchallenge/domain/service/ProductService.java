@@ -1,25 +1,26 @@
 package com.fiap.techchallenge.domain.service;
 
-import com.fiap.techchallenge.adapters.in.rest.dto.CreateProductDTO;
-import com.fiap.techchallenge.domain.entity.Product;
-import com.fiap.techchallenge.domain.usecase.IProductUseCase;
 import com.fiap.techchallenge.adapters.out.database.postgress.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
+import com.fiap.techchallenge.domain.entity.Product;
+import com.fiap.techchallenge.domain.repository.ProductRepositoryPort;
+import com.fiap.techchallenge.domain.usecase.IProductUseCase;
 
+
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.UUID;
 
-@Service
 public class ProductService implements IProductUseCase {
 
-    @Autowired
-    @Qualifier("PGProductRepository")
-    private ProductRepository productRepository;
+    private final ProductRepositoryPort productRepository;
+
+    public ProductService(DataSource dataSource) {
+        this.productRepository = new ProductRepository(dataSource);
+    }
 
     @Override
-    public Product createProduct(Product product) {
+    public Product createProduct(Product product)
+    {
         product.setId(UUID.randomUUID());
 
         if(productRepository.create(product) == 1)
@@ -29,12 +30,14 @@ public class ProductService implements IProductUseCase {
     }
 
     @Override
-    public List<Product> getAllProducts(Product.ProductFilters filters) {
+    public List<Product> getAllProducts(Product.ProductFilters filters)
+    {
         return productRepository.getAll(filters);
     }
 
     @Override
-    public Boolean deleteProduct (String id) {
+    public Boolean deleteProduct (String id)
+    {
         int deleteFlag = productRepository.delete(id);
         return deleteFlag == 1;
     }

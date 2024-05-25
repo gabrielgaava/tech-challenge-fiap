@@ -3,25 +3,23 @@ package com.fiap.techchallenge.adapters.out.database.postgress;
 import com.fiap.techchallenge.domain.entity.Product;
 import com.fiap.techchallenge.domain.repository.ProductRepositoryPort;
 import com.fiap.techchallenge.adapters.out.database.postgress.mapper.ProductMapper;
+import com.fiap.techchallenge.infrastructure.configuration.DatabaseConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.UUID;
 
-@Repository("PGProductRepository")
+@Repository
 public class ProductRepository implements ProductRepositoryPort {
 
-    private JdbcTemplate jdbcTemplate;
-
-    public JdbcTemplate getJdbcTemplate() {
-        return this.jdbcTemplate;
-    }
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public ProductRepository(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override

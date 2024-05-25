@@ -32,7 +32,6 @@ import java.util.UUID;
 @RequestMapping("/orders")
 public class OrderController {
 
-    @Autowired
     IOrderUseCase iOrderUseCase;
 
     @Operation(

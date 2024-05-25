@@ -24,7 +24,6 @@ import java.util.List;
 @RequestMapping("/customer")
 public class CustomerController {
 
-    @Autowired
     private ICustomerUseCase customerService;
 
     @Operation(summary = "Search for a customer by ID")

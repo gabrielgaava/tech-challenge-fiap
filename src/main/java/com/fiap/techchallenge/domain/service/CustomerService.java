@@ -5,7 +5,7 @@ import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
 import com.fiap.techchallenge.domain.usecase.ICustomerUseCase;
-import com.fiap.techchallenge.adapters.out.database.postgress.CustomerRepository;
+import com.fiap.techchallenge.domain.repository.CustomerRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class CustomerService implements ICustomerUseCase {
 
     @Autowired
     @Qualifier("PGCustomerRepository")
-    private CustomerRepository customerRepository;
+    private CustomerRepositoryPort customerRepository;
 
     @Override
     public Customer createCustomer(Customer customer) throws InvalidCpfException, EntityAlreadyExistException {

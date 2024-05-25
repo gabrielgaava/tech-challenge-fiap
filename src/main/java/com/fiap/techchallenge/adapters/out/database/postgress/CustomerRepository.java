@@ -19,7 +19,7 @@ public class CustomerRepository implements CustomerRepositoryPort {
 
     private JdbcTemplate jdbcTemplate;
 
-  @Autowired
+    @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

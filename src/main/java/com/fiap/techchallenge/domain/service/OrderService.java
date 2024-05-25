@@ -33,8 +33,6 @@ public class OrderService implements IOrderUseCase {
     @Qualifier("PGOrderRepository")
     OrderRepositoryPort IOrderRepository;
 
-    @Autowired
-    @Qualifier("PGProductRepository")
     ProductRepositoryPort IProductRepository;
 
     @Autowired

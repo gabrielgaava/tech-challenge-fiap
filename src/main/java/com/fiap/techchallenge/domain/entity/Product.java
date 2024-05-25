@@ -32,6 +32,8 @@ public class Product {
         this.category = category;
     }
 
+    public Product() {}
+
     public UUID getId() {
         return id;
     }
