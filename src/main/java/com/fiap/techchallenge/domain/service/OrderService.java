@@ -1,5 +1,8 @@
 package com.fiap.techchallenge.domain.service;
 
+import com.fiap.techchallenge.adapters.out.database.postgress.OderRepository;
+import com.fiap.techchallenge.adapters.out.database.postgress.PaymentRepository;
+import com.fiap.techchallenge.adapters.out.database.postgress.ProductRepository;
 import com.fiap.techchallenge.adapters.out.rest.mercadopago.exception.PaymentErrorException;
 import com.fiap.techchallenge.adapters.out.rest.mercadopago.service.MercadoPagoService;
 import com.fiap.techchallenge.domain.entity.*;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -26,21 +30,22 @@ import static com.fiap.techchallenge.domain.enums.OrderStatus.PAID;
 import static com.fiap.techchallenge.domain.enums.OrderStatus.RECEIVED;
 import static java.math.RoundingMode.HALF_EVEN;
 
-@Service
 public class OrderService implements IOrderUseCase {
 
-    @Autowired
-    @Qualifier("PGOrderRepository")
     OrderRepositoryPort IOrderRepository;
 
     ProductRepositoryPort IProductRepository;
 
-    @Autowired
-    @Qualifier("PGPaymentRepository")
     PaymentRepositoryPort IPaymentRepository;
 
-    @Autowired
     MercadoPagoService mercadoPagoService;
+
+    public OrderService(DataSource dataSource) {
+        this.IOrderRepository = new OderRepository(dataSource);
+        this.IProductRepository = new ProductRepository(dataSource);
+        this.IPaymentRepository = new PaymentRepository(dataSource);
+        this.mercadoPagoService = new MercadoPagoService();
+    }
 
     /**
      * Gets ALL orders stored at the database
@@ -153,9 +158,11 @@ public class OrderService implements IOrderUseCase {
      * @throws OrderAlreadyWithStatusException
      */
     @Override
-    public boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException
-    {
+    public boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException, EntityNotFoundException {
         var order = IOrderRepository.getById(id);
+
+        if(order == null)
+            throw new EntityNotFoundException("Order", id);
 
         if(status == null)
             throw new IllegalArgumentException("Status cannot be null and have to be a valid status");
