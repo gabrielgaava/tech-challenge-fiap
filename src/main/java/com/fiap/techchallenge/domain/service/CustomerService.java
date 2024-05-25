@@ -1,24 +1,26 @@
 package com.fiap.techchallenge.domain.service;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
+import com.fiap.techchallenge.adapters.out.database.postgress.CustomerRepository;
 import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
 import com.fiap.techchallenge.domain.usecase.ICustomerUseCase;
 import com.fiap.techchallenge.domain.repository.CustomerRepositoryPort;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
+
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-@Service
+
 public class CustomerService implements ICustomerUseCase {
 
-    @Autowired
-    @Qualifier("PGCustomerRepository")
-    private CustomerRepositoryPort customerRepository;
+    private final CustomerRepositoryPort customerRepository;
+
+    public CustomerService(DataSource dataSource) {
+        this.customerRepository = new CustomerRepository(dataSource);
+    }
 
     @Override
     public Customer createCustomer(Customer customer) throws InvalidCpfException, EntityAlreadyExistException {

@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.UUID;
 
-@Repository
+@Repository("PGProductRepository")
 public class ProductRepository implements ProductRepositoryPort {
 
     private final JdbcTemplate jdbcTemplate;
