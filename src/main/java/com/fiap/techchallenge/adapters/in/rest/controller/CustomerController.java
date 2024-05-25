@@ -7,6 +7,7 @@ import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
 import com.fiap.techchallenge.domain.service.CustomerService;
+import com.fiap.techchallenge.domain.usecase.ICustomerUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -24,7 +25,7 @@ import java.util.List;
 public class CustomerController {
 
     @Autowired
-    private CustomerService customerService;
+    private ICustomerUseCase customerService;
 
     @Operation(summary = "Search for a customer by ID")
     @GetMapping("/{cpf}")

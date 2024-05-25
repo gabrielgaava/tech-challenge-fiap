@@ -6,6 +6,7 @@ import com.fiap.techchallenge.adapters.in.rest.mapper.ProductMapper;
 import com.fiap.techchallenge.domain.entity.Product;
 import com.fiap.techchallenge.domain.enums.ProductCategory;
 import com.fiap.techchallenge.domain.service.ProductService;
+import com.fiap.techchallenge.domain.usecase.IProductUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,7 +24,7 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    private IProductUseCase productService;
 
     @GetMapping
     @Operation(
