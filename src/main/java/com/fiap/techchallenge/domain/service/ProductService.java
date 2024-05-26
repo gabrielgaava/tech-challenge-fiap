@@ -40,7 +40,12 @@ public class ProductService implements IProductUseCase {
     @Override
     public Boolean deleteProduct (String id)
     {
-        int deleteFlag = productRepository.delete(id);
+        var product = productRepository.getById(UUID.fromString(id));
+
+        if(product == null)
+            return false;
+
+        int deleteFlag = productRepository.delete(UUID.fromString(id));
         return deleteFlag == 1;
     }
 
@@ -48,6 +53,6 @@ public class ProductService implements IProductUseCase {
         if (input == null) {
             throw new IllegalArgumentException("Price cannot be null");
         }
-        return input.setScale(2, RoundingMode.HALF_UP);
+        return input.setScale(2, RoundingMode.HALF_EVEN);
     }
 }
