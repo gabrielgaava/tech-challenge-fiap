@@ -50,7 +50,7 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(OrderNotReadyException.class)
     public ResponseEntity<ErrorDTO> handleOrderNotReady(OrderNotReadyException exception) {
-        ErrorDTO errorResponse = new ErrorDTO(exception.getMessage());
+        ErrorDTO errorResponse = new ErrorDTO(exception.getMessage(), exception.getDetails());
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
