@@ -3,6 +3,7 @@ package com.fiap.techchallenge.adapters.in.rest.handler;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.ErrorDTO;
 import com.fiap.techchallenge.domain.exception.*;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -71,6 +72,11 @@ public class ExceptionHandlerController {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
+    @ExceptionHandler(DuplicateKeyException.class)
+    public ResponseEntity<ErrorDTO> handleDuplicateKeyException(DuplicateKeyException exception) {
+        ErrorDTO errorResponse = new ErrorDTO("Invalid body", exception.getCause().getMessage());
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
 
 
 }
