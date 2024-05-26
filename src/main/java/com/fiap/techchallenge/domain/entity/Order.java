@@ -21,6 +21,8 @@ public class Order {
 
     private LocalDateTime createdAt;
 
+    private LocalDateTime paidAt;
+
     private long waitingTimeInSeconds;
 
     List<ProductAndQuantity> products;
@@ -29,13 +31,14 @@ public class Order {
 
     public Order() {}
 
-    public Order(UUID id, UUID customerId, Integer orderNumber, BigDecimal amount, OrderStatus status, LocalDateTime createdAt, long waitingTimeInSeconds, List<ProductAndQuantity> products, List<OrderHistory> history) {
+    public Order(UUID id, UUID customerId, Integer orderNumber, BigDecimal amount, OrderStatus status, LocalDateTime createdAt, long waitingTimeInSeconds, List<ProductAndQuantity> products, List<OrderHistory> history, LocalDateTime paidAt) {
         this.id = id;
         this.customerId = customerId;
         this.orderNumber = orderNumber;
         this.amount = amount;
         this.status = status;
         this.createdAt = createdAt;
+        this.paidAt = paidAt;
         this.waitingTimeInSeconds = waitingTimeInSeconds;
         this.products = products;
         this.history = history;
@@ -111,5 +114,13 @@ public class Order {
 
     public void setHistory(List<OrderHistory> history) {
         this.history = history;
+    }
+
+    public LocalDateTime getPaidAt() {
+        return paidAt;
+    }
+
+    public void setPaidAt(LocalDateTime paidAt) {
+        this.paidAt = paidAt;
     }
 }

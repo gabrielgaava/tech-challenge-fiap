@@ -52,7 +52,7 @@ public class OderRepository implements OrderRepositoryPort {
 
     @Override
     public Order getByIdWithProducts(UUID id) {
-        String sql = "SELECT op.order_id, op.product_id, o.amount, o.created_at, o.status, o.order_number, op.quantity, o.customer_id, p.name, p.price, p.category, p.description, p.image_url " +
+        String sql = "SELECT op.order_id, op.product_id, o.amount, o.created_at, o.paid_at, o.status, o.order_number, op.quantity, o.customer_id, p.name, p.price, p.category, p.description, p.image_url " +
                 "FROM public.order o " +
                 "LEFT JOIN public.order_products op ON op.order_id = o.id " +
                 "LEFT JOIN public.product p ON p.id = op.product_id " +
@@ -99,18 +99,24 @@ public class OderRepository implements OrderRepositoryPort {
     }
 
     @Override
-    public int updateStatus(UUID id, OrderStatus newStatus, OrderStatus previousStatus) {
+    public int updateStatus(Order order, OrderStatus newStatus, OrderStatus previousStatus) {
         LocalDateTime now = LocalDateTime.now();
-        String updateStatusSQL = "UPDATE public.order SET status = ? WHERE id = ?";
+        String updateStatusSQL = "UPDATE public.order SET status = ?, paid_at = ? WHERE id = ?";
         String relationInsertSQL = "INSERT INTO public.order_history (order_id, previous_status, new_status, moment) VALUES (?, ?, ?, ?)";
 
-        int updated = jdbcTemplate.update(updateStatusSQL, newStatus.toString(), id);
+        int updated = jdbcTemplate.update(
+            updateStatusSQL,
+            newStatus.toString(),
+            order.getPaidAt(),
+            order.getId()
+        );
+
         int relationInsertResult = jdbcTemplate.update(
-                relationInsertSQL,
-                id,
-                previousStatus.toString(),
-                newStatus.toString(),
-                now
+            relationInsertSQL,
+            order.getId(),
+            previousStatus.toString(),
+            newStatus.toString(),
+            now
         );
 
         return updated + relationInsertResult;

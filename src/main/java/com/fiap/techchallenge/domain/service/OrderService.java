@@ -155,7 +155,8 @@ public class OrderService implements IOrderUseCase {
      * @throws OrderAlreadyWithStatusException
      */
     @Override
-    public boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException, EntityNotFoundException {
+    public boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException, EntityNotFoundException
+    {
         var order = IOrderRepository.getById(id);
 
         if(order == null)
@@ -167,7 +168,7 @@ public class OrderService implements IOrderUseCase {
         if(order.getStatus().equals(status))
             throw new OrderAlreadyWithStatusException(id, status);
 
-        return IOrderRepository.updateStatus(id, status, order.getStatus()) == 2;
+        return IOrderRepository.updateStatus(order, status, order.getStatus()) == 2;
     }
 
     /**
@@ -198,7 +199,8 @@ public class OrderService implements IOrderUseCase {
 
         try {
             Payment payment = mercadoPagoService.executePayment(order.getId().toString(), order.getAmount());
-            IOrderRepository.updateStatus(id, PAID, order.getStatus());
+            order.setPaidAt(payment.getPayedAt());
+            IOrderRepository.updateStatus(order, PAID, order.getStatus());
             IPaymentRepository.create(payment);
             return payment;
         }
@@ -216,7 +218,14 @@ public class OrderService implements IOrderUseCase {
      */
     private long calculateWaitTime(Order order)
     {
-        if(order.getStatus().equals(OrderStatus.FINISHED)) return 0;
-        return Duration.between(order.getCreatedAt(), LocalDateTime.now()).toSeconds();
+        OrderStatus status = order.getStatus();
+
+        // Invalid states to count waiting time
+        if(status.equals(RECEIVED)
+            || status.equals(OrderStatus.FINISHED)
+            || status.equals(OrderStatus.CANCELED))
+            return 0;
+
+        return Duration.between(order.getPaidAt(), LocalDateTime.now()).toSeconds();
     }
 }
