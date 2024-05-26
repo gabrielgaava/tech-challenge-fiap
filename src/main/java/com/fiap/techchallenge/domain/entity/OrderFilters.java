@@ -9,15 +9,13 @@ public class OrderFilters {
     private OrderStatus status;
     private OrderSortFields orderBy;
     private SortDirection direction;
-    private Boolean expandProducts;
 
     public OrderFilters() {}
 
-    public OrderFilters(OrderStatus status, OrderSortFields orderBy, SortDirection direction, Boolean expandProducts) {
+    public OrderFilters(OrderStatus status, OrderSortFields orderBy, SortDirection direction) {
         this.status = status;
         this.orderBy = orderBy;
         this.direction = direction;
-        this.expandProducts = expandProducts;
     }
 
     public OrderStatus getStatus() {
@@ -44,11 +42,4 @@ public class OrderFilters {
         this.direction = direction;
     }
 
-    public Boolean getExpandProducts() {
-        return expandProducts;
-    }
-
-    public void setExpandProducts(Boolean expandProducts) {
-        this.expandProducts = expandProducts;
-    }
 }

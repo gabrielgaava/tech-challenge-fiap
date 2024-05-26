@@ -23,8 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static com.fiap.techchallenge.domain.enums.OrderStatus.PAID;
-import static com.fiap.techchallenge.domain.enums.OrderStatus.RECEIVED;
+import static com.fiap.techchallenge.domain.enums.OrderStatus.*;
 import static java.math.RoundingMode.HALF_EVEN;
 
 public class OrderService implements IOrderUseCase {
@@ -121,7 +120,7 @@ public class OrderService implements IOrderUseCase {
         // Create final order object
         order.setId(UUID.randomUUID());
         order.setAmount(orderAmount);
-        order.setStatus(RECEIVED);
+        order.setStatus(CREATED);
         order.setCreatedAt(LocalDateTime.now());
 
         // Successfully created all data in database
@@ -188,9 +187,9 @@ public class OrderService implements IOrderUseCase {
             throw new EntityNotFoundException("Order", id);
         }
 
-        if (order.getStatus() != RECEIVED){
+        if (order.getStatus() != CREATED){
 
-            if (order.getStatus() == PAID){
+            if (order.getStatus() == RECEIVED){
                 throw new OrderNotReadyException("Order already PAID");
             }
 
@@ -200,7 +199,7 @@ public class OrderService implements IOrderUseCase {
         try {
             Payment payment = mercadoPagoService.executePayment(order.getId().toString(), order.getAmount());
             order.setPaidAt(payment.getPayedAt());
-            IOrderRepository.updateStatus(order, PAID, order.getStatus());
+            IOrderRepository.updateStatus(order, RECEIVED, order.getStatus());
             IPaymentRepository.create(payment);
             return payment;
         }
@@ -221,7 +220,7 @@ public class OrderService implements IOrderUseCase {
         OrderStatus status = order.getStatus();
 
         // Invalid states to count waiting time
-        if(status.equals(RECEIVED)
+        if(status.equals(CREATED)
             || status.equals(OrderStatus.FINISHED)
             || status.equals(OrderStatus.CANCELED))
             return 0;

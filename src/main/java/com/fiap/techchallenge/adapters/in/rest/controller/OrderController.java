@@ -45,20 +45,17 @@ public class OrderController {
         @Parameter(name = "status", schema = @Schema(implementation = OrderStatus.class)),
         @Parameter(name = "orderBy", schema = @Schema(implementation = OrderSortFields.class)),
         @Parameter(name = "orderDirection", schema = @Schema(implementation = SortDirection.class)),
-        @Parameter(name = "expandProducts", schema = @Schema(implementation = Boolean.class), description = "Bring the list of products to each order")
     })
     @GetMapping
     public ResponseEntity<List<OrderDTO>> getOrders(
         @Valid @RequestParam(required = false) String status,
         @Valid @RequestParam(required = false) String orderBy,
-        @Valid @RequestParam(required = false) String orderDirection,
-        @Valid @RequestParam(required = false) Boolean expandProducts
+        @Valid @RequestParam(required = false) String orderDirection
     )
     {
         OrderFilters filters = new OrderFilters();
         filters.setStatus(OrderStatus.fromString(status));
         filters.setOrderBy(OrderSortFields.fromString(orderBy));
-        filters.setExpandProducts(expandProducts);
 
         orderDirection = orderDirection == null ? "ASC" : orderDirection;
         filters.setDirection(SortDirection.fromString(orderDirection));
