@@ -19,7 +19,7 @@ public abstract class ProductMapper {
             product.setName(rs.getString("name"));
             product.setDescription(rs.getString("description"));
             product.setImageUrl(rs.getString("image_url"));
-            product.setPrice(BigDecimal.valueOf(rs.getFloat("price")));
+            product.setPrice(rs.getBigDecimal("price"));
             product.setCategory(ProductCategory.valueOf(rs.getString("category")));
             return product;
         }
