@@ -64,8 +64,8 @@ public class ProductRepository implements ProductRepositoryPort {
     }
 
     @Override
-    public int delete(String id) {
-        String sql = "DELETE FROM product WHERE id = ?";
+    public int delete(UUID id) {
+        String sql = "DELETE FROM public.product WHERE id = ?";
         return jdbcTemplate.update(sql, id);
     }
 }
