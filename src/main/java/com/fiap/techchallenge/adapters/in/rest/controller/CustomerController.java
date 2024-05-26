@@ -37,7 +37,7 @@ public class CustomerController {
         var customer = customerService.getCustomerByCpf(cpf);
 
         if(customer == null) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.notFound().build();
         }
 
         return ResponseEntity.ok(new CustomerDTO(customer));
