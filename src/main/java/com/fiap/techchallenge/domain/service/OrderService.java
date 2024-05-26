@@ -191,7 +191,7 @@ public class OrderService implements IOrderUseCase {
             throw new OrderNotReadyException("Order must be with 'RECEIVED' status");
         }
 
-        if (order.getStatus() != PAID){
+        if (order.getStatus() == PAID){
             throw new OrderNotReadyException("Order already PAID");
         }
 
