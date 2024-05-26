@@ -19,11 +19,4 @@ public class CustomerDTO {
     private String cpf;
     private String name;
     private String email;
-
-    public CustomerDTO(Customer customer){
-        this.id = customer.getId();
-        this.cpf = customer.getCpf();
-        this.name = customer.getName();
-        this.email = customer.getEmail();
-    }
 }

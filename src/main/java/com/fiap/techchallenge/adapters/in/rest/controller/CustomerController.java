@@ -3,6 +3,7 @@ package com.fiap.techchallenge.adapters.in.rest.controller;
 import com.fiap.techchallenge.adapters.in.rest.dto.CreateCustomerDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.CustomerDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
+import com.fiap.techchallenge.adapters.in.rest.mapper.CustomerMapper;
 import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
@@ -40,7 +41,7 @@ public class CustomerController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(new CustomerDTO(customer));
+        return ResponseEntity.ok(CustomerMapper.fromDomain(customer));
     }
 
     @Operation(summary = "List all customers")
@@ -56,7 +57,7 @@ public class CustomerController {
         List<CustomerDTO> customersDTO = new ArrayList<>();
         customers.forEach((customer)->{
             if (customer != null){
-                customersDTO.add(new CustomerDTO(customer));
+                customersDTO.add(CustomerMapper.fromDomain(customer));
             }
         });
 
@@ -70,7 +71,7 @@ public class CustomerController {
         Customer newCustomer = new Customer(null,request.getCpf(), request.getName(), request.getEmail());
 
         if(customerService.createCustomer(newCustomer) != null) {
-          return ResponseEntity.status(HttpStatus.CREATED).body(new CustomerDTO(newCustomer));
+          return ResponseEntity.status(HttpStatus.CREATED).body(CustomerMapper.fromDomain(newCustomer));
         }
 
         return ResponseEntity.badRequest().build();
@@ -84,7 +85,7 @@ public class CustomerController {
         if(customerService.updateCustomer(customerDTO, cpf) != null) {
             var retrievedCustomer = customerService.getCustomerByCpf(cpf);
             if (retrievedCustomer != null){
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body(new CustomerDTO(retrievedCustomer));
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomerMapper.fromDomain(retrievedCustomer));
             }
         }
 
