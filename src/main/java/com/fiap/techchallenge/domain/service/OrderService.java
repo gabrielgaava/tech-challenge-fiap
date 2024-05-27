@@ -165,7 +165,8 @@ public class OrderService implements IOrderUseCase {
 
             // Invalid Status from Payload
             case null: {
-                throw new IllegalArgumentException("Status cannot be null and have to be a valid status");
+                throw new IllegalArgumentException("Status cannot be null and must be a valid status: CREATED, " +
+                        "RECEIVED, IN_PREPARATION, READY_TO_DELIVERY, CANCELED or FINISHED");
             }
 
             // Forbidden route usage
