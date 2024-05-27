@@ -22,5 +22,5 @@ public interface OrderRepositoryPort {
 
     int create(Order order);
 
-    int updateStatus(UUID id, OrderStatus newStatus, OrderStatus previousStatus);
+    int updateStatus(Order order, OrderStatus newStatus, OrderStatus previousStatus);
 }

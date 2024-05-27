@@ -69,6 +69,10 @@ public abstract class OrderMapper {
         order.setOrderNumber(rs.getInt("order_number"));
         order.setCustomerId(getUUID(rs.getString("customer_id")));
         order.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+
+        if(rs.getTimestamp("paid_at") != null)
+            order.setPaidAt(rs.getTimestamp("paid_at").toLocalDateTime());
+
         order.setAmount(rs.getBigDecimal("amount"));
         order.setStatus(OrderStatus.fromString(rs.getString("status")));
         return order;
