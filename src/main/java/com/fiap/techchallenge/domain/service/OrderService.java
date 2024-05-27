@@ -173,24 +173,38 @@ public class OrderService implements IOrderUseCase {
                 throw new IllegalArgumentException("To update to this status use payment route");
             }
 
-            // IN_PREPARATION -> RECEIVED Validation
+            // RECEIVED -> IN_PREPARATION Validation
             case IN_PREPARATION: {
                 if(order.getStatus() != RECEIVED)
                     throw new IllegalArgumentException("Order must be in 'RECEIVED' status");
                 break;
             }
 
-            // IN_PREPARATION -> RECEIVED Validation
+            // IN_PREPARATION -> READY_TO_DELIVERY Validation
             case READY_TO_DELIVERY: {
                 if(order.getStatus() != IN_PREPARATION)
                     throw new IllegalArgumentException("Order must be in 'IN_PREPARATION' status");
                 break;
             }
 
-            // IN_PREPARATION -> RECEIVED Validation
+            // READY_TO_DELIVERY -> FINISHED Validation
             case FINISHED: {
                 if(order.getStatus() != READY_TO_DELIVERY)
                     throw new IllegalArgumentException("Order must be in 'READY_TO_DELIVERY' status");
+                break;
+            }
+
+            // CANCELED not update status
+            case CREATED: {
+                if(order.getStatus() != CREATED)
+                    throw new IllegalArgumentException("Not possible to change the status of an order to 'CREATED'.");
+                break;
+            }
+
+            // FINISHED not update status
+            case CANCELED: {
+                if(order.getStatus() == FINISHED)
+                    throw new IllegalArgumentException("Not possible to change the status of an order to 'FINISHED'.");
                 break;
             }
 
