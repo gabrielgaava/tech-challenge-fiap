@@ -2,6 +2,7 @@ package com.fiap.techchallenge.adapters.in.rest.controller;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.*;
 import com.fiap.techchallenge.adapters.in.rest.mapper.OrderMapper;
+import com.fiap.techchallenge.adapters.out.database.postgress.OderRepository;
 import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.entity.OrderFilters;
 import com.fiap.techchallenge.domain.entity.Payment;
@@ -27,6 +28,7 @@ import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Tag(name = "Order Controller")
 @RestController
@@ -56,16 +58,13 @@ public class OrderController {
         OrderFilters filters = new OrderFilters();
         filters.setStatus(OrderStatus.fromString(status));
         filters.setOrderBy(OrderSortFields.fromString(orderBy));
+        filters.setDirection(SortDirection.fromString(orderDirection == null ? "ASC" : orderDirection));
 
-        orderDirection = orderDirection == null ? "ASC" : orderDirection;
-        filters.setDirection(SortDirection.fromString(orderDirection));
+        List<OrderDTO> ordersDTO = iOrderUseCase.getOrders(filters)
+            .stream()
+            .map(OrderDTO::new)
+            .collect(Collectors.toList());
 
-        var ordersDTO = new ArrayList<OrderDTO>();
-        iOrderUseCase.getOrders(filters).forEach((order) ->{
-            if (order != null){
-                ordersDTO.add(new OrderDTO(order));
-            }
-        });
         return ResponseEntity.ok(ordersDTO);
     }
 
@@ -79,13 +78,12 @@ public class OrderController {
 
     @Operation(summary = "Get the order's history with all status changes")
     @GetMapping("/{id}/history")
-    public List<OrderHistoryDTO> getOrderHistory(@PathVariable String id) throws EntityNotFoundException
+    public List<OrderHistoryDTO> getOrderHistory(@PathVariable UUID id) throws EntityNotFoundException
     {
-        var orderHistoryDTO = new ArrayList<OrderHistoryDTO>();
-        iOrderUseCase.getOrderHistory(UUID.fromString(id)).forEach(orderHistory -> {
-            orderHistoryDTO.add(new OrderHistoryDTO(orderHistory));
-        });
-        return orderHistoryDTO;
+        return iOrderUseCase.getOrderHistory(id)
+            .stream()
+            .map(OrderHistoryDTO::new)
+            .toList();
     }
 
     @Operation(summary = "Create a new Order")
@@ -118,7 +116,7 @@ public class OrderController {
     }
 
     @Operation(summary = "Pay the order with mercado pago")
-    @PostMapping("/{order_id}/payment")
+    @PostMapping("/{order_id}/checkout")
     public ResponseEntity<PaymentDTO> payOrder(@PathVariable("order_id") UUID orderId)
         throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException
     {

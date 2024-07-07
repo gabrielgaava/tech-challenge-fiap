@@ -15,6 +15,8 @@ import com.fiap.techchallenge.domain.repository.OrderRepositoryPort;
 import com.fiap.techchallenge.domain.repository.PaymentRepositoryPort;
 import com.fiap.techchallenge.domain.repository.ProductRepositoryPort;
 import com.fiap.techchallenge.domain.usecase.IOrderUseCase;
+import com.mercadopago.exceptions.MPApiException;
+import com.mercadopago.exceptions.MPException;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -234,6 +236,7 @@ public class OrderService implements IOrderUseCase {
     public Payment payOrder(UUID id) throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException
     {
         var order = IOrderRepository.getById(id);
+        var customerEmail = "unknow@gmail.com";
 
         if (order == null || order.getStatus() == null) {
             throw new EntityNotFoundException("Order", id);
@@ -249,14 +252,14 @@ public class OrderService implements IOrderUseCase {
         }
 
         try {
-            Payment payment = mercadoPagoService.executePayment(order.getId().toString(), order.getAmount());
+            Payment payment = mercadoPagoService.execute(order);
             order.setPaidAt(payment.getPayedAt());
             IOrderRepository.updateStatus(order, RECEIVED, order.getStatus());
             IPaymentRepository.create(payment);
             return payment;
         }
 
-        catch (PaymentErrorException e) {
+        catch (PaymentErrorException | MPApiException | MPException e) {
             throw new MercadoPagoUnavailableException();
         }
 

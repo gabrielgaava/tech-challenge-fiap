@@ -19,10 +19,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Tag(name = "Customer Controller")
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/customers")
 public class CustomerController {
 
     private final ICustomerUseCase customerService;
@@ -54,14 +55,11 @@ public class CustomerController {
             return ResponseEntity.noContent().build();
         }
 
-        List<CustomerDTO> customersDTO = new ArrayList<>();
-        customers.forEach((customer)->{
-            if (customer != null){
-                customersDTO.add(CustomerMapper.fromDomain(customer));
-            }
-        });
+        List<CustomerDTO> response = customers.stream()
+            .map(CustomerMapper::fromDomain)
+            .toList();
 
-        return ResponseEntity.ok(customersDTO);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "Create a new customers")
