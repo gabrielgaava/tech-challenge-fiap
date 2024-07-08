@@ -6,7 +6,9 @@ import com.fiap.techchallenge.adapters.out.database.postgress.ProductRepository;
 import com.fiap.techchallenge.adapters.out.rest.mercadopago.exception.PaymentErrorException;
 import com.fiap.techchallenge.adapters.out.rest.mercadopago.service.MercadoPagoService;
 import com.fiap.techchallenge.domain.entity.*;
+import com.fiap.techchallenge.domain.enums.OrderSortFields;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
+import com.fiap.techchallenge.domain.enums.SortDirection;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.MercadoPagoUnavailableException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
@@ -51,14 +53,38 @@ public class OrderService implements IOrderUseCase {
     @Override
     public List<Order> getOrders(OrderFilters filters)
     {
-        var orders = IOrderRepository.getAll(filters);
-
-        for(Order order : orders) {
-            var waitTime = calculateWaitTime(order);
-            order.setWaitingTimeInSeconds(waitTime);
+        List<Order> orders;
+        if (filters.hasNoParameters()){
+            orders = getOrdersDefaultHierarchy();
+        }
+        else {
+            orders = IOrderRepository.getAll(filters);
         }
 
-        return orders;
+        return calculateOrdersWaitTime(orders);
+    }
+
+    /**
+     * Gets the orders using default hierarchy:
+     * 1. READY_TO_DELIVERY > IN_PREPARATION > RECEIVED
+     * 2. Older orders first
+     * 3. Finished orders should NOT be present
+     * @return: the filtered list of orders
+     */
+    private List<Order> getOrdersDefaultHierarchy(){
+        var orderReadyFilters = new OrderFilters(READY_TO_DELIVERY, OrderSortFields.CREATED_AT, SortDirection.ASC);
+        var ordersReady = IOrderRepository.getAll(orderReadyFilters);
+
+        var orderPreparationFilters = new OrderFilters(IN_PREPARATION, OrderSortFields.CREATED_AT, SortDirection.ASC);
+        var ordersInPreparation = IOrderRepository.getAll(orderPreparationFilters);
+
+        var orderReceivedFilters = new OrderFilters(RECEIVED, OrderSortFields.CREATED_AT, SortDirection.ASC);
+        var ordersReceived = IOrderRepository.getAll(orderReceivedFilters);
+
+        ordersReady.addAll((ordersInPreparation));
+        ordersReady.addAll(ordersReceived);
+
+        return ordersReady;
     }
 
     /**
@@ -282,5 +308,18 @@ public class OrderService implements IOrderUseCase {
             return 0;
 
         return Duration.between(order.getPaidAt(), LocalDateTime.now()).toSeconds();
+    }
+
+    /**
+     * Calculate the total of time in seconds that the orders list was created until now
+     * @param orders: The Oders that will have the time waiting calculated
+     * @return orders list with the total time of wait (in seconds) for each order
+     */
+    private List<Order> calculateOrdersWaitTime(List<Order> orders){
+        for(Order order : orders) {
+            var waitTime = calculateWaitTime(order);
+            order.setWaitingTimeInSeconds(waitTime);
+        }
+        return orders;
     }
 }
