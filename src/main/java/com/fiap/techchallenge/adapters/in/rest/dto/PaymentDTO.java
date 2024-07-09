@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.adapters.in.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fiap.techchallenge.domain.entity.Payment;
 import lombok.*;
 
@@ -9,19 +10,20 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PaymentDTO {
-	private LocalDateTime payedAt;
 	private BigDecimal amount;
-	private UUID paymentId;
+	private Object transactionData;
+	private String paymentId;
 	private UUID orderId;
 
 	public PaymentDTO(Payment payment){
-		this.payedAt = payment.getPayedAt();
 		this.amount = payment.getAmount();
 		this.paymentId = payment.getPaymentId();
 		this.orderId = payment.getOrderId();
+		this.transactionData = payment.getTransactionData();
 	}
 }

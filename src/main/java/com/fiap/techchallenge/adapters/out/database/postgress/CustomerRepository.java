@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.UUID;
 
 @Repository("PGCustomerRepository")
 public class CustomerRepository implements CustomerRepositoryPort {
@@ -53,6 +54,21 @@ public class CustomerRepository implements CustomerRepositoryPort {
         }
         catch (EmptyResultDataAccessException e) {
           return null;
+        }
+    }
+
+    @Override
+    public Customer getByID(UUID id) {
+        String sql = "SELECT * FROM customer WHERE id = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(
+                sql,
+                CustomerMapper.listMapper,
+                id);
+        }
+        catch (EmptyResultDataAccessException e) {
+            return null;
         }
     }
 

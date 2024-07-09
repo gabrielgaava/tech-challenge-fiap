@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.domain.service;
 
+import com.fiap.techchallenge.adapters.out.database.postgress.CustomerRepository;
 import com.fiap.techchallenge.adapters.out.database.postgress.OderRepository;
 import com.fiap.techchallenge.adapters.out.database.postgress.PaymentRepository;
 import com.fiap.techchallenge.adapters.out.database.postgress.ProductRepository;
@@ -11,6 +12,7 @@ import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.MercadoPagoUnavailableException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
+import com.fiap.techchallenge.domain.repository.CustomerRepositoryPort;
 import com.fiap.techchallenge.domain.repository.OrderRepositoryPort;
 import com.fiap.techchallenge.domain.repository.PaymentRepositoryPort;
 import com.fiap.techchallenge.domain.repository.ProductRepositoryPort;
@@ -30,6 +32,8 @@ import static java.math.RoundingMode.HALF_EVEN;
 
 public class OrderService implements IOrderUseCase {
 
+    CustomerRepositoryPort ICustomerRepository;
+
     OrderRepositoryPort IOrderRepository;
 
     ProductRepositoryPort IProductRepository;
@@ -39,6 +43,7 @@ public class OrderService implements IOrderUseCase {
     MercadoPagoService mercadoPagoService;
 
     public OrderService(DataSource dataSource) {
+        this.ICustomerRepository = new CustomerRepository(dataSource);
         this.IOrderRepository = new OderRepository(dataSource);
         this.IProductRepository = new ProductRepository(dataSource);
         this.IPaymentRepository = new PaymentRepository(dataSource);
@@ -235,8 +240,8 @@ public class OrderService implements IOrderUseCase {
     @Override
     public Payment payOrder(UUID id) throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException
     {
-        var order = IOrderRepository.getById(id);
-        var customerEmail = "unknow@gmail.com";
+        Order order = IOrderRepository.getById(id);
+        Customer customer = null;
 
         if (order == null || order.getStatus() == null) {
             throw new EntityNotFoundException("Order", id);
@@ -251,9 +256,12 @@ public class OrderService implements IOrderUseCase {
             throw new OrderNotReadyException("Order must be with 'RECEIVED' status");
         }
 
+        if(order.getCustomerId() != null) {
+            customer = ICustomerRepository.getByID(order.getCustomerId());
+        }
+
         try {
-            Payment payment = mercadoPagoService.execute(order);
-            order.setPaidAt(payment.getPayedAt());
+            Payment payment = mercadoPagoService.execute(order, customer);
             IOrderRepository.updateStatus(order, RECEIVED, order.getStatus());
             IPaymentRepository.create(payment);
             return payment;

@@ -2,7 +2,6 @@ package com.fiap.techchallenge.adapters.in.rest.controller;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.*;
 import com.fiap.techchallenge.adapters.in.rest.mapper.OrderMapper;
-import com.fiap.techchallenge.adapters.out.database.postgress.OderRepository;
 import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.entity.OrderFilters;
 import com.fiap.techchallenge.domain.entity.Payment;
@@ -25,7 +24,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;

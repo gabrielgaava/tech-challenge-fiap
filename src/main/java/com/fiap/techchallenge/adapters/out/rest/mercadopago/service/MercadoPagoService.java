@@ -1,7 +1,7 @@
 package com.fiap.techchallenge.adapters.out.rest.mercadopago.service;
 
-import com.fiap.techchallenge.adapters.out.rest.mercadopago.dto.MercadoPagoPaymentResponseDTO;
 import com.fiap.techchallenge.adapters.out.rest.mercadopago.exception.PaymentErrorException;
+import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.entity.Payment;
 import com.fiap.techchallenge.domain.usecase.ICheckoutUseCase;
@@ -14,78 +14,77 @@ import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class MercadoPagoService implements ICheckoutUseCase {
 
-  private final String SERVICE_BASE_URI = "https://jsonplaceholder.typicode.com";
-
-  private final RestTemplate restTemplate;
-
-  public MercadoPagoService() {
-    this.restTemplate = new RestTemplate();
-  }
+  public MercadoPagoService() {}
 
   @Override
-  public Payment execute(Order order) throws PaymentErrorException, MPException, MPApiException {
+  public Payment execute(Order order, Customer customer) throws PaymentErrorException, MPException, MPApiException {
 
-    String customerEmail = "unknow@gmail.com";
-    MercadoPagoConfig.setAccessToken("APP_USR-134942421404165-070622-8c4501d1b924586a1c50eae59e15fd8d-449901113");
-
+    String ACCESS_TOKEN = "TEST-4517379499194350-070720-7a234218d8d1d7fe49f0b99f6e21902c-449901113";
+    MercadoPagoConfig.setAccessToken(ACCESS_TOKEN);
     PaymentClient client = new PaymentClient();
 
-    Map<String, String> customHeaders = new HashMap<>();
-    customHeaders.put("x-idempotency-key", UUID.randomUUID().toString());
+    MPRequestOptions requestHeaders = this.getMPRequestOptions(order);
+    PaymentCreateRequest request = this.createPaymentRequest(order, customer);
 
-    MPRequestOptions requestOptions = MPRequestOptions.builder()
-            .customHeaders(customHeaders)
-            .build();
-
-    if(order.getCustomerId() != null) {
-      // Retrive customer email
-      customerEmail = "gabriel.gava2077@outlook.com";
-    }
-
-    PaymentCreateRequest paymentCreateRequest =
-      PaymentCreateRequest.builder()
-        .transactionAmount(new BigDecimal("100"))
-        .description("Título do produto")
-        .paymentMethodId("pix")
-        .dateOfExpiration(OffsetDateTime.now().plusHours(24))
-        .payer(
-            PaymentPayerRequest.builder()
-                    .email(customerEmail)
-                    .firstName("Gabriel")
-                    .identification(
-                            IdentificationRequest.builder().type("CPF").number("47667846855").build())
-                    .build())
-        .build();
-
-    com.mercadopago.resources.payment.Payment mpResponse = client.create(paymentCreateRequest, requestOptions);
-
-    String URI = SERVICE_BASE_URI + "/todos/1/";
-    MercadoPagoPaymentResponseDTO response = restTemplate.getForObject(URI, MercadoPagoPaymentResponseDTO.class);
+    var response = client.create(request, requestHeaders);
 
     if(response == null){
       throw new PaymentErrorException(order.getId().toString());
     }
 
     Payment payment = new Payment();
-    payment.setPaymentId(UUID.randomUUID());
+    payment.setGateway("MERCADOPAGO");
+    payment.setPaymentId(String.valueOf(response.getId()));
     payment.setAmount(order.getAmount());
-    payment.setPayedAt(LocalDateTime.now());
+    payment.setPayedAt(null);
     payment.setOrderId(order.getId());
+    payment.setTransactionData(response.getPointOfInteraction().getTransactionData());
 
     return payment;
+
+  }
+
+  private MPRequestOptions getMPRequestOptions(Order order) {
+    Map<String, String> customHeaders = new HashMap<>();
+    customHeaders.put("x-idempotency-key", order.getId().toString());
+
+    return MPRequestOptions.builder()
+        .customHeaders(customHeaders)
+        .build();
+  }
+
+  private PaymentCreateRequest createPaymentRequest(Order order, Customer customer) {
+    PaymentPayerRequest payer = null;
+
+    if(customer != null) {
+      String[] names = customer.getName().split(" ");
+      String firstName = names[0];
+      String lastName = names[names.length - 1];
+
+      payer = PaymentPayerRequest.builder()
+        .email(customer.getEmail())
+        .firstName(firstName)
+        .lastName(lastName)
+        .identification(IdentificationRequest.builder().type("CPF").number(customer.getCpf()).build())
+        .build();
+    }
+
+    return PaymentCreateRequest.builder()
+      .transactionAmount(new BigDecimal("100"))
+      .description("Pedido Galegaburger " + order.getId().toString())
+      .paymentMethodId("pix")
+      .dateOfExpiration(OffsetDateTime.now().plusHours(24))
+      .payer(payer)
+      .build();
 
   }
 
