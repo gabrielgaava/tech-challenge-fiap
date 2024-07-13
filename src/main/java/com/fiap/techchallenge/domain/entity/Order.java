@@ -25,9 +25,11 @@ public class Order {
 
     private long waitingTimeInSeconds;
 
-    List<ProductAndQuantity> products;
+    private List<ProductAndQuantity> products;
 
-    List<OrderHistory> history;
+    private List<OrderHistory> history;
+
+    private Payment payment;
 
     public Order() {}
 
@@ -122,5 +124,13 @@ public class Order {
 
     public void setPaidAt(LocalDateTime paidAt) {
         this.paidAt = paidAt;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

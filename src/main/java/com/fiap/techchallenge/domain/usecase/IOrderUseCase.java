@@ -15,15 +15,19 @@ import java.util.UUID;
 
 public interface IOrderUseCase {
 
-    List<Order> getOrders(OrderFilters filters);
+    List<Order> getAll(OrderFilters filters);
 
-    Order getOrder(UUID id) throws EntityNotFoundException;
+    Order get(UUID id) throws EntityNotFoundException;
 
-    Order createOrder(Order dto) throws EntityNotFoundException;
+    Order create(Order dto) throws EntityNotFoundException;
 
     List<OrderHistory> getOrderHistory(UUID id) throws EntityNotFoundException;
 
-    boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException, EntityNotFoundException;
+    boolean updateStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException, EntityNotFoundException;
 
-    Payment payOrder(UUID orderId) throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException;
+    Payment checkout(UUID orderId) throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException;
+
+    Payment pay(Order order, Payment payment) throws EntityNotFoundException, OrderNotReadyException, OrderAlreadyWithStatusException;
+
+    Payment getPaymentByExternalID(String id) throws EntityNotFoundException;
 }

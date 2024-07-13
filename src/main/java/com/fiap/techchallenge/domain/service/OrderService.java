@@ -8,6 +8,7 @@ import com.fiap.techchallenge.adapters.out.rest.mercadopago.exception.PaymentErr
 import com.fiap.techchallenge.adapters.out.rest.mercadopago.service.MercadoPagoService;
 import com.fiap.techchallenge.domain.entity.*;
 import com.fiap.techchallenge.domain.enums.OrderStatus;
+import com.fiap.techchallenge.domain.enums.PaymentStatus;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.MercadoPagoUnavailableException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
@@ -16,6 +17,7 @@ import com.fiap.techchallenge.domain.repository.CustomerRepositoryPort;
 import com.fiap.techchallenge.domain.repository.OrderRepositoryPort;
 import com.fiap.techchallenge.domain.repository.PaymentRepositoryPort;
 import com.fiap.techchallenge.domain.repository.ProductRepositoryPort;
+import com.fiap.techchallenge.domain.usecase.ICheckoutUseCase;
 import com.fiap.techchallenge.domain.usecase.IOrderUseCase;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
@@ -40,14 +42,14 @@ public class OrderService implements IOrderUseCase {
 
     PaymentRepositoryPort IPaymentRepository;
 
-    MercadoPagoService mercadoPagoService;
+    ICheckoutUseCase ICheckoutUseCase;
 
     public OrderService(DataSource dataSource) {
         this.ICustomerRepository = new CustomerRepository(dataSource);
         this.IOrderRepository = new OderRepository(dataSource);
         this.IProductRepository = new ProductRepository(dataSource);
         this.IPaymentRepository = new PaymentRepository(dataSource);
-        this.mercadoPagoService = new MercadoPagoService();
+        this.ICheckoutUseCase = new MercadoPagoService(dataSource);
     }
 
     /**
@@ -56,7 +58,7 @@ public class OrderService implements IOrderUseCase {
      * @return: the filtered list of orders
      */
     @Override
-    public List<Order> getOrders(OrderFilters filters)
+    public List<Order> getAll(OrderFilters filters)
     {
         var orders = IOrderRepository.getAll(filters);
 
@@ -75,7 +77,7 @@ public class OrderService implements IOrderUseCase {
      * @throws EntityNotFoundException
      */
     @Override
-    public Order getOrder(UUID id) throws EntityNotFoundException
+    public Order get(UUID id) throws EntityNotFoundException
     {
         var order = IOrderRepository.getByIdWithProducts(id);
 
@@ -95,7 +97,7 @@ public class OrderService implements IOrderUseCase {
      * @return the created order object or null, in case of error
      */
     @Override
-    public Order createOrder(Order order) throws EntityNotFoundException
+    public Order create(Order order) throws EntityNotFoundException
     {
 
         // The order must have at least one product to be created
@@ -160,8 +162,9 @@ public class OrderService implements IOrderUseCase {
      * @return true if updated successfully, false otherwise
      * @throws OrderAlreadyWithStatusException
      */
+
     @Override
-    public boolean updateOrderStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException, EntityNotFoundException
+    public boolean updateStatus(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException, EntityNotFoundException
     {
         var order = IOrderRepository.getById(id);
 
@@ -238,7 +241,7 @@ public class OrderService implements IOrderUseCase {
      * @throws MercadoPagoUnavailableException
      */
     @Override
-    public Payment payOrder(UUID id) throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException
+    public Payment checkout(UUID id) throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException
     {
         Order order = IOrderRepository.getById(id);
         Customer customer = null;
@@ -261,7 +264,7 @@ public class OrderService implements IOrderUseCase {
         }
 
         try {
-            Payment payment = mercadoPagoService.execute(order, customer);
+            Payment payment = ICheckoutUseCase.execute(order, customer);
             IOrderRepository.updateStatus(order, RECEIVED, order.getStatus());
             IPaymentRepository.create(payment);
             return payment;
@@ -271,6 +274,45 @@ public class OrderService implements IOrderUseCase {
             throw new MercadoPagoUnavailableException();
         }
 
+    }
+
+    /**
+     * Pay the order, setting the payment as "paid" and going to next orders' step
+     * @param order Order to be paid
+     * @param payment Payment relation to the order
+     * @return Payment details with updated Status
+     * @throws EntityNotFoundException in case the order or payment is not found
+     * @throws OrderAlreadyWithStatusException in case the order or payment already was paid
+     */
+    @Override
+    public Payment pay(Order order, Payment payment) throws EntityNotFoundException, OrderAlreadyWithStatusException {
+
+        // Updates the Payment status on database
+        payment.setPayedAt(LocalDateTime.now());
+        payment.setStatus(PaymentStatus.APPROVED.toString());
+        this.IPaymentRepository.update(payment);
+
+        // Move order to the next step
+        this.updateStatus(order.getId(), IN_PREPARATION);
+
+        return payment;
+    }
+
+
+    /**
+     * Get the payment from a order, by the external id (gateway)
+     * @param id External Payment ID
+     * @return Payment details
+     * @throws EntityNotFoundException
+     */
+    public Payment getPaymentByExternalID(String id) throws EntityNotFoundException {
+        Payment data = IPaymentRepository.getByExternalId(id);
+
+        if(data == null) {
+            throw new EntityNotFoundException("Payment", id);
+        }
+
+        return data;
     }
 
     /**

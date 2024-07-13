@@ -1,6 +1,8 @@
 CREATE TABLE payment (
-  id varchar PRIMARY KEY,
+  id uuid PRIMARY KEY,
+  external_id varchar PRIMARY KEY,
   order_id uuid,
+  status varchar,
   gateway varchar,
   amount float,
   transaction_data varchar,

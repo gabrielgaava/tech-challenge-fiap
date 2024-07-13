@@ -17,12 +17,12 @@ import java.util.UUID;
 public class PaymentDTO {
 	private BigDecimal amount;
 	private Object transactionData;
-	private String paymentId;
+	private UUID paymentId;
 	private UUID orderId;
 
 	public PaymentDTO(Payment payment){
 		this.amount = payment.getAmount();
-		this.paymentId = payment.getPaymentId();
+		this.paymentId = payment.getId();
 		this.orderId = payment.getOrderId();
 		this.transactionData = payment.getTransactionData();
 	}

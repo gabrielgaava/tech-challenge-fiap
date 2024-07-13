@@ -58,7 +58,7 @@ public class OrderController {
         filters.setOrderBy(OrderSortFields.fromString(orderBy));
         filters.setDirection(SortDirection.fromString(orderDirection == null ? "ASC" : orderDirection));
 
-        List<OrderDTO> ordersDTO = iOrderUseCase.getOrders(filters)
+        List<OrderDTO> ordersDTO = iOrderUseCase.getAll(filters)
             .stream()
             .map(OrderDTO::new)
             .collect(Collectors.toList());
@@ -70,7 +70,7 @@ public class OrderController {
     @GetMapping("/{id}")
     public OrderDTO getOrder(@PathVariable String id) throws EntityNotFoundException
     {
-        var order = iOrderUseCase.getOrder(UUID.fromString(id));
+        var order = iOrderUseCase.get(UUID.fromString(id));
         return new OrderDTO(order);
     }
 
@@ -89,7 +89,7 @@ public class OrderController {
     public ResponseEntity<OrderDTO> createOrder(@Valid @RequestBody CreateOrderDTO request) throws EntityNotFoundException
     {
         Order order = OrderMapper.toDomain(request);
-        Order createdOrder = iOrderUseCase.createOrder(order);
+        Order createdOrder = iOrderUseCase.create(order);
 
         if(createdOrder == null)
             return ResponseEntity.badRequest().body(null);
@@ -107,7 +107,7 @@ public class OrderController {
     ) throws OrderAlreadyWithStatusException, EntityNotFoundException {
         var oderId = UUID.fromString(id);
         var status = OrderStatus.fromString(request.getStatus().toUpperCase());
-        boolean updated = iOrderUseCase.updateOrderStatus(oderId, status);
+        boolean updated = iOrderUseCase.updateStatus(oderId, status);
 
         if(updated) return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
@@ -118,7 +118,7 @@ public class OrderController {
     public ResponseEntity<PaymentDTO> payOrder(@PathVariable("order_id") UUID orderId)
         throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException
     {
-        Payment payment = iOrderUseCase.payOrder(orderId);
+        Payment payment = iOrderUseCase.checkout(orderId);
 
         if(payment == null)
             return ResponseEntity.badRequest().body(null);

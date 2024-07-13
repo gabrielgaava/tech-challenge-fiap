@@ -1,10 +1,20 @@
 package com.fiap.techchallenge.adapters.out.rest.mercadopago.service;
 
+import com.fiap.techchallenge.adapters.out.database.postgress.OderRepository;
+import com.fiap.techchallenge.adapters.out.database.postgress.PaymentRepository;
 import com.fiap.techchallenge.adapters.out.rest.mercadopago.exception.PaymentErrorException;
 import com.fiap.techchallenge.domain.entity.Customer;
 import com.fiap.techchallenge.domain.entity.Order;
 import com.fiap.techchallenge.domain.entity.Payment;
+import com.fiap.techchallenge.domain.enums.OrderStatus;
+import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
+import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
+import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
+import com.fiap.techchallenge.domain.repository.OrderRepositoryPort;
+import com.fiap.techchallenge.domain.repository.PaymentRepositoryPort;
+import com.fiap.techchallenge.domain.service.OrderService;
 import com.fiap.techchallenge.domain.usecase.ICheckoutUseCase;
+import com.fiap.techchallenge.domain.usecase.IOrderUseCase;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.payment.PaymentClient;
@@ -13,17 +23,27 @@ import com.mercadopago.client.payment.PaymentPayerRequest;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.payment.PaymentStatus;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class MercadoPagoService implements ICheckoutUseCase {
 
-  public MercadoPagoService() {}
+  private final OrderRepositoryPort orderRepository;
+  private final PaymentRepositoryPort paymentRepository;
+
+  public MercadoPagoService(DataSource dataSource) {
+    this.orderRepository = new OderRepository(dataSource);
+    this.paymentRepository = new PaymentRepository(dataSource);
+  }
 
   @Override
   public Payment execute(Order order, Customer customer) throws PaymentErrorException, MPException, MPApiException {
@@ -43,13 +63,37 @@ public class MercadoPagoService implements ICheckoutUseCase {
 
     Payment payment = new Payment();
     payment.setGateway("MERCADOPAGO");
-    payment.setPaymentId(String.valueOf(response.getId()));
+    payment.setId(UUID.randomUUID());
+    payment.setExternalId(String.valueOf(response.getId()));
     payment.setAmount(order.getAmount());
     payment.setPayedAt(null);
     payment.setOrderId(order.getId());
     payment.setTransactionData(response.getPointOfInteraction().getTransactionData());
 
     return payment;
+
+  }
+
+
+  public void checkPaymentUpdate(String paymentId) throws MPException, MPApiException {
+
+    var client = new PaymentClient();
+    var response = client.get(Long.valueOf(paymentId));
+
+    Payment payment = paymentRepository.getByExternalId(response.getId().toString());
+    Order order = orderRepository.getById(payment.getOrderId());
+
+    boolean approved = response.getStatus().equals(PaymentStatus.APPROVED);
+
+    if (approved) {
+      payment.setStatus(PaymentStatus.APPROVED);
+      payment.setPayedAt(LocalDateTime.now());
+
+      paymentRepository.update(payment);
+      orderRepository.updateStatus(order, OrderStatus.IN_PREPARATION, order.getStatus());
+
+      return;
+    }
 
   }
 
