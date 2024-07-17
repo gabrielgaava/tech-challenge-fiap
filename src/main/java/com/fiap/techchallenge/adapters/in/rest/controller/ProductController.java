@@ -3,16 +3,16 @@ package com.fiap.techchallenge.adapters.in.rest.controller;
 import com.fiap.techchallenge.adapters.in.rest.dto.CreateProductDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.ProductDTO;
 import com.fiap.techchallenge.adapters.in.rest.mapper.ProductMapper;
-import com.fiap.techchallenge.domain.entity.Product;
-import com.fiap.techchallenge.domain.enums.ProductCategory;
-import com.fiap.techchallenge.domain.service.ProductService;
-import com.fiap.techchallenge.domain.usecase.IProductUseCase;
+import com.fiap.techchallenge.domain.product.Product;
+import com.fiap.techchallenge.domain.product.ProductCategory;
+import com.fiap.techchallenge.domain.product.usecase.ICreateProductUseCase;
+import com.fiap.techchallenge.domain.product.usecase.IDeleteProductUseCase;
+import com.fiap.techchallenge.domain.product.usecase.IListAllProductsUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +24,22 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 
-  private final IProductUseCase productService;
+    private final ICreateProductUseCase createProductUseCase;
+    private final IDeleteProductUseCase deleteProductUseCase;
+    private final IListAllProductsUseCase listAllProductsUseCase;
 
-  public ProductController(DataSource dataSource) {
-    this.productService = new ProductService(dataSource);
-  }
+    public ProductController
+    (
+        ICreateProductUseCase createProductUseCase,
+        IDeleteProductUseCase deleteProductUseCase,
+        IListAllProductsUseCase listAllProductsUseCase
+    ) {
+        this.createProductUseCase = createProductUseCase;
+        this.deleteProductUseCase = deleteProductUseCase;
+        this.listAllProductsUseCase = listAllProductsUseCase;
+    }
 
-  @GetMapping
+    @GetMapping
     @Operation(
         summary = "List all storage products",
         parameters = {@Parameter(name = "category", schema = @Schema(implementation = ProductCategory.class))}
@@ -43,7 +52,7 @@ public class ProductController {
                 : null;
 
         Product.ProductFilters filters = new Product.ProductFilters(productCategory);
-        var products = productService.getAllProducts(filters);
+        var products = listAllProductsUseCase.execute(filters);
 
         if(products.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -58,7 +67,7 @@ public class ProductController {
     {
 
         Product product = ProductMapper.toDomain(createProductDTO);
-        Product createdProduct = productService.createProduct(product);
+        Product createdProduct = createProductUseCase.execute(product);
 
         if(createdProduct != null){
             ProductDTO response = ProductMapper.toDto(createdProduct);
@@ -72,7 +81,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct (@PathVariable String id)
     {
-        if(productService.deleteProduct(id)) {
+        if(deleteProductUseCase.execute(id)) {
             return ResponseEntity.noContent().build();
         }
 

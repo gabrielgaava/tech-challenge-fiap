@@ -1,9 +1,8 @@
 package com.fiap.techchallenge.adapters.out.database.postgress;
 
-import com.fiap.techchallenge.adapters.out.database.postgress.mapper.OrderMapper;
 import com.fiap.techchallenge.adapters.out.database.postgress.mapper.PaymentMapper;
-import com.fiap.techchallenge.domain.entity.Payment;
-import com.fiap.techchallenge.domain.repository.PaymentRepositoryPort;
+import com.fiap.techchallenge.domain.payment.Payment;
+import com.fiap.techchallenge.domain.payment.PaymentRepositoryPort;
 import com.fiap.techchallenge.utils.ParseUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,7 +46,7 @@ public class PaymentRepository implements PaymentRepositoryPort {
     String sqlSelect = "SELECT * FROM public.payment WHERE external_id = ?";
     List<Payment> data = jdbcTemplate.query(sqlSelect, PaymentMapper.map, externalId);
 
-    if (data.size() == 1) { return null; }
+    if (data.isEmpty()) { return null; }
 
     return data.getFirst();
   }
@@ -70,7 +68,8 @@ public class PaymentRepository implements PaymentRepositoryPort {
     int updated = jdbcTemplate.update(
         updateStatusSQL,
         payment.getPayedAt(),
-        payment.getStatus()
+        payment.getStatus(),
+        payment.getId()
     );
 
     return updated == 1;

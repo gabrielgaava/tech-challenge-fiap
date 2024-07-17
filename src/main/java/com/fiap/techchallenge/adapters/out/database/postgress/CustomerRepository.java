@@ -1,9 +1,8 @@
 package com.fiap.techchallenge.adapters.out.database.postgress;
 
-import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.adapters.out.database.postgress.mapper.CustomerMapper;
-import com.fiap.techchallenge.domain.entity.Customer;
-import com.fiap.techchallenge.domain.repository.CustomerRepositoryPort;
+import com.fiap.techchallenge.domain.customer.Customer;
+import com.fiap.techchallenge.domain.customer.CustomerRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -81,7 +80,7 @@ public class CustomerRepository implements CustomerRepositoryPort {
     }
 
     @Override
-    public int update(PutCustomerDTO customer, String cpf) {
+    public int update(Customer customer) {
         String sql = "UPDATE customer SET name = ?, email = ? WHERE cpf = ?";
 
         try {
@@ -89,7 +88,7 @@ public class CustomerRepository implements CustomerRepositoryPort {
               sql,
               customer.getName(),
               customer.getEmail(),
-              cpf
+              customer.getCpf()
           );
         }
         catch (DuplicateKeyException e) {

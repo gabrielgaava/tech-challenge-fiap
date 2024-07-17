@@ -1,8 +1,8 @@
 package com.fiap.techchallenge.adapters.out.database.postgress;
 
 import com.fiap.techchallenge.adapters.out.database.postgress.mapper.ProductMapper;
-import com.fiap.techchallenge.domain.entity.Product;
-import com.fiap.techchallenge.domain.repository.ProductRepositoryPort;
+import com.fiap.techchallenge.domain.product.Product;
+import com.fiap.techchallenge.domain.product.ProductRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

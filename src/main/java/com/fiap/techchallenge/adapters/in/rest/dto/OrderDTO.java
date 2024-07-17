@@ -1,10 +1,10 @@
 package com.fiap.techchallenge.adapters.in.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fiap.techchallenge.domain.entity.Order;
-import com.fiap.techchallenge.domain.entity.OrderHistory;
-import com.fiap.techchallenge.domain.entity.ProductAndQuantity;
-import com.fiap.techchallenge.domain.enums.OrderStatus;
+import com.fiap.techchallenge.domain.order.Order;
+import com.fiap.techchallenge.domain.order.OrderHistory;
+import com.fiap.techchallenge.domain.product.ProductAndQuantity;
+import com.fiap.techchallenge.domain.order.OrderStatus;
 import lombok.*;
 
 import java.math.BigDecimal;

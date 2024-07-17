@@ -1,6 +1,6 @@
 package com.fiap.techchallenge.adapters.in.rest.dto;
 
-import com.fiap.techchallenge.domain.enums.ProductCategory;
+import com.fiap.techchallenge.domain.product.ProductCategory;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

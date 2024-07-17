@@ -1,7 +1,6 @@
 package com.fiap.techchallenge.adapters.in.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fiap.techchallenge.domain.entity.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

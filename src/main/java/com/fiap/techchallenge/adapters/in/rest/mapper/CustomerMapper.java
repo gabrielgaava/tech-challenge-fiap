@@ -1,7 +1,8 @@
 package com.fiap.techchallenge.adapters.in.rest.mapper;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.CustomerDTO;
-import com.fiap.techchallenge.domain.entity.Customer;
+import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
+import com.fiap.techchallenge.domain.customer.Customer;
 
 public abstract class CustomerMapper {
 
@@ -12,6 +13,15 @@ public abstract class CustomerMapper {
     customerDTO.setName(customer.getName());
     customerDTO.setEmail(customer.getEmail());
     return  customerDTO;
+  }
+
+  public static Customer toDomain(final PutCustomerDTO dto, String cpf) {
+    Customer customer = new Customer();
+    customer.setName(dto.getName());
+    customer.setEmail(dto.getEmail());
+    customer.setCpf(cpf);
+
+    return  customer;
   }
 
 }

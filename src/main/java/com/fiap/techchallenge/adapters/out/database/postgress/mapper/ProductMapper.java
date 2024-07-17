@@ -1,10 +1,9 @@
 package com.fiap.techchallenge.adapters.out.database.postgress.mapper;
 
-import com.fiap.techchallenge.domain.entity.Product;
-import com.fiap.techchallenge.domain.enums.ProductCategory;
+import com.fiap.techchallenge.domain.product.Product;
+import com.fiap.techchallenge.domain.product.ProductCategory;
 import org.springframework.jdbc.core.RowMapper;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
