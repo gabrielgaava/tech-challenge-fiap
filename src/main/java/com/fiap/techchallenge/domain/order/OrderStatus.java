@@ -29,4 +29,10 @@ public enum OrderStatus {
     public String toString() {
         return this.status;
     }
+
+    public boolean isDefaultListStatus() {
+        return this.status.equals(READY_TO_DELIVERY.toString())
+            || this.status.equals(IN_PREPARATION.toString())
+            || this.status.equals(RECEIVED.toString());
+    }
 }

@@ -19,10 +19,6 @@ public class CalculateOrderWaitTimeUseCase implements ICalculateOrderWaitTimeUse
         || status.equals(OrderStatus.CANCELED))
       return 0;
 
-    // Error retrieving paid at date
-    if (order.getPaidAt() == null)
-      return 0;
-
     return Duration.between(order.getPaidAt(), LocalDateTime.now()).toSeconds();
   }
 

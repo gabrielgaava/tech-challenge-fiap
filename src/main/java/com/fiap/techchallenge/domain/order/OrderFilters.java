@@ -38,4 +38,8 @@ public class OrderFilters {
         this.direction = direction;
     }
 
+    public boolean hasNoParameters() {
+        return status == null && orderBy == null && direction == null;
+    }
+
 }

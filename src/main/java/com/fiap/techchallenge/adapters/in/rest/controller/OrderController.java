@@ -73,7 +73,7 @@ public class OrderController {
         OrderFilters filters = new OrderFilters();
         filters.setStatus(OrderStatus.fromString(status));
         filters.setOrderBy(OrderSortFields.fromString(orderBy));
-        filters.setDirection(SortDirection.fromString(orderDirection == null ? "ASC" : orderDirection));
+        filters.setDirection(SortDirection.fromString(orderDirection));
 
         List<OrderDTO> ordersDTO = listOrdersWithFiltersUseCase.execute(filters)
             .stream()
