@@ -2,9 +2,9 @@ package com.fiap.techchallenge.adapters.in.rest.mapper;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.CreateOrderDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.OrderProductDTO;
-import com.fiap.techchallenge.domain.entity.Order;
-import com.fiap.techchallenge.domain.entity.Product;
-import com.fiap.techchallenge.domain.entity.ProductAndQuantity;
+import com.fiap.techchallenge.domain.order.Order;
+import com.fiap.techchallenge.domain.product.Product;
+import com.fiap.techchallenge.domain.product.ProductAndQuantity;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

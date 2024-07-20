@@ -2,7 +2,7 @@ package com.fiap.techchallenge.adapters.in.rest.mapper;
 
 import com.fiap.techchallenge.adapters.in.rest.dto.CreateProductDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.ProductDTO;
-import com.fiap.techchallenge.domain.entity.Product;
+import com.fiap.techchallenge.domain.product.Product;
 
 public abstract class ProductMapper {
 

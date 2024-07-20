@@ -1,12 +1,12 @@
 package com.fiap.techchallenge.adapters.out.database.postgress;
 
 import com.fiap.techchallenge.adapters.out.database.postgress.mapper.OrderMapper;
-import com.fiap.techchallenge.domain.entity.Order;
-import com.fiap.techchallenge.domain.entity.OrderFilters;
-import com.fiap.techchallenge.domain.entity.OrderHistory;
-import com.fiap.techchallenge.domain.entity.ProductAndQuantity;
-import com.fiap.techchallenge.domain.enums.OrderStatus;
-import com.fiap.techchallenge.domain.repository.OrderRepositoryPort;
+import com.fiap.techchallenge.domain.order.Order;
+import com.fiap.techchallenge.domain.order.OrderFilters;
+import com.fiap.techchallenge.domain.order.OrderHistory;
+import com.fiap.techchallenge.domain.product.ProductAndQuantity;
+import com.fiap.techchallenge.domain.order.OrderStatus;
+import com.fiap.techchallenge.domain.order.OrderRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

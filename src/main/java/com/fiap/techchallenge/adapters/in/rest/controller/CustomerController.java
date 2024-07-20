@@ -4,11 +4,13 @@ import com.fiap.techchallenge.adapters.in.rest.dto.CreateCustomerDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.CustomerDTO;
 import com.fiap.techchallenge.adapters.in.rest.dto.PutCustomerDTO;
 import com.fiap.techchallenge.adapters.in.rest.mapper.CustomerMapper;
-import com.fiap.techchallenge.domain.entity.Customer;
+import com.fiap.techchallenge.domain.customer.Customer;
 import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
-import com.fiap.techchallenge.domain.service.CustomerService;
-import com.fiap.techchallenge.domain.usecase.ICustomerUseCase;
+import com.fiap.techchallenge.domain.customer.usecase.impl.CreateCustomerUseCase;
+import com.fiap.techchallenge.domain.customer.usecase.impl.GetCustomerByCPFUseCase;
+import com.fiap.techchallenge.domain.customer.usecase.impl.ListAllCustomerUseCase;
+import com.fiap.techchallenge.domain.customer.usecase.impl.UpdateCustomerUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -16,26 +18,35 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Tag(name = "Customer Controller")
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/customers")
 public class CustomerController {
 
-    private final ICustomerUseCase customerService;
+    private final CreateCustomerUseCase createCustomerUseCase;
+    private final GetCustomerByCPFUseCase getCustomerByCPFUseCase;
+    private final ListAllCustomerUseCase listAllCustomerUseCase;
+    private final UpdateCustomerUseCase updateCustomerUseCase;
 
-    public CustomerController(DataSource dataSource) {
-        this.customerService = new CustomerService(dataSource);
+    public CustomerController(
+        CreateCustomerUseCase createCustomerUseCase,
+        GetCustomerByCPFUseCase getCustomerByCPFUseCase,
+        ListAllCustomerUseCase listAllCustomerUseCase,
+        UpdateCustomerUseCase updateCustomerUseCase
+    ) {
+        this.createCustomerUseCase = createCustomerUseCase;
+        this.getCustomerByCPFUseCase = getCustomerByCPFUseCase;
+        this.listAllCustomerUseCase = listAllCustomerUseCase;
+        this.updateCustomerUseCase = updateCustomerUseCase;
     }
 
     @Operation(summary = "Search for a customer by CPF")
     @GetMapping("/{cpf}")
     public ResponseEntity<CustomerDTO> getCustomerByCpf(@PathVariable String cpf)
     {
-        var customer = customerService.getCustomerByCpf(cpf);
+        var customer = getCustomerByCPFUseCase.execute(cpf);
 
         if(customer == null) {
             return ResponseEntity.notFound().build();
@@ -48,20 +59,17 @@ public class CustomerController {
     @GetMapping
     public ResponseEntity<List<CustomerDTO>> getAllCustomers()
     {
-        var customers = customerService.getAllCustomers();
+        var customers = listAllCustomerUseCase.execute();
 
         if(customers.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        List<CustomerDTO> customersDTO = new ArrayList<>();
-        customers.forEach((customer)->{
-            if (customer != null){
-                customersDTO.add(CustomerMapper.fromDomain(customer));
-            }
-        });
+        List<CustomerDTO> response = customers.stream()
+            .map(CustomerMapper::fromDomain)
+            .toList();
 
-        return ResponseEntity.ok(customersDTO);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "Create a new customers")
@@ -70,7 +78,7 @@ public class CustomerController {
     {
         Customer newCustomer = new Customer(null,request.getCpf(), request.getName(), request.getEmail());
 
-        if(customerService.createCustomer(newCustomer) != null) {
+        if(createCustomerUseCase.execute(newCustomer) != null) {
           return ResponseEntity.status(HttpStatus.CREATED).body(CustomerMapper.fromDomain(newCustomer));
         }
 
@@ -82,8 +90,10 @@ public class CustomerController {
     public ResponseEntity<CustomerDTO> updateCustomerByCpf(@Valid @RequestBody PutCustomerDTO customerDTO, @PathVariable String cpf) throws EntityAlreadyExistException
     {
 
-        if(customerService.updateCustomer(customerDTO, cpf) != null) {
-            var retrievedCustomer = customerService.getCustomerByCpf(cpf);
+        Customer customer = CustomerMapper.toDomain(customerDTO, cpf);
+
+        if(updateCustomerUseCase.execute(customer) != null) {
+            var retrievedCustomer = getCustomerByCPFUseCase.execute(cpf);
             if (retrievedCustomer != null){
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomerMapper.fromDomain(retrievedCustomer));
             }

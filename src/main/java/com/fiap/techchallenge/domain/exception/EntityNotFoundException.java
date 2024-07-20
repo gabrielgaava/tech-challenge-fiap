@@ -8,4 +8,8 @@ public class EntityNotFoundException extends Exception {
         super("Entity " + entity + "with id " + id.toString() + " not found.");
     }
 
+    public EntityNotFoundException(String entity, String id) {
+        super("Entity " + entity + "with id " + id + " not found.");
+    }
+
 }

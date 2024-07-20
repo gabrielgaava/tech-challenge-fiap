@@ -1,15 +1,14 @@
 package com.fiap.techchallenge.adapters.out.database.postgress.mapper;
 
-import com.fiap.techchallenge.domain.entity.Order;
-import com.fiap.techchallenge.domain.entity.OrderHistory;
-import com.fiap.techchallenge.domain.entity.Product;
-import com.fiap.techchallenge.domain.entity.ProductAndQuantity;
-import com.fiap.techchallenge.domain.enums.OrderStatus;
-import com.fiap.techchallenge.domain.enums.ProductCategory;
+import com.fiap.techchallenge.domain.order.Order;
+import com.fiap.techchallenge.domain.order.OrderHistory;
+import com.fiap.techchallenge.domain.product.Product;
+import com.fiap.techchallenge.domain.product.ProductAndQuantity;
+import com.fiap.techchallenge.domain.order.OrderStatus;
+import com.fiap.techchallenge.domain.product.ProductCategory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

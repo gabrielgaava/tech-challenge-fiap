@@ -1,6 +1,6 @@
 package com.fiap.techchallenge.domain.exception;
 
-import com.fiap.techchallenge.domain.enums.OrderStatus;
+import com.fiap.techchallenge.domain.order.OrderStatus;
 
 import java.util.UUID;
 
