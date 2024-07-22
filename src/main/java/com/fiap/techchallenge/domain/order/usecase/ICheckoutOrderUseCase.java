@@ -1,17 +1,11 @@
 package com.fiap.techchallenge.domain.order.usecase;
 
-import com.fiap.techchallenge.adapters.out.rest.mercadopago.exception.PaymentErrorException;
-import com.fiap.techchallenge.domain.customer.Customer;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.MercadoPagoUnavailableException;
 import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
-import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.domain.payment.Payment;
 
 import java.util.UUID;
-
-import static com.fiap.techchallenge.domain.order.OrderStatus.CREATED;
-import static com.fiap.techchallenge.domain.order.OrderStatus.RECEIVED;
 
 public interface ICheckoutOrderUseCase {
 

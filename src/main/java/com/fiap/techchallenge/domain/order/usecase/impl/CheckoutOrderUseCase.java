@@ -1,6 +1,6 @@
 package com.fiap.techchallenge.domain.order.usecase.impl;
 
-import com.fiap.techchallenge.adapters.out.rest.mercadopago.exception.PaymentErrorException;
+import com.fiap.techchallenge.handlers.mercadopago.exception.PaymentErrorException;
 import com.fiap.techchallenge.domain.customer.Customer;
 import com.fiap.techchallenge.domain.customer.CustomerRepositoryPort;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
