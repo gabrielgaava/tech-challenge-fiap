@@ -1,10 +1,10 @@
 package com.fiap.techchallenge.presenters;
 
-import com.fiap.techchallenge.handlers.api.dto.OrderProductDTO;
-import com.fiap.techchallenge.handlers.api.dto.CreateOrderDTO;
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.domain.product.Product;
 import com.fiap.techchallenge.domain.product.ProductAndQuantity;
+import com.fiap.techchallenge.handlers.rest.dto.CreateOrderDTO;
+import com.fiap.techchallenge.handlers.rest.dto.OrderProductDTO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

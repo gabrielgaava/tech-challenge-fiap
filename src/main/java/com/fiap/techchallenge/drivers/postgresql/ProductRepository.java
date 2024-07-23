@@ -1,8 +1,8 @@
 package com.fiap.techchallenge.drivers.postgresql;
 
-import com.fiap.techchallenge.drivers.postgresql.mapper.ProductMapper;
 import com.fiap.techchallenge.domain.product.Product;
 import com.fiap.techchallenge.domain.product.ProductRepositoryPort;
+import com.fiap.techchallenge.drivers.postgresql.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

@@ -2,9 +2,9 @@ package com.fiap.techchallenge.drivers.postgresql.mapper;
 
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.domain.order.OrderHistory;
+import com.fiap.techchallenge.domain.order.OrderStatus;
 import com.fiap.techchallenge.domain.product.Product;
 import com.fiap.techchallenge.domain.product.ProductAndQuantity;
-import com.fiap.techchallenge.domain.order.OrderStatus;
 import com.fiap.techchallenge.domain.product.ProductCategory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.util.StringUtils;

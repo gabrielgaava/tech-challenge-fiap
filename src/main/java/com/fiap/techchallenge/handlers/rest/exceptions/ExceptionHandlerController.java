@@ -1,8 +1,8 @@
-package com.fiap.techchallenge.handlers.api.exceptions;
+package com.fiap.techchallenge.handlers.rest.exceptions;
 
 
-import com.fiap.techchallenge.handlers.api.dto.ErrorDTO;
 import com.fiap.techchallenge.domain.exception.*;
+import com.fiap.techchallenge.handlers.rest.dto.ErrorDTO;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;

@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.handlers.api.dto;
+package com.fiap.techchallenge.handlers.rest.dto;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;

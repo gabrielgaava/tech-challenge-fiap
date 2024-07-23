@@ -1,8 +1,9 @@
-package com.fiap.techchallenge.handlers.api.dto;
+package com.fiap.techchallenge.handlers.rest.dto;
 
 import com.fiap.techchallenge.domain.product.ProductCategory;
-import com.fiap.techchallenge.handlers.api.constants.FieldValidationConstants;
-import jakarta.validation.constraints.*;
+import com.fiap.techchallenge.handlers.rest.constants.FieldValidationConstants;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

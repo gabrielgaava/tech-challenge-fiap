@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.handlers.api.controller;
+package com.fiap.techchallenge.handlers.rest.api;
 
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.domain.payment.usecase.IGetPaymentUseCase;
@@ -15,11 +15,11 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/payments")
 @Tag(name = "Payment Controller")
-public class PaymentController {
+public class PaymentAPI {
 
   private final IGetPaymentUseCase getPaymentUseCase;
 
-  public PaymentController(IGetPaymentUseCase getPaymentUseCase) {
+  public PaymentAPI(IGetPaymentUseCase getPaymentUseCase) {
     this.getPaymentUseCase = getPaymentUseCase;
   }
 

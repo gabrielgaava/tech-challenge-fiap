@@ -6,8 +6,6 @@ import com.fiap.techchallenge.domain.order.OrderStatus;
 
 import java.util.UUID;
 
-import static com.fiap.techchallenge.domain.order.OrderStatus.*;
-
 public interface IUpdateOrderStatusUseCase {
 
    /**

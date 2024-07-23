@@ -1,12 +1,8 @@
 package com.fiap.techchallenge.drivers.postgresql;
 
-import com.fiap.techchallenge.drivers.postgresql.mapper.OrderMapper;
-import com.fiap.techchallenge.domain.order.Order;
-import com.fiap.techchallenge.domain.order.OrderFilters;
-import com.fiap.techchallenge.domain.order.OrderHistory;
+import com.fiap.techchallenge.domain.order.*;
 import com.fiap.techchallenge.domain.product.ProductAndQuantity;
-import com.fiap.techchallenge.domain.order.OrderStatus;
-import com.fiap.techchallenge.domain.order.OrderRepositoryPort;
+import com.fiap.techchallenge.drivers.postgresql.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

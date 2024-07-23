@@ -6,6 +6,7 @@ import com.fiap.techchallenge.domain.order.usecase.ICalculateOrderWaitTimeUseCas
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+
 import static com.fiap.techchallenge.domain.order.OrderStatus.CREATED;
 
 public class CalculateOrderWaitTimeUseCase implements ICalculateOrderWaitTimeUseCase {

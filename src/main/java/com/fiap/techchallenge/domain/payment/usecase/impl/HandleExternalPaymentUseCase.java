@@ -1,6 +1,5 @@
 package com.fiap.techchallenge.domain.payment.usecase.impl;
 
-import com.fiap.techchallenge.handlers.mercadopago.exception.PaymentErrorException;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.order.Order;
@@ -11,6 +10,7 @@ import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.domain.payment.PaymentRepositoryPort;
 import com.fiap.techchallenge.domain.payment.PaymentStatus;
 import com.fiap.techchallenge.domain.payment.usecase.IHandleExternalPaymentUseCase;
+import com.fiap.techchallenge.handlers.mercadopago.exception.PaymentErrorException;
 
 import java.time.LocalDateTime;
 

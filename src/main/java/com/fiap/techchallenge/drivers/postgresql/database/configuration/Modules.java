@@ -1,9 +1,5 @@
 package com.fiap.techchallenge.drivers.postgresql.database.configuration;
 
-import com.fiap.techchallenge.drivers.postgresql.CustomerRepository;
-import com.fiap.techchallenge.drivers.postgresql.OderRepository;
-import com.fiap.techchallenge.drivers.postgresql.PaymentRepository;
-import com.fiap.techchallenge.drivers.postgresql.ProductRepository;
 import com.fiap.techchallenge.domain.customer.usecase.impl.CreateCustomerUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.impl.GetCustomerByCPFUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.impl.ListAllCustomerUseCase;
@@ -13,11 +9,11 @@ import com.fiap.techchallenge.domain.order.usecase.*;
 import com.fiap.techchallenge.domain.order.usecase.impl.*;
 import com.fiap.techchallenge.domain.payment.usecase.ICreatePaymentUseCase;
 import com.fiap.techchallenge.domain.payment.usecase.IGetPaymentUseCase;
+import com.fiap.techchallenge.domain.payment.usecase.IHandleExternalPaymentUseCase;
 import com.fiap.techchallenge.domain.payment.usecase.IUpdatePaymentUseCase;
 import com.fiap.techchallenge.domain.payment.usecase.impl.CreatePaymentUseCase;
 import com.fiap.techchallenge.domain.payment.usecase.impl.GetPaymentUseCase;
 import com.fiap.techchallenge.domain.payment.usecase.impl.HandleExternalPaymentUseCase;
-import com.fiap.techchallenge.domain.payment.usecase.IHandleExternalPaymentUseCase;
 import com.fiap.techchallenge.domain.payment.usecase.impl.UpdatePaymentUseCase;
 import com.fiap.techchallenge.domain.product.usecase.ICreateProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.IDeleteProductUseCase;
@@ -25,6 +21,10 @@ import com.fiap.techchallenge.domain.product.usecase.IListAllProductsUseCase;
 import com.fiap.techchallenge.domain.product.usecase.impl.CreateProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.impl.DeleteProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.impl.ListAllProductsUseCase;
+import com.fiap.techchallenge.drivers.postgresql.CustomerRepository;
+import com.fiap.techchallenge.drivers.postgresql.OderRepository;
+import com.fiap.techchallenge.drivers.postgresql.PaymentRepository;
+import com.fiap.techchallenge.drivers.postgresql.ProductRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

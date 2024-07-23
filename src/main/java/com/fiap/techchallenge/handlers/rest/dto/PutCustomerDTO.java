@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.handlers.api.dto;
+package com.fiap.techchallenge.handlers.rest.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static com.fiap.techchallenge.handlers.api.constants.FieldValidationConstants.NOT_BLANK;
+import static com.fiap.techchallenge.handlers.rest.constants.FieldValidationConstants.NOT_BLANK;
 
 
 @Getter

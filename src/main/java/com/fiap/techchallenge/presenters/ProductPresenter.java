@@ -1,8 +1,8 @@
 package com.fiap.techchallenge.presenters;
 
-import com.fiap.techchallenge.handlers.api.dto.CreateProductDTO;
-import com.fiap.techchallenge.handlers.api.dto.ProductDTO;
 import com.fiap.techchallenge.domain.product.Product;
+import com.fiap.techchallenge.handlers.rest.dto.CreateProductDTO;
+import com.fiap.techchallenge.handlers.rest.dto.ProductDTO;
 
 public abstract class ProductPresenter {
 

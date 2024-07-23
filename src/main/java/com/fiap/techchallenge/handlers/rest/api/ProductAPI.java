@@ -1,13 +1,13 @@
-package com.fiap.techchallenge.handlers.api.controller;
+package com.fiap.techchallenge.handlers.rest.api;
 
-import com.fiap.techchallenge.presenters.ProductPresenter;
-import com.fiap.techchallenge.handlers.api.dto.CreateProductDTO;
-import com.fiap.techchallenge.handlers.api.dto.ProductDTO;
 import com.fiap.techchallenge.domain.product.Product;
 import com.fiap.techchallenge.domain.product.ProductCategory;
 import com.fiap.techchallenge.domain.product.usecase.ICreateProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.IDeleteProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.IListAllProductsUseCase;
+import com.fiap.techchallenge.handlers.rest.dto.CreateProductDTO;
+import com.fiap.techchallenge.handlers.rest.dto.ProductDTO;
+import com.fiap.techchallenge.presenters.ProductPresenter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,16 +18,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@Tag(name = "Product Controller")
+
+@Tag(name = "Product API")
 @RestController
 @RequestMapping("/products")
-public class ProductController {
+public class ProductAPI {
 
     private final ICreateProductUseCase createProductUseCase;
     private final IDeleteProductUseCase deleteProductUseCase;
     private final IListAllProductsUseCase listAllProductsUseCase;
 
-    public ProductController
+    public ProductAPI
     (
         ICreateProductUseCase createProductUseCase,
         IDeleteProductUseCase deleteProductUseCase,

@@ -1,7 +1,7 @@
 package com.fiap.techchallenge.domain.payment.usecase;
 
-import com.fiap.techchallenge.handlers.mercadopago.exception.PaymentErrorException;
 import com.fiap.techchallenge.domain.payment.Payment;
+import com.fiap.techchallenge.handlers.mercadopago.exception.PaymentErrorException;
 
 public interface IHandleExternalPaymentUseCase {
 

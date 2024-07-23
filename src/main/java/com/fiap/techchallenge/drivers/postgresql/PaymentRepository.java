@@ -1,8 +1,8 @@
 package com.fiap.techchallenge.drivers.postgresql;
 
-import com.fiap.techchallenge.drivers.postgresql.mapper.PaymentMapper;
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.domain.payment.PaymentRepositoryPort;
+import com.fiap.techchallenge.drivers.postgresql.mapper.PaymentMapper;
 import com.fiap.techchallenge.utils.ParseUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;

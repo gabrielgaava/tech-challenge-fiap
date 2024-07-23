@@ -1,13 +1,13 @@
 package com.fiap.techchallenge.handlers.mercadopago.service;
 
-import com.fiap.techchallenge.handlers.mercadopago.exception.PaymentErrorException;
 import com.fiap.techchallenge.domain.customer.Customer;
+import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
+import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.domain.order.gateway.ICheckoutGateway;
 import com.fiap.techchallenge.domain.payment.Payment;
-import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
-import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.payment.usecase.IHandleExternalPaymentUseCase;
+import com.fiap.techchallenge.handlers.mercadopago.exception.PaymentErrorException;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.payment.PaymentClient;
@@ -18,6 +18,7 @@ import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.payment.PaymentStatus;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.HashMap;

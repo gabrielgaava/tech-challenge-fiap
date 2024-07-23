@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.handlers.api.constants;
+package com.fiap.techchallenge.handlers.rest.constants;
 
 public abstract class FieldValidationConstants {
 

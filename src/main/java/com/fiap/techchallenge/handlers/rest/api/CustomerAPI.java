@@ -1,16 +1,16 @@
-package com.fiap.techchallenge.handlers.api.controller;
+package com.fiap.techchallenge.handlers.rest.api;
 
-import com.fiap.techchallenge.handlers.api.dto.PutCustomerDTO;
-import com.fiap.techchallenge.presenters.CustomerPresenter;
-import com.fiap.techchallenge.handlers.api.dto.CreateCustomerDTO;
-import com.fiap.techchallenge.handlers.api.dto.CustomerDTO;
 import com.fiap.techchallenge.domain.customer.Customer;
-import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
-import com.fiap.techchallenge.domain.exception.InvalidCpfException;
 import com.fiap.techchallenge.domain.customer.usecase.impl.CreateCustomerUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.impl.GetCustomerByCPFUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.impl.ListAllCustomerUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.impl.UpdateCustomerUseCase;
+import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
+import com.fiap.techchallenge.domain.exception.InvalidCpfException;
+import com.fiap.techchallenge.handlers.rest.dto.CreateCustomerDTO;
+import com.fiap.techchallenge.handlers.rest.dto.CustomerDTO;
+import com.fiap.techchallenge.handlers.rest.dto.PutCustomerDTO;
+import com.fiap.techchallenge.presenters.CustomerPresenter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -20,21 +20,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Customer Controller")
+@Tag(name = "Customer API")
 @RestController
 @RequestMapping("/customers")
-public class CustomerController {
+public class CustomerAPI {
 
     private final CreateCustomerUseCase createCustomerUseCase;
     private final GetCustomerByCPFUseCase getCustomerByCPFUseCase;
     private final ListAllCustomerUseCase listAllCustomerUseCase;
     private final UpdateCustomerUseCase updateCustomerUseCase;
 
-    public CustomerController(
-        CreateCustomerUseCase createCustomerUseCase,
-        GetCustomerByCPFUseCase getCustomerByCPFUseCase,
-        ListAllCustomerUseCase listAllCustomerUseCase,
-        UpdateCustomerUseCase updateCustomerUseCase
+    public CustomerAPI(
+            CreateCustomerUseCase createCustomerUseCase,
+            GetCustomerByCPFUseCase getCustomerByCPFUseCase,
+            ListAllCustomerUseCase listAllCustomerUseCase,
+            UpdateCustomerUseCase updateCustomerUseCase
     ) {
         this.createCustomerUseCase = createCustomerUseCase;
         this.getCustomerByCPFUseCase = getCustomerByCPFUseCase;
@@ -66,8 +66,8 @@ public class CustomerController {
         }
 
         List<CustomerDTO> response = customers.stream()
-            .map(CustomerPresenter::fromDomain)
-            .toList();
+                .map(CustomerPresenter::fromDomain)
+                .toList();
 
         return ResponseEntity.ok(response);
     }
@@ -79,7 +79,7 @@ public class CustomerController {
         Customer newCustomer = new Customer(null,request.getCpf(), request.getName(), request.getEmail());
 
         if(createCustomerUseCase.execute(newCustomer) != null) {
-          return ResponseEntity.status(HttpStatus.CREATED).body(CustomerPresenter.fromDomain(newCustomer));
+            return ResponseEntity.status(HttpStatus.CREATED).body(CustomerPresenter.fromDomain(newCustomer));
         }
 
         return ResponseEntity.badRequest().build();

@@ -1,8 +1,8 @@
 package com.fiap.techchallenge.drivers.postgresql;
 
-import com.fiap.techchallenge.drivers.postgresql.mapper.CustomerMapper;
 import com.fiap.techchallenge.domain.customer.Customer;
 import com.fiap.techchallenge.domain.customer.CustomerRepositoryPort;
+import com.fiap.techchallenge.drivers.postgresql.mapper.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;

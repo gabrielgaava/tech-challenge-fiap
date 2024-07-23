@@ -1,8 +1,8 @@
 package com.fiap.techchallenge.presenters;
 
-import com.fiap.techchallenge.handlers.api.dto.CustomerDTO;
-import com.fiap.techchallenge.handlers.api.dto.PutCustomerDTO;
 import com.fiap.techchallenge.domain.customer.Customer;
+import com.fiap.techchallenge.handlers.rest.dto.CustomerDTO;
+import com.fiap.techchallenge.handlers.rest.dto.PutCustomerDTO;
 
 public abstract class CustomerPresenter {
 

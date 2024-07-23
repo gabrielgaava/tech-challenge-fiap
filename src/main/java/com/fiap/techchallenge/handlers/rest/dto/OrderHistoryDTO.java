@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.handlers.api.dto;
+package com.fiap.techchallenge.handlers.rest.dto;
 
 import com.fiap.techchallenge.domain.order.OrderHistory;
 import com.fiap.techchallenge.domain.order.OrderStatus;

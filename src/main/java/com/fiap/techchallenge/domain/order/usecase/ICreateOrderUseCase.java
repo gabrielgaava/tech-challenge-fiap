@@ -2,14 +2,6 @@ package com.fiap.techchallenge.domain.order.usecase;
 
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.order.Order;
-import com.fiap.techchallenge.domain.product.ProductAndQuantity;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.UUID;
-
-import static com.fiap.techchallenge.domain.order.OrderStatus.CREATED;
-import static java.math.RoundingMode.HALF_EVEN;
 
 public interface ICreateOrderUseCase {
 
