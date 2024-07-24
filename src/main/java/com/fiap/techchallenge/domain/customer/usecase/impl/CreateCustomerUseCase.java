@@ -1,7 +1,7 @@
 package com.fiap.techchallenge.domain.customer.usecase.impl;
 
 import com.fiap.techchallenge.domain.customer.Customer;
-import com.fiap.techchallenge.domain.customer.CustomerRepositoryPort;
+import com.fiap.techchallenge.gateway.CustomerGateway;
 import com.fiap.techchallenge.domain.customer.usecase.ICreateCustomerUseCase;
 import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
@@ -11,9 +11,9 @@ import java.util.regex.Pattern;
 
 public class CreateCustomerUseCase implements ICreateCustomerUseCase {
 
-  private final CustomerRepositoryPort customerRepository;
+  private final CustomerGateway customerRepository;
 
-  public CreateCustomerUseCase(CustomerRepositoryPort customerRepository) {
+  public CreateCustomerUseCase(CustomerGateway customerRepository) {
     this.customerRepository = customerRepository;
   }
 

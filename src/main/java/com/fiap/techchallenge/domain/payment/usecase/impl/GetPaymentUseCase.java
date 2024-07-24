@@ -1,16 +1,16 @@
 package com.fiap.techchallenge.domain.payment.usecase.impl;
 
 import com.fiap.techchallenge.domain.payment.Payment;
-import com.fiap.techchallenge.domain.payment.PaymentRepositoryPort;
+import com.fiap.techchallenge.gateway.PaymentGateway;
 import com.fiap.techchallenge.domain.payment.usecase.IGetPaymentUseCase;
 
 import java.util.UUID;
 
 public class GetPaymentUseCase implements IGetPaymentUseCase {
 
-  private final PaymentRepositoryPort paymentRepository;
+  private final PaymentGateway paymentRepository;
 
-  public GetPaymentUseCase(PaymentRepositoryPort paymentRepository) {
+  public GetPaymentUseCase(PaymentGateway paymentRepository) {
     this.paymentRepository = paymentRepository;
   }
 

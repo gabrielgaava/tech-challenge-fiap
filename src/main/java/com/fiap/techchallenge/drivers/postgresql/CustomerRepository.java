@@ -1,7 +1,7 @@
 package com.fiap.techchallenge.drivers.postgresql;
 
 import com.fiap.techchallenge.domain.customer.Customer;
-import com.fiap.techchallenge.domain.customer.CustomerRepositoryPort;
+import com.fiap.techchallenge.gateway.CustomerGateway;
 import com.fiap.techchallenge.drivers.postgresql.mapper.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository("PGCustomerRepository")
-public class CustomerRepository implements CustomerRepositoryPort {
+public class CustomerRepository implements CustomerGateway {
 
     private final JdbcTemplate jdbcTemplate;
 

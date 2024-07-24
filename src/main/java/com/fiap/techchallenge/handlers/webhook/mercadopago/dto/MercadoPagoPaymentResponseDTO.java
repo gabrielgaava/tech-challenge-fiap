@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.handlers.mercadopago.dto;
+package com.fiap.techchallenge.handlers.webhook.mercadopago.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

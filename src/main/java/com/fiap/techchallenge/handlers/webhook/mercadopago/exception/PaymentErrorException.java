@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.handlers.mercadopago.exception;
+package com.fiap.techchallenge.handlers.webhook.mercadopago.exception;
 
 public class PaymentErrorException extends Exception {
 

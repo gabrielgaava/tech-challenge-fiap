@@ -2,10 +2,6 @@ package com.fiap.techchallenge.handlers.rest.api;
 
 import com.fiap.techchallenge.controller.CustomerController;
 import com.fiap.techchallenge.domain.customer.Customer;
-import com.fiap.techchallenge.domain.customer.usecase.impl.CreateCustomerUseCase;
-import com.fiap.techchallenge.domain.customer.usecase.impl.GetCustomerByCPFUseCase;
-import com.fiap.techchallenge.domain.customer.usecase.impl.ListAllCustomerUseCase;
-import com.fiap.techchallenge.domain.customer.usecase.impl.UpdateCustomerUseCase;
 import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
 import com.fiap.techchallenge.handlers.rest.dto.CreateCustomerDTO;

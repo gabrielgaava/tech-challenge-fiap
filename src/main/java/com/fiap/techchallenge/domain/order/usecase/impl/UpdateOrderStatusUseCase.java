@@ -2,7 +2,7 @@ package com.fiap.techchallenge.domain.order.usecase.impl;
 
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
-import com.fiap.techchallenge.domain.order.OrderRepositoryPort;
+import com.fiap.techchallenge.gateway.OrderGateway;
 import com.fiap.techchallenge.domain.order.OrderStatus;
 import com.fiap.techchallenge.domain.order.usecase.IUpdateOrderStatusUseCase;
 
@@ -12,9 +12,9 @@ import static com.fiap.techchallenge.domain.order.OrderStatus.*;
 
 public class UpdateOrderStatusUseCase implements IUpdateOrderStatusUseCase {
 
-  private final OrderRepositoryPort orderRepository;
+  private final OrderGateway orderRepository;
 
-  public UpdateOrderStatusUseCase(OrderRepositoryPort repositoryPort) {
+  public UpdateOrderStatusUseCase(OrderGateway repositoryPort) {
     this.orderRepository = repositoryPort;
   }
 

@@ -10,7 +10,6 @@ import com.fiap.techchallenge.domain.order.OrderHistory;
 import com.fiap.techchallenge.domain.order.OrderStatus;
 import com.fiap.techchallenge.domain.order.usecase.*;
 import com.fiap.techchallenge.domain.payment.Payment;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.UUID;

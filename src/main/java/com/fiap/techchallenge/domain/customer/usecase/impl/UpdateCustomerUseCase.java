@@ -1,16 +1,16 @@
 package com.fiap.techchallenge.domain.customer.usecase.impl;
 
 import com.fiap.techchallenge.domain.customer.Customer;
-import com.fiap.techchallenge.domain.customer.CustomerRepositoryPort;
+import com.fiap.techchallenge.gateway.CustomerGateway;
 import com.fiap.techchallenge.domain.customer.usecase.IUpdateCustomerUseCase;
 import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 
 
 public class UpdateCustomerUseCase implements IUpdateCustomerUseCase {
 
-  private final CustomerRepositoryPort customerRepository;
+  private final CustomerGateway customerRepository;
 
-  public UpdateCustomerUseCase(CustomerRepositoryPort customerRepository) {
+  public UpdateCustomerUseCase(CustomerGateway customerRepository) {
     this.customerRepository = customerRepository;
   }
 

@@ -1,7 +1,7 @@
 package com.fiap.techchallenge.domain.product.usecase.impl;
 
 import com.fiap.techchallenge.domain.product.Product;
-import com.fiap.techchallenge.domain.product.ProductRepositoryPort;
+import com.fiap.techchallenge.gateway.ProductGateway;
 import com.fiap.techchallenge.domain.product.usecase.ICreateProductUseCase;
 
 import java.math.BigDecimal;
@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public class CreateProductUseCase implements ICreateProductUseCase {
 
-  private final ProductRepositoryPort productRepository;
+  private final ProductGateway productRepository;
 
-  public CreateProductUseCase(ProductRepositoryPort productRepository) {
+  public CreateProductUseCase(ProductGateway productRepository) {
     this.productRepository = productRepository;
   }
 

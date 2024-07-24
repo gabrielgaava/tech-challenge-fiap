@@ -1,9 +1,11 @@
-package com.fiap.techchallenge.domain.product;
+package com.fiap.techchallenge.gateway;
+
+import com.fiap.techchallenge.domain.product.Product;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface ProductRepositoryPort {
+public interface ProductGateway {
 
     int create(Product product);
 

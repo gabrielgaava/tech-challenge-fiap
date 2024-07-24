@@ -2,7 +2,6 @@ package com.fiap.techchallenge.handlers.rest.api;
 
 import com.fiap.techchallenge.controller.PaymentController;
 import com.fiap.techchallenge.domain.payment.Payment;
-import com.fiap.techchallenge.domain.payment.usecase.IGetPaymentUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;

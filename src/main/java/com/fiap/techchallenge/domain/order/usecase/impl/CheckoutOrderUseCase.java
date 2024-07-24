@@ -1,17 +1,17 @@
 package com.fiap.techchallenge.domain.order.usecase.impl;
 
 import com.fiap.techchallenge.domain.customer.Customer;
-import com.fiap.techchallenge.domain.customer.CustomerRepositoryPort;
+import com.fiap.techchallenge.gateway.CustomerGateway;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.MercadoPagoUnavailableException;
 import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
 import com.fiap.techchallenge.domain.order.Order;
-import com.fiap.techchallenge.domain.order.OrderRepositoryPort;
-import com.fiap.techchallenge.domain.order.gateway.ICheckoutGateway;
+import com.fiap.techchallenge.gateway.OrderGateway;
+import com.fiap.techchallenge.gateway.ICheckoutGateway;
 import com.fiap.techchallenge.domain.order.usecase.ICheckoutOrderUseCase;
 import com.fiap.techchallenge.domain.payment.Payment;
-import com.fiap.techchallenge.domain.payment.PaymentRepositoryPort;
-import com.fiap.techchallenge.handlers.mercadopago.exception.PaymentErrorException;
+import com.fiap.techchallenge.gateway.PaymentGateway;
+import com.fiap.techchallenge.handlers.webhook.mercadopago.exception.PaymentErrorException;
 
 import java.util.UUID;
 
@@ -20,12 +20,12 @@ import static com.fiap.techchallenge.domain.order.OrderStatus.RECEIVED;
 
 public class CheckoutOrderUseCase implements ICheckoutOrderUseCase {
 
-  private final OrderRepositoryPort orderRepository;
-  private final CustomerRepositoryPort customerRepository;
-  private final PaymentRepositoryPort paymentRepository;
+  private final OrderGateway orderRepository;
+  private final CustomerGateway customerRepository;
+  private final PaymentGateway paymentRepository;
   private final ICheckoutGateway checkoutGateway;
 
-  public CheckoutOrderUseCase(OrderRepositoryPort orderRepository, CustomerRepositoryPort customerRepository, PaymentRepositoryPort paymentRepository, ICheckoutGateway checkoutGateway) {
+  public CheckoutOrderUseCase(OrderGateway orderRepository, CustomerGateway customerRepository, PaymentGateway paymentRepository, ICheckoutGateway checkoutGateway) {
     this.orderRepository = orderRepository;;
     this.customerRepository = customerRepository;
     this.paymentRepository = paymentRepository;

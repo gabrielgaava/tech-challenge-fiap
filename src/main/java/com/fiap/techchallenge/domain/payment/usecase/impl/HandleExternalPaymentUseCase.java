@@ -7,21 +7,21 @@ import com.fiap.techchallenge.domain.order.OrderStatus;
 import com.fiap.techchallenge.domain.order.usecase.impl.GetOrderUseCase;
 import com.fiap.techchallenge.domain.order.usecase.impl.UpdateOrderStatusUseCase;
 import com.fiap.techchallenge.domain.payment.Payment;
-import com.fiap.techchallenge.domain.payment.PaymentRepositoryPort;
+import com.fiap.techchallenge.gateway.PaymentGateway;
 import com.fiap.techchallenge.domain.payment.PaymentStatus;
 import com.fiap.techchallenge.domain.payment.usecase.IHandleExternalPaymentUseCase;
-import com.fiap.techchallenge.handlers.mercadopago.exception.PaymentErrorException;
+import com.fiap.techchallenge.handlers.webhook.mercadopago.exception.PaymentErrorException;
 
 import java.time.LocalDateTime;
 
 public class HandleExternalPaymentUseCase implements IHandleExternalPaymentUseCase {
 
-  private final PaymentRepositoryPort paymentRepository;
+  private final PaymentGateway paymentRepository;
   private final GetOrderUseCase getOrderUseCase;
   private final UpdateOrderStatusUseCase updateOrderStatusUseCase;
 
   public HandleExternalPaymentUseCase(
-      PaymentRepositoryPort paymentRepository,
+      PaymentGateway paymentRepository,
       GetOrderUseCase getOrderUseCase,
       UpdateOrderStatusUseCase updateOrderStatusUseCase
   ) {

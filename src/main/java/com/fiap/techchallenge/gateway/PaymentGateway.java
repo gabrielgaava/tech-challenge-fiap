@@ -1,8 +1,10 @@
-package com.fiap.techchallenge.domain.payment;
+package com.fiap.techchallenge.gateway;
+
+import com.fiap.techchallenge.domain.payment.Payment;
 
 import java.util.UUID;
 
-public interface PaymentRepositoryPort {
+public interface PaymentGateway {
 
   int create(Payment payment);
 

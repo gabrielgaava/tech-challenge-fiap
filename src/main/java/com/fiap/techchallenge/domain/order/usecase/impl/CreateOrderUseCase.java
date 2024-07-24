@@ -2,10 +2,10 @@ package com.fiap.techchallenge.domain.order.usecase.impl;
 
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.order.Order;
-import com.fiap.techchallenge.domain.order.OrderRepositoryPort;
+import com.fiap.techchallenge.gateway.OrderGateway;
 import com.fiap.techchallenge.domain.order.usecase.ICreateOrderUseCase;
 import com.fiap.techchallenge.domain.product.ProductAndQuantity;
-import com.fiap.techchallenge.domain.product.ProductRepositoryPort;
+import com.fiap.techchallenge.gateway.ProductGateway;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,10 +16,10 @@ import static java.math.RoundingMode.HALF_EVEN;
 
 public class CreateOrderUseCase implements ICreateOrderUseCase {
 
-  private final OrderRepositoryPort orderRepository;
-  private final ProductRepositoryPort productRepository;
+  private final OrderGateway orderRepository;
+  private final ProductGateway productRepository;
 
-  public CreateOrderUseCase(OrderRepositoryPort orderRepository, ProductRepositoryPort productRepository) {
+  public CreateOrderUseCase(OrderGateway orderRepository, ProductGateway productRepository) {
     this.orderRepository = orderRepository;
     this.productRepository = productRepository;
   }

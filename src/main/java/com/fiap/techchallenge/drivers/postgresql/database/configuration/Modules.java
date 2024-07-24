@@ -4,7 +4,7 @@ import com.fiap.techchallenge.domain.customer.usecase.impl.CreateCustomerUseCase
 import com.fiap.techchallenge.domain.customer.usecase.impl.GetCustomerByCPFUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.impl.ListAllCustomerUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.impl.UpdateCustomerUseCase;
-import com.fiap.techchallenge.domain.order.gateway.ICheckoutGateway;
+import com.fiap.techchallenge.gateway.ICheckoutGateway;
 import com.fiap.techchallenge.domain.order.usecase.*;
 import com.fiap.techchallenge.domain.order.usecase.impl.*;
 import com.fiap.techchallenge.domain.payment.usecase.ICreatePaymentUseCase;

@@ -1,15 +1,9 @@
 package com.fiap.techchallenge.controller;
 
 import com.fiap.techchallenge.domain.product.Product;
-import com.fiap.techchallenge.domain.product.ProductCategory;
 import com.fiap.techchallenge.domain.product.usecase.ICreateProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.IDeleteProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.IListAllProductsUseCase;
-import com.fiap.techchallenge.handlers.rest.dto.CreateProductDTO;
-import com.fiap.techchallenge.handlers.rest.dto.ProductDTO;
-import com.fiap.techchallenge.presenters.ProductPresenter;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 

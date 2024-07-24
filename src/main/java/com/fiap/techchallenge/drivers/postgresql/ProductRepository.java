@@ -1,7 +1,7 @@
 package com.fiap.techchallenge.drivers.postgresql;
 
 import com.fiap.techchallenge.domain.product.Product;
-import com.fiap.techchallenge.domain.product.ProductRepositoryPort;
+import com.fiap.techchallenge.gateway.ProductGateway;
 import com.fiap.techchallenge.drivers.postgresql.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository("PGProductRepository")
-public class ProductRepository implements ProductRepositoryPort {
+public class ProductRepository implements ProductGateway {
 
     private final JdbcTemplate jdbcTemplate;
 

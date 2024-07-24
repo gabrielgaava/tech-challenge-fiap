@@ -8,8 +8,6 @@ import com.fiap.techchallenge.domain.customer.usecase.impl.ListAllCustomerUseCas
 import com.fiap.techchallenge.domain.customer.usecase.impl.UpdateCustomerUseCase;
 import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
-import com.fiap.techchallenge.handlers.rest.dto.CreateCustomerDTO;
-import com.fiap.techchallenge.handlers.rest.dto.CustomerDTO;
 
 import java.util.List;
 

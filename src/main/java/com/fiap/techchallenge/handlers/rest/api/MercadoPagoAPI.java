@@ -1,11 +1,11 @@
-package com.fiap.techchallenge.controller.notification;
+package com.fiap.techchallenge.handlers.rest.api;
 
+import com.fiap.techchallenge.controller.MercadoPagoController;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.domain.payment.usecase.IHandleExternalPaymentUseCase;
-import com.fiap.techchallenge.handlers.mercadopago.exception.PaymentErrorException;
-import com.fiap.techchallenge.handlers.mercadopago.service.MercadoPagoCheckoutAdapter;
+import com.fiap.techchallenge.handlers.webhook.mercadopago.exception.PaymentErrorException;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,37 +21,29 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Webhook Mercado Pago Controller")
 @RestController
 @RequestMapping("/notifications/mercadopago")
-public class MercadoPagoWebHookController {
+public class MercadoPagoAPI {
+    private final MercadoPagoController mercadoPagoController;
 
-    private final MercadoPagoCheckoutAdapter mercadoPagoCheckoutAdapter;
-    private final IHandleExternalPaymentUseCase handleExternalPaymentUseCase;
-
-    public MercadoPagoWebHookController(MercadoPagoCheckoutAdapter mercadoPagoCheckoutAdapter, IHandleExternalPaymentUseCase handleExternalPaymentUseCase) {
-        this.mercadoPagoCheckoutAdapter = mercadoPagoCheckoutAdapter;
-        this.handleExternalPaymentUseCase = handleExternalPaymentUseCase;
+    public MercadoPagoAPI(MercadoPagoController MercadoPagoController) {
+        this.mercadoPagoController = MercadoPagoController;
     }
 
     @PostMapping
     public ResponseEntity<?> instantPaymentNotification(@RequestParam String topic, @RequestParam String id)  {
 
-        if(topic.equals("payment"))
-        {
+        if(topic.equals("payment")){
             try {
-                // TODO: Process should be queued ?
-                mercadoPagoCheckoutAdapter.checkPaymentUpdate(id);
+                mercadoPagoController.checkPaymentUpdate(id);
             }
-
             catch (MPException | MPApiException e) {
                 // Mercado Pago Service unavailable, should do a internal retry
                 return ResponseEntity.ok().build();
             }
-
             catch (PaymentErrorException | EntityNotFoundException | OrderAlreadyWithStatusException e) {
                 // SQL Internal Error
                 return ResponseEntity.ok().build();
             }
         }
-
         // Must return 200 for mercadopago request
         return ResponseEntity.ok().build();
     }
@@ -63,12 +55,9 @@ public class MercadoPagoWebHookController {
             @Parameter(name = "id", schema = @Schema(implementation = String.class)),
     })
     @PostMapping("/fake")
-    public ResponseEntity<?> fakePaymentNotification(@RequestParam Boolean approve, @RequestParam String id) throws PaymentErrorException {
+    public ResponseEntity<?> fakePaymentNotification(@RequestParam String id) throws PaymentErrorException {
 
-        Payment payment = handleExternalPaymentUseCase.execute(id, true);
+        Payment payment = mercadoPagoController.paymentNotification(id);
         return ResponseEntity.ok(payment);
-
     }
-
-
 }

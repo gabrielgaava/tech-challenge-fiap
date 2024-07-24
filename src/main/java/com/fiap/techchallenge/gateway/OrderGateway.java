@@ -1,12 +1,16 @@
-package com.fiap.techchallenge.domain.order;
+package com.fiap.techchallenge.gateway;
 
+import com.fiap.techchallenge.domain.order.Order;
+import com.fiap.techchallenge.domain.order.OrderFilters;
+import com.fiap.techchallenge.domain.order.OrderHistory;
+import com.fiap.techchallenge.domain.order.OrderStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface OrderRepositoryPort {
+public interface OrderGateway {
 
     List<Order> getAll(OrderFilters filters);
 

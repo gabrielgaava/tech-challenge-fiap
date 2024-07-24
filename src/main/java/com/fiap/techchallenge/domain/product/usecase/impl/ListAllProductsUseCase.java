@@ -1,16 +1,16 @@
 package com.fiap.techchallenge.domain.product.usecase.impl;
 
 import com.fiap.techchallenge.domain.product.Product;
-import com.fiap.techchallenge.domain.product.ProductRepositoryPort;
+import com.fiap.techchallenge.gateway.ProductGateway;
 import com.fiap.techchallenge.domain.product.usecase.IListAllProductsUseCase;
 
 import java.util.List;
 
 public class ListAllProductsUseCase implements IListAllProductsUseCase {
 
-  private final ProductRepositoryPort productRepository;
+  private final ProductGateway productRepository;
 
-  public ListAllProductsUseCase(ProductRepositoryPort productRepository) {
+  public ListAllProductsUseCase(ProductGateway productRepository) {
     this.productRepository = productRepository;
   }
 

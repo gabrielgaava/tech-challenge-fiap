@@ -1,14 +1,14 @@
 package com.fiap.techchallenge.domain.payment.usecase.impl;
 
 import com.fiap.techchallenge.domain.payment.Payment;
-import com.fiap.techchallenge.domain.payment.PaymentRepositoryPort;
+import com.fiap.techchallenge.gateway.PaymentGateway;
 import com.fiap.techchallenge.domain.payment.usecase.ICreatePaymentUseCase;
 
 public class CreatePaymentUseCase implements ICreatePaymentUseCase {
 
-  private final PaymentRepositoryPort paymentRepository;
+  private final PaymentGateway paymentRepository;
 
-  public CreatePaymentUseCase(PaymentRepositoryPort paymentRepository) {
+  public CreatePaymentUseCase(PaymentGateway paymentRepository) {
     this.paymentRepository = paymentRepository;
   }
 

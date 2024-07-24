@@ -2,6 +2,7 @@ package com.fiap.techchallenge.domain.order.usecase.impl;
 
 import com.fiap.techchallenge.domain.order.*;
 import com.fiap.techchallenge.domain.order.usecase.IListOrdersWithFiltersUseCase;
+import com.fiap.techchallenge.gateway.OrderGateway;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +10,10 @@ import java.util.List;
 
 public class ListOrdersWithFiltersUseCase implements IListOrdersWithFiltersUseCase {
 
-  private final OrderRepositoryPort repository;
+  private final OrderGateway repository;
   private final CalculateOrderWaitTimeUseCase calculateOrderWaitTimeUseCase;
 
-  public ListOrdersWithFiltersUseCase(OrderRepositoryPort repository, CalculateOrderWaitTimeUseCase useCase) {
+  public ListOrdersWithFiltersUseCase(OrderGateway repository, CalculateOrderWaitTimeUseCase useCase) {
     this.repository = repository;
     this.calculateOrderWaitTimeUseCase = useCase;
   }

@@ -3,6 +3,7 @@ package com.fiap.techchallenge.drivers.postgresql;
 import com.fiap.techchallenge.domain.order.*;
 import com.fiap.techchallenge.domain.product.ProductAndQuantity;
 import com.fiap.techchallenge.drivers.postgresql.mapper.OrderMapper;
+import com.fiap.techchallenge.gateway.OrderGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository("PGOrderRepository")
-public class OderRepository implements OrderRepositoryPort {
+public class OderRepository implements OrderGateway {
 
     private final JdbcTemplate jdbcTemplate;
 
