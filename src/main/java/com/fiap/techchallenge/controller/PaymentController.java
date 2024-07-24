@@ -2,7 +2,6 @@ package com.fiap.techchallenge.controller;
 
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.domain.payment.usecase.IGetPaymentUseCase;
-import org.springframework.http.ResponseEntity;
 
 import java.util.UUID;
 
@@ -16,15 +15,12 @@ public class PaymentController {
   }
 
 
-  public ResponseEntity<Payment> getPayment(
-      String paymentId,
-      boolean isExternal
-  ) {
-    if (isExternal) {
-      return ResponseEntity.ok(getPaymentUseCase.execute(paymentId));
-    }
+  public Payment getPayment(String paymentId){
+      return getPaymentUseCase.execute(paymentId);
+  }
 
-    return ResponseEntity.ok(getPaymentUseCase.execute(UUID.fromString(paymentId)));
+  public Payment getPayment(UUID paymentId){
+    return getPaymentUseCase.execute(paymentId);
   }
 
 }

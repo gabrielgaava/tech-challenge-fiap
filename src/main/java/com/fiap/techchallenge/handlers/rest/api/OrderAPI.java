@@ -1,11 +1,11 @@
 package com.fiap.techchallenge.handlers.rest.api;
 
+import com.fiap.techchallenge.controller.OrderController;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.MercadoPagoUnavailableException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
 import com.fiap.techchallenge.domain.order.*;
-import com.fiap.techchallenge.domain.order.usecase.*;
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.handlers.rest.dto.*;
 import com.fiap.techchallenge.presenters.OrderPresenter;
@@ -26,28 +26,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/orders")
 public class OrderAPI {
+    private final OrderController orderController;
 
-    private final IGetOrderUseCase getOrderUseCase;
-    private final IListOrdersWithFiltersUseCase listOrdersWithFiltersUseCase;
-    private final IUpdateOrderStatusUseCase updateOrderStatusUseCase;
-    private final ICheckoutOrderUseCase checkoutOrderUseCase;
-    private final IGetOrderHistoryUseCase getOrderHistoryUseCase;
-    private final ICreateOrderUseCase createOrderUseCase;
-
-    public OrderAPI(
-       IGetOrderUseCase getOrderUseCase,
-       IListOrdersWithFiltersUseCase listOrdersWithFiltersUseCase,
-       IUpdateOrderStatusUseCase updateOrderStatusUseCase,
-       ICheckoutOrderUseCase checkoutOrderUseCase,
-       IGetOrderHistoryUseCase getOrderHistoryUseCase,
-       ICreateOrderUseCase createOrderUseCase
-    ) {
-        this.getOrderUseCase = getOrderUseCase;
-        this.listOrdersWithFiltersUseCase = listOrdersWithFiltersUseCase;
-        this.updateOrderStatusUseCase = updateOrderStatusUseCase;
-        this.checkoutOrderUseCase = checkoutOrderUseCase;
-        this.getOrderHistoryUseCase = getOrderHistoryUseCase;
-        this.createOrderUseCase = createOrderUseCase;
+    public OrderAPI(OrderController orderController) {
+        this.orderController = orderController;
     }
 
     @Operation(
@@ -69,7 +51,7 @@ public class OrderAPI {
         filters.setOrderBy(OrderSortFields.fromString(orderBy));
         filters.setDirection(SortDirection.fromString(orderDirection));
 
-        List<OrderDTO> ordersDTO = listOrdersWithFiltersUseCase.execute(filters)
+        List<OrderDTO> ordersDTO = orderController.getOrders(filters)
             .stream()
             .map(OrderDTO::new)
             .collect(Collectors.toList());
@@ -81,7 +63,7 @@ public class OrderAPI {
     @GetMapping("/{id}")
     public OrderDTO getOrder(@PathVariable String id) throws EntityNotFoundException
     {
-        var order = getOrderUseCase.execute(UUID.fromString(id));
+        var order = orderController.getOrder(id);
         return new OrderDTO(order);
     }
 
@@ -89,7 +71,7 @@ public class OrderAPI {
     @GetMapping("/{id}/history")
     public List<OrderHistoryDTO> getOrderHistory(@PathVariable UUID id) throws EntityNotFoundException
     {
-        return getOrderHistoryUseCase.execute(id)
+        return orderController.getOrderHistory(id)
             .stream()
             .map(OrderHistoryDTO::new)
             .toList();
@@ -100,7 +82,7 @@ public class OrderAPI {
     public ResponseEntity<OrderDTO> createOrder(@Valid @RequestBody CreateOrderDTO request) throws EntityNotFoundException
     {
         Order order = OrderPresenter.toDomain(request);
-        Order createdOrder = createOrderUseCase.execute(order);
+        Order createdOrder = orderController.createOrder(order);
 
         if(createdOrder == null)
             return ResponseEntity.badRequest().body(null);
@@ -115,10 +97,10 @@ public class OrderAPI {
     public ResponseEntity<?> updateStatus(
             @PathVariable String id,
             @Valid @RequestBody UpdateOrderStatusDTO request
-    ) throws OrderAlreadyWithStatusException, EntityNotFoundException {
-        var oderId = UUID.fromString(id);
+    ) throws EntityNotFoundException, OrderAlreadyWithStatusException {
+        var orderId = UUID.fromString(id);
         var status = OrderStatus.fromString(request.getStatus().toUpperCase());
-        boolean updated = updateOrderStatusUseCase.execute(oderId, status);
+        boolean updated = orderController.updateStatus(orderId, status);
 
         if(updated) return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
@@ -127,18 +109,15 @@ public class OrderAPI {
     @Operation(summary = "Pay the order with mercado pago")
     @PostMapping("/{order_id}/checkout")
     public ResponseEntity<PaymentDTO> payOrder(@PathVariable("order_id") UUID orderId)
-        throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException
-    {
-        Payment payment = checkoutOrderUseCase.execute(orderId);
+        throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException {
+        Payment payment = orderController.payOrder(orderId);
 
-        if(payment == null)
+        if (payment == null)
             return ResponseEntity.badRequest().body(null);
 
         return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(new PaymentDTO(payment));
+                .status(HttpStatus.OK)
+                .body(new PaymentDTO(payment));
 
     }
-
-
 }

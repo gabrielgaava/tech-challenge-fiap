@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.handlers.rest.api;
 
+import com.fiap.techchallenge.controller.PaymentController;
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.domain.payment.usecase.IGetPaymentUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,10 +18,10 @@ import java.util.UUID;
 @Tag(name = "Payment Controller")
 public class PaymentAPI {
 
-  private final IGetPaymentUseCase getPaymentUseCase;
+  private final PaymentController paymentController;
 
-  public PaymentAPI(IGetPaymentUseCase getPaymentUseCase) {
-    this.getPaymentUseCase = getPaymentUseCase;
+  public PaymentAPI(PaymentController paymentController) {
+    this.paymentController = paymentController;
   }
 
   @Operation(
@@ -34,10 +35,9 @@ public class PaymentAPI {
       @Valid @RequestParam(required = false) boolean isExternal
   ) {
     if (isExternal) {
-      return ResponseEntity.ok(getPaymentUseCase.execute(paymentId));
+      return ResponseEntity.ok(paymentController.getPayment(paymentId));
     }
-
-    return ResponseEntity.ok(getPaymentUseCase.execute(UUID.fromString(paymentId)));
+    return ResponseEntity.ok(paymentController.getPayment(UUID.fromString(paymentId)));
   }
 
 }

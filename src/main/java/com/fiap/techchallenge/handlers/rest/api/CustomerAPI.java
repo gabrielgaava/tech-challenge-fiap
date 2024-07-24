@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.handlers.rest.api;
 
+import com.fiap.techchallenge.controller.CustomerController;
 import com.fiap.techchallenge.domain.customer.Customer;
 import com.fiap.techchallenge.domain.customer.usecase.impl.CreateCustomerUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.impl.GetCustomerByCPFUseCase;
@@ -25,28 +26,17 @@ import java.util.List;
 @RequestMapping("/customers")
 public class CustomerAPI {
 
-    private final CreateCustomerUseCase createCustomerUseCase;
-    private final GetCustomerByCPFUseCase getCustomerByCPFUseCase;
-    private final ListAllCustomerUseCase listAllCustomerUseCase;
-    private final UpdateCustomerUseCase updateCustomerUseCase;
+    private final CustomerController customerController;
 
-    public CustomerAPI(
-            CreateCustomerUseCase createCustomerUseCase,
-            GetCustomerByCPFUseCase getCustomerByCPFUseCase,
-            ListAllCustomerUseCase listAllCustomerUseCase,
-            UpdateCustomerUseCase updateCustomerUseCase
-    ) {
-        this.createCustomerUseCase = createCustomerUseCase;
-        this.getCustomerByCPFUseCase = getCustomerByCPFUseCase;
-        this.listAllCustomerUseCase = listAllCustomerUseCase;
-        this.updateCustomerUseCase = updateCustomerUseCase;
+    public CustomerAPI(CustomerController customerController) {
+        this.customerController = customerController;
     }
 
     @Operation(summary = "Search for a customer by CPF")
     @GetMapping("/{cpf}")
     public ResponseEntity<CustomerDTO> getCustomerByCpf(@PathVariable String cpf)
     {
-        var customer = getCustomerByCPFUseCase.execute(cpf);
+        var customer = customerController.getCustomerByCpf(cpf);
 
         if(customer == null) {
             return ResponseEntity.notFound().build();
@@ -59,7 +49,7 @@ public class CustomerAPI {
     @GetMapping
     public ResponseEntity<List<CustomerDTO>> getAllCustomers()
     {
-        var customers = listAllCustomerUseCase.execute();
+        var customers = customerController.getAllCustomers();
 
         if(customers.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -76,9 +66,8 @@ public class CustomerAPI {
     @PostMapping
     public ResponseEntity<CustomerDTO> createCustomer (@Valid @RequestBody CreateCustomerDTO request) throws InvalidCpfException, EntityAlreadyExistException
     {
-        Customer newCustomer = new Customer(null,request.getCpf(), request.getName(), request.getEmail());
-
-        if(createCustomerUseCase.execute(newCustomer) != null) {
+        Customer newCustomer = new Customer(null,request.getCpf(),request.getName(), request.getEmail());
+        if(customerController.createCustomer(newCustomer) != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(CustomerPresenter.fromDomain(newCustomer));
         }
 
@@ -89,14 +78,11 @@ public class CustomerAPI {
     @PutMapping("/{cpf}")
     public ResponseEntity<CustomerDTO> updateCustomerByCpf(@Valid @RequestBody PutCustomerDTO customerDTO, @PathVariable String cpf) throws EntityAlreadyExistException
     {
-
         Customer customer = CustomerPresenter.toDomain(customerDTO, cpf);
 
-        if(updateCustomerUseCase.execute(customer) != null) {
-            var retrievedCustomer = getCustomerByCPFUseCase.execute(cpf);
-            if (retrievedCustomer != null){
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomerPresenter.fromDomain(retrievedCustomer));
-            }
+        var retrievedCustomer = customerController.updateCustomerByCpf(customer, cpf);
+        if (retrievedCustomer != null){
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomerPresenter.fromDomain(retrievedCustomer));
         }
 
         return ResponseEntity.badRequest().build();

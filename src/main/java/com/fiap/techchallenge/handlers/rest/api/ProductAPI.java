@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.handlers.rest.api;
 
+import com.fiap.techchallenge.controller.ProductController;
 import com.fiap.techchallenge.domain.product.Product;
 import com.fiap.techchallenge.domain.product.ProductCategory;
 import com.fiap.techchallenge.domain.product.usecase.ICreateProductUseCase;
@@ -24,19 +25,10 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductAPI {
 
-    private final ICreateProductUseCase createProductUseCase;
-    private final IDeleteProductUseCase deleteProductUseCase;
-    private final IListAllProductsUseCase listAllProductsUseCase;
+    private final ProductController productController;
 
-    public ProductAPI
-    (
-        ICreateProductUseCase createProductUseCase,
-        IDeleteProductUseCase deleteProductUseCase,
-        IListAllProductsUseCase listAllProductsUseCase
-    ) {
-        this.createProductUseCase = createProductUseCase;
-        this.deleteProductUseCase = deleteProductUseCase;
-        this.listAllProductsUseCase = listAllProductsUseCase;
+    public ProductAPI(ProductController productController) {
+        this.productController = productController;
     }
 
     @GetMapping
@@ -52,7 +44,7 @@ public class ProductAPI {
                 : null;
 
         Product.ProductFilters filters = new Product.ProductFilters(productCategory);
-        var products = listAllProductsUseCase.execute(filters);
+        var products = productController.getProducts(filters);
 
         if(products.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -67,7 +59,7 @@ public class ProductAPI {
     {
 
         Product product = ProductPresenter.toDomain(createProductDTO);
-        Product createdProduct = createProductUseCase.execute(product);
+        Product createdProduct = productController.createProduct(product);
 
         if(createdProduct != null){
             ProductDTO response = ProductPresenter.toDto(createdProduct);
@@ -81,7 +73,7 @@ public class ProductAPI {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct (@PathVariable String id)
     {
-        if(deleteProductUseCase.execute(id)) {
+        if(productController.deleteProduct(id)) {
             return ResponseEntity.noContent().build();
         }
 

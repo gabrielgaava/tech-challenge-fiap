@@ -30,45 +30,15 @@ public class ProductController {
         this.listAllProductsUseCase = listAllProductsUseCase;
     }
 
-
-    public ResponseEntity<List<Product>> getProducts(String category)
-    {
-
-        ProductCategory productCategory = category != null
-                ? ProductCategory.valueOf(category.toUpperCase())
-                : null;
-
-        Product.ProductFilters filters = new Product.ProductFilters(productCategory);
-        var products = listAllProductsUseCase.execute(filters);
-
-        if(products.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(products);
+    public List<Product> getProducts(Product.ProductFilters filters){
+        return listAllProductsUseCase.execute(filters);
     }
 
-
-    public ResponseEntity<ProductDTO> createProduct(CreateProductDTO createProductDTO)
-    {
-
-        Product product = ProductPresenter.toDomain(createProductDTO);
-        Product createdProduct = createProductUseCase.execute(product);
-
-        if(createdProduct != null){
-            ProductDTO response = ProductPresenter.toDto(createdProduct);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        }
-
-        return ResponseEntity.badRequest().build();
+    public Product createProduct(Product product){
+        return createProductUseCase.execute(product);
     }
 
-    public ResponseEntity<?> deleteProduct (String id)
-    {
-        if(deleteProductUseCase.execute(id)) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.notFound().build();
+    public Boolean deleteProduct (String id){
+        return (deleteProductUseCase.execute(id));
     }
 }
