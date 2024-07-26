@@ -5,9 +5,11 @@ import com.fiap.techchallenge.domain.product.usecase.CreateProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.DeleteProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.ListAllProductsUseCase;
 import com.fiap.techchallenge.gateway.ProductGateway;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class ProductController {
 
     private final CreateProductUseCase createProductUseCase;

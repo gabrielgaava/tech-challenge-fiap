@@ -11,10 +11,12 @@ import com.fiap.techchallenge.domain.order.OrderStatus;
 import com.fiap.techchallenge.domain.order.usecase.*;
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.gateway.OrderGateway;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;
 
+@Component
 public class OrderController {
 
     private final GetOrderUseCase getOrderUseCase;

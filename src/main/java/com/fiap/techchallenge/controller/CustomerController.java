@@ -8,10 +8,13 @@ import com.fiap.techchallenge.domain.customer.usecase.ListAllCustomerUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.UpdateCustomerUseCase;
 import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
+
 import com.fiap.techchallenge.gateway.CustomerGateway;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class CustomerController {
     private final GetCustomerByCPFUseCase getCustomerByCPFUseCase;
     private final CreateCustomerUseCase createCustomerUseCase;

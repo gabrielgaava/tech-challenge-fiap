@@ -25,7 +25,7 @@ public class CheckoutOrderUseCase {
   private final CheckoutGateway checkoutGateway;
 
   public CheckoutOrderUseCase(OrderGateway orderGateway, CustomerGateway customerGateway, PaymentGateway paymentGateway, CheckoutGateway checkoutGateway) {
-    this.orderGateway = orderGateway;;
+    this.orderGateway = orderGateway;
     this.customerGateway = customerGateway;
     this.paymentGateway = paymentGateway;
     this.checkoutGateway = checkoutGateway;

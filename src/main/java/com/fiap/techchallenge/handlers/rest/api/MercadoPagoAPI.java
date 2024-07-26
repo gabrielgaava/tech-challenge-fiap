@@ -4,6 +4,9 @@ import com.fiap.techchallenge.controller.MercadoPagoController;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.payment.Payment;
+import com.fiap.techchallenge.domain.payment.usecase.HandleExternalPaymentUseCase;
+import com.fiap.techchallenge.drivers.api.MercadoPagoCheckoutDriver;
+import com.fiap.techchallenge.gateway.CheckoutGateway;
 import com.fiap.techchallenge.handlers.rest.exceptions.PaymentErrorException;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
@@ -22,9 +25,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/notifications/mercadopago")
 public class MercadoPagoAPI {
     private final MercadoPagoController mercadoPagoController;
+    private final CheckoutGateway checkoutGateway;
 
-    public MercadoPagoAPI(MercadoPagoController MercadoPagoController) {
-        this.mercadoPagoController = MercadoPagoController;
+
+    public MercadoPagoAPI(MercadoPagoController mercadoPagoController, MercadoPagoCheckoutDriver mercadoPagoDriver) {
+        this.mercadoPagoController = mercadoPagoController;
+        this.checkoutGateway = mercadoPagoDriver;
     }
 
     @PostMapping
@@ -32,7 +38,7 @@ public class MercadoPagoAPI {
 
         if(topic.equals("payment")){
             try {
-                mercadoPagoController.checkPaymentUpdate(id);
+                mercadoPagoController.checkPaymentUpdate(id, this.checkoutGateway);
             }
             catch (MPException | MPApiException e) {
                 // Mercado Pago Service unavailable, should do a internal retry
@@ -56,7 +62,7 @@ public class MercadoPagoAPI {
     @PostMapping("/fake")
     public ResponseEntity<?> fakePaymentNotification(@RequestParam String id) throws PaymentErrorException {
 
-        Payment payment = mercadoPagoController.paymentNotification(id);
+        Payment payment = mercadoPagoController.paymentNotification(id, this.checkoutGateway);
         return ResponseEntity.ok(payment);
     }
 }
