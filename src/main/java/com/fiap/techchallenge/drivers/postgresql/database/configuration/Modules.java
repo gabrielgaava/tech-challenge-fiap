@@ -4,9 +4,7 @@ import com.fiap.techchallenge.domain.customer.usecase.CreateCustomerUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.GetCustomerByCPFUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.ListAllCustomerUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.UpdateCustomerUseCase;
-import com.fiap.techchallenge.gateway.ICheckoutGateway;
 import com.fiap.techchallenge.domain.order.usecase.*;
-import com.fiap.techchallenge.domain.order.usecase.impl.*;
 import com.fiap.techchallenge.domain.payment.usecase.CreatePaymentUseCase;
 import com.fiap.techchallenge.domain.payment.usecase.GetPaymentUseCase;
 import com.fiap.techchallenge.domain.payment.usecase.HandleExternalPaymentUseCase;
@@ -18,6 +16,7 @@ import com.fiap.techchallenge.drivers.postgresql.CustomerRepository;
 import com.fiap.techchallenge.drivers.postgresql.OderRepository;
 import com.fiap.techchallenge.drivers.postgresql.PaymentRepository;
 import com.fiap.techchallenge.drivers.postgresql.ProductRepository;
+import com.fiap.techchallenge.gateway.ICheckoutGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -67,22 +66,22 @@ public class Modules {
   // ========================= ORDERS =========================
 
   @Bean
-  public IGetOrderUseCase getOrderUseCase(OderRepository oderRepository) {
+  public GetOrderUseCase getOrderUseCase(OderRepository oderRepository) {
     return new GetOrderUseCase(oderRepository, new CalculateOrderWaitTimeUseCase());
   }
 
   @Bean
-  public IListOrdersWithFiltersUseCase listOrdersWithFiltersUseCase(OderRepository oderRepository) {
+  public ListOrdersWithFiltersUseCase listOrdersWithFiltersUseCase(OderRepository oderRepository) {
     return new ListOrdersWithFiltersUseCase(oderRepository, new CalculateOrderWaitTimeUseCase());
   }
 
   @Bean
-  public IUpdateOrderStatusUseCase updateOrderStatusUseCase(OderRepository oderRepository) {
+  public UpdateOrderStatusUseCase updateOrderStatusUseCase(OderRepository oderRepository) {
     return new UpdateOrderStatusUseCase(oderRepository);
   }
 
   @Bean
-  public ICheckoutOrderUseCase checkoutOrderUseCase(OderRepository oderRepository, CustomerRepository customerRepository, PaymentRepository paymentRepository, ICheckoutGateway gateway) {
+  public CheckoutOrderUseCase checkoutOrderUseCase(OderRepository oderRepository, CustomerRepository customerRepository, PaymentRepository paymentRepository, ICheckoutGateway gateway) {
     return new CheckoutOrderUseCase(
         oderRepository,
         customerRepository,
@@ -92,12 +91,12 @@ public class Modules {
   }
 
   @Bean
-  public IGetOrderHistoryUseCase getOrderHistoryUseCase(OderRepository oderRepository) {
+  public GetOrderHistoryUseCase getOrderHistoryUseCase(OderRepository oderRepository) {
     return new GetOrderHistoryUseCase(oderRepository);
   }
 
   @Bean
-  public ICreateOrderUseCase createOrderUseCase(OderRepository oderRepository, ProductRepository productRepository) {
+  public CreateOrderUseCase createOrderUseCase(OderRepository oderRepository, ProductRepository productRepository) {
     return new CreateOrderUseCase(oderRepository, productRepository);
   }
 
