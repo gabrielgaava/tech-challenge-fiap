@@ -4,6 +4,7 @@ import com.fiap.techchallenge.domain.product.Product;
 import com.fiap.techchallenge.domain.product.usecase.CreateProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.DeleteProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.ListAllProductsUseCase;
+import com.fiap.techchallenge.gateway.ProductGateway;
 
 import java.util.List;
 
@@ -24,15 +25,15 @@ public class ProductController {
         this.listAllProductsUseCase = listAllProductsUseCase;
     }
 
-    public List<Product> getProducts(Product.ProductFilters filters){
+    public List<Product> getProducts(Product.ProductFilters filters, ProductGateway productGateway){
         return listAllProductsUseCase.execute(filters);
     }
 
-    public Product createProduct(Product product){
+    public Product createProduct(Product product, ProductGateway productGateway){
         return createProductUseCase.execute(product);
     }
 
-    public Boolean deleteProduct (String id){
+    public Boolean deleteProduct (String id, ProductGateway productGateway){
         return (deleteProductUseCase.execute(id));
     }
 }

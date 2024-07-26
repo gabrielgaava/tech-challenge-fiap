@@ -4,6 +4,8 @@ import com.fiap.techchallenge.controller.CustomerController;
 import com.fiap.techchallenge.domain.customer.Customer;
 import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
+import com.fiap.techchallenge.drivers.postgresql.CustomerPostgreDriver;
+import com.fiap.techchallenge.gateway.CustomerGateway;
 import com.fiap.techchallenge.handlers.rest.dto.CreateCustomerDTO;
 import com.fiap.techchallenge.handlers.rest.dto.CustomerDTO;
 import com.fiap.techchallenge.handlers.rest.dto.PutCustomerDTO;
@@ -23,16 +25,18 @@ import java.util.List;
 public class CustomerAPI {
 
     private final CustomerController customerController;
+    private final CustomerGateway customerGateway;
 
-    public CustomerAPI(CustomerController customerController) {
+    public CustomerAPI(CustomerController customerController, CustomerPostgreDriver postgreDriver) {
         this.customerController = customerController;
+        this.customerGateway = postgreDriver;
     }
 
     @Operation(summary = "Search for a customer by CPF")
     @GetMapping("/{cpf}")
     public ResponseEntity<CustomerDTO> getCustomerByCpf(@PathVariable String cpf)
     {
-        var customer = customerController.getCustomerByCpf(cpf);
+        var customer = customerController.getCustomerByCpf(cpf,  this.customerGateway);
 
         if(customer == null) {
             return ResponseEntity.notFound().build();
@@ -45,7 +49,7 @@ public class CustomerAPI {
     @GetMapping
     public ResponseEntity<List<CustomerDTO>> getAllCustomers()
     {
-        var customers = customerController.getAllCustomers();
+        var customers = customerController.getAllCustomers(this.customerGateway);
 
         if(customers.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -63,7 +67,7 @@ public class CustomerAPI {
     public ResponseEntity<CustomerDTO> createCustomer (@Valid @RequestBody CreateCustomerDTO request) throws InvalidCpfException, EntityAlreadyExistException
     {
         Customer newCustomer = new Customer(null,request.getCpf(),request.getName(), request.getEmail());
-        if(customerController.createCustomer(newCustomer) != null) {
+        if(customerController.createCustomer(newCustomer, this.customerGateway) != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(CustomerPresenter.fromDomain(newCustomer));
         }
 
@@ -76,7 +80,7 @@ public class CustomerAPI {
     {
         Customer customer = CustomerPresenter.toDomain(customerDTO, cpf);
 
-        var retrievedCustomer = customerController.updateCustomerByCpf(customer, cpf);
+        var retrievedCustomer = customerController.updateCustomerByCpf(customer, cpf, this.customerGateway);
         if (retrievedCustomer != null){
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomerPresenter.fromDomain(retrievedCustomer));
         }

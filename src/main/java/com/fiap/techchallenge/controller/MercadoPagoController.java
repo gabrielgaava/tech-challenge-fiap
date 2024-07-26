@@ -6,7 +6,7 @@ import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.domain.payment.usecase.HandleExternalPaymentUseCase;
-import com.fiap.techchallenge.handlers.webhook.mercadopago.exception.PaymentErrorException;
+import com.fiap.techchallenge.handlers.rest.exceptions.PaymentErrorException;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.common.IdentificationRequest;
 import com.mercadopago.client.payment.PaymentClient;

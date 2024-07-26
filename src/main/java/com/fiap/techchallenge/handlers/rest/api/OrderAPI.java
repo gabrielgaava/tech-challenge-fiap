@@ -7,6 +7,8 @@ import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
 import com.fiap.techchallenge.domain.order.*;
 import com.fiap.techchallenge.domain.payment.Payment;
+import com.fiap.techchallenge.drivers.postgresql.OrderPostgreDriver;
+import com.fiap.techchallenge.gateway.OrderGateway;
 import com.fiap.techchallenge.handlers.rest.dto.*;
 import com.fiap.techchallenge.presenters.OrderPresenter;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,9 +29,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/orders")
 public class OrderAPI {
     private final OrderController orderController;
+    private final OrderGateway orderGateway;
 
-    public OrderAPI(OrderController orderController) {
+    public OrderAPI(OrderController orderController, OrderPostgreDriver postgreDriver) {
         this.orderController = orderController;
+        this.orderGateway = postgreDriver;
     }
 
     @Operation(
@@ -51,7 +55,7 @@ public class OrderAPI {
         filters.setOrderBy(OrderSortFields.fromString(orderBy));
         filters.setDirection(SortDirection.fromString(orderDirection));
 
-        List<OrderDTO> ordersDTO = orderController.getOrders(filters)
+        List<OrderDTO> ordersDTO = orderController.getOrders(filters, this.orderGateway)
             .stream()
             .map(OrderDTO::new)
             .collect(Collectors.toList());
@@ -63,7 +67,7 @@ public class OrderAPI {
     @GetMapping("/{id}")
     public OrderDTO getOrder(@PathVariable String id) throws EntityNotFoundException
     {
-        var order = orderController.getOrder(id);
+        var order = orderController.getOrder(id, this.orderGateway);
         return new OrderDTO(order);
     }
 
@@ -71,7 +75,7 @@ public class OrderAPI {
     @GetMapping("/{id}/history")
     public List<OrderHistoryDTO> getOrderHistory(@PathVariable UUID id) throws EntityNotFoundException
     {
-        return orderController.getOrderHistory(id)
+        return orderController.getOrderHistory(id, this.orderGateway)
             .stream()
             .map(OrderHistoryDTO::new)
             .toList();
@@ -82,7 +86,7 @@ public class OrderAPI {
     public ResponseEntity<OrderDTO> createOrder(@Valid @RequestBody CreateOrderDTO request) throws EntityNotFoundException
     {
         Order order = OrderPresenter.toDomain(request);
-        Order createdOrder = orderController.createOrder(order);
+        Order createdOrder = orderController.createOrder(order, this.orderGateway);
 
         if(createdOrder == null)
             return ResponseEntity.badRequest().body(null);
@@ -100,7 +104,7 @@ public class OrderAPI {
     ) throws EntityNotFoundException, OrderAlreadyWithStatusException {
         var orderId = UUID.fromString(id);
         var status = OrderStatus.fromString(request.getStatus().toUpperCase());
-        boolean updated = orderController.updateStatus(orderId, status);
+        boolean updated = orderController.updateStatus(orderId, status, this.orderGateway);
 
         if(updated) return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
@@ -110,7 +114,7 @@ public class OrderAPI {
     @PostMapping("/{order_id}/checkout")
     public ResponseEntity<PaymentDTO> payOrder(@PathVariable("order_id") UUID orderId)
         throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException {
-        Payment payment = orderController.payOrder(orderId);
+        Payment payment = orderController.payOrder(orderId, this.orderGateway);
 
         if (payment == null)
             return ResponseEntity.badRequest().body(null);

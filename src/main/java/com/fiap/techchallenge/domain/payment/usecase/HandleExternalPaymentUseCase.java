@@ -9,7 +9,7 @@ import com.fiap.techchallenge.domain.order.usecase.UpdateOrderStatusUseCase;
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.gateway.PaymentGateway;
 import com.fiap.techchallenge.domain.payment.PaymentStatus;
-import com.fiap.techchallenge.handlers.webhook.mercadopago.exception.PaymentErrorException;
+import com.fiap.techchallenge.handlers.rest.exceptions.PaymentErrorException;
 
 import java.time.LocalDateTime;
 

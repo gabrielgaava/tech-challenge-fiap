@@ -10,6 +10,7 @@ import com.fiap.techchallenge.domain.order.OrderHistory;
 import com.fiap.techchallenge.domain.order.OrderStatus;
 import com.fiap.techchallenge.domain.order.usecase.*;
 import com.fiap.techchallenge.domain.payment.Payment;
+import com.fiap.techchallenge.gateway.OrderGateway;
 
 import java.util.List;
 import java.util.UUID;
@@ -39,27 +40,27 @@ public class OrderController {
         this.createOrderUseCase = createOrderUseCase;
     }
 
-    public List<Order> getOrders(OrderFilters filters){
+    public List<Order> getOrders(OrderFilters filters, OrderGateway orderGateway){
        return listOrdersWithFiltersUseCase.execute(filters);
     }
 
-    public Order getOrder(String id) throws EntityNotFoundException {
+    public Order getOrder(String id, OrderGateway orderGateway) throws EntityNotFoundException {
         return getOrderUseCase.execute(UUID.fromString(id));
     }
 
-    public List<OrderHistory> getOrderHistory(UUID id) throws EntityNotFoundException {
+    public List<OrderHistory> getOrderHistory(UUID id, OrderGateway orderGateway) throws EntityNotFoundException {
         return getOrderHistoryUseCase.execute(id);
     }
 
-    public Order createOrder(Order order) throws EntityNotFoundException {
+    public Order createOrder(Order order, OrderGateway orderGateway) throws EntityNotFoundException {
         return createOrderUseCase.execute(order);
     }
 
-    public boolean updateStatus(UUID orderId, OrderStatus status) throws EntityNotFoundException, OrderAlreadyWithStatusException {
+    public boolean updateStatus(UUID orderId, OrderStatus status, OrderGateway orderGateway) throws EntityNotFoundException, OrderAlreadyWithStatusException {
         return updateOrderStatusUseCase.execute(orderId, status);
     }
 
-    public Payment payOrder(UUID orderId) throws MercadoPagoUnavailableException, EntityNotFoundException, OrderNotReadyException {
+    public Payment payOrder(UUID orderId, OrderGateway orderGateway) throws MercadoPagoUnavailableException, EntityNotFoundException, OrderNotReadyException {
         return checkoutOrderUseCase.execute(orderId);
     }
 

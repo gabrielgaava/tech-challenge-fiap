@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository("PGProductRepository")
-public class ProductRepository implements ProductGateway {
+public class ProductPostgreDriver implements ProductGateway {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ProductRepository(DataSource dataSource) {
+    public ProductPostgreDriver(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 

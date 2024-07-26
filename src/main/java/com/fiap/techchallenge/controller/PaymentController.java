@@ -2,6 +2,7 @@ package com.fiap.techchallenge.controller;
 
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.domain.payment.usecase.GetPaymentUseCase;
+import com.fiap.techchallenge.gateway.PaymentGateway;
 
 import java.util.UUID;
 
@@ -15,11 +16,11 @@ public class PaymentController {
   }
 
 
-  public Payment getPayment(String paymentId){
+  public Payment getPayment(String paymentId, PaymentGateway paymentGateway){
       return getPaymentUseCase.execute(paymentId);
   }
 
-  public Payment getPayment(UUID paymentId){
+  public Payment getPayment(UUID paymentId, PaymentGateway paymentGateway){
     return getPaymentUseCase.execute(paymentId);
   }
 

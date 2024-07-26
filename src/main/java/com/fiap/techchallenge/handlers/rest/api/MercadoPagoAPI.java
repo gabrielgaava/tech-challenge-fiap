@@ -4,7 +4,7 @@ import com.fiap.techchallenge.controller.MercadoPagoController;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.payment.Payment;
-import com.fiap.techchallenge.handlers.webhook.mercadopago.exception.PaymentErrorException;
+import com.fiap.techchallenge.handlers.rest.exceptions.PaymentErrorException;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import io.swagger.v3.oas.annotations.Operation;

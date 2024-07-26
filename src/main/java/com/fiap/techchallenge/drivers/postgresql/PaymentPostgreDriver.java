@@ -15,12 +15,12 @@ import java.util.UUID;
 
 @Getter
 @Repository("PGPaymentRepository")
-public class PaymentRepository implements PaymentGateway {
+public class PaymentPostgreDriver implements PaymentGateway {
 
   private final JdbcTemplate jdbcTemplate;
 
   @Autowired
-  public PaymentRepository(DataSource dataSource) {
+  public PaymentPostgreDriver(DataSource dataSource) {
     this.jdbcTemplate = new JdbcTemplate(dataSource);
   }
 

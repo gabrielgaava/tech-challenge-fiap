@@ -6,8 +6,8 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {
-		"com.fiap.techchallenge.infrastructure",
-		"com.fiap.techchallenge.adapters"
+		"com.fiap.techchallenge.drivers",
+		"com.fiap.techchallenge.handlers"
 })
 public class TechChallengeApplication {
 

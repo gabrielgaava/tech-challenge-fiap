@@ -7,10 +7,10 @@ import com.fiap.techchallenge.domain.exception.MercadoPagoUnavailableException;
 import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.gateway.OrderGateway;
-import com.fiap.techchallenge.gateway.ICheckoutGateway;
+import com.fiap.techchallenge.gateway.CheckoutGateway;
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.gateway.PaymentGateway;
-import com.fiap.techchallenge.handlers.webhook.mercadopago.exception.PaymentErrorException;
+import com.fiap.techchallenge.handlers.rest.exceptions.PaymentErrorException;
 
 import java.util.UUID;
 
@@ -22,9 +22,9 @@ public class CheckoutOrderUseCase {
   private final OrderGateway orderRepository;
   private final CustomerGateway customerRepository;
   private final PaymentGateway paymentRepository;
-  private final ICheckoutGateway checkoutGateway;
+  private final CheckoutGateway checkoutGateway;
 
-  public CheckoutOrderUseCase(OrderGateway orderRepository, CustomerGateway customerRepository, PaymentGateway paymentRepository, ICheckoutGateway checkoutGateway) {
+  public CheckoutOrderUseCase(OrderGateway orderRepository, CustomerGateway customerRepository, PaymentGateway paymentRepository, CheckoutGateway checkoutGateway) {
     this.orderRepository = orderRepository;;
     this.customerRepository = customerRepository;
     this.paymentRepository = paymentRepository;

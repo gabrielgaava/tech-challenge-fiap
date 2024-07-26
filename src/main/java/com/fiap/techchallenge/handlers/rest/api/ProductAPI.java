@@ -3,6 +3,8 @@ package com.fiap.techchallenge.handlers.rest.api;
 import com.fiap.techchallenge.controller.ProductController;
 import com.fiap.techchallenge.domain.product.Product;
 import com.fiap.techchallenge.domain.product.ProductCategory;
+import com.fiap.techchallenge.drivers.postgresql.ProductPostgreDriver;
+import com.fiap.techchallenge.gateway.ProductGateway;
 import com.fiap.techchallenge.handlers.rest.dto.CreateProductDTO;
 import com.fiap.techchallenge.handlers.rest.dto.ProductDTO;
 import com.fiap.techchallenge.presenters.ProductPresenter;
@@ -23,9 +25,11 @@ import java.util.List;
 public class ProductAPI {
 
     private final ProductController productController;
+    private final ProductGateway productGateway;
 
-    public ProductAPI(ProductController productController) {
+    public ProductAPI(ProductController productController, ProductPostgreDriver postgreDriver) {
         this.productController = productController;
+        this.productGateway = postgreDriver;
     }
 
     @GetMapping
@@ -41,7 +45,7 @@ public class ProductAPI {
                 : null;
 
         Product.ProductFilters filters = new Product.ProductFilters(productCategory);
-        var products = productController.getProducts(filters);
+        var products = productController.getProducts(filters, this.productGateway);
 
         if(products.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -56,7 +60,7 @@ public class ProductAPI {
     {
 
         Product product = ProductPresenter.toDomain(createProductDTO);
-        Product createdProduct = productController.createProduct(product);
+        Product createdProduct = productController.createProduct(product, this.productGateway);
 
         if(createdProduct != null){
             ProductDTO response = ProductPresenter.toDto(createdProduct);
@@ -70,7 +74,7 @@ public class ProductAPI {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct (@PathVariable String id)
     {
-        if(productController.deleteProduct(id)) {
+        if(productController.deleteProduct(id, this.productGateway)) {
             return ResponseEntity.noContent().build();
         }
 

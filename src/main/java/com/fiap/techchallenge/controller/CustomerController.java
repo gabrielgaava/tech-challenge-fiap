@@ -8,6 +8,7 @@ import com.fiap.techchallenge.domain.customer.usecase.ListAllCustomerUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.UpdateCustomerUseCase;
 import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 import com.fiap.techchallenge.domain.exception.InvalidCpfException;
+import com.fiap.techchallenge.gateway.CustomerGateway;
 
 import java.util.List;
 
@@ -30,19 +31,19 @@ public class CustomerController {
         this.updateCustomerUseCase = updateCustomerUseCase;
     }
 
-    public Customer getCustomerByCpf(String cpf){
+    public Customer getCustomerByCpf(String cpf, CustomerGateway customerGateway){
         return getCustomerByCPFUseCase.execute(cpf);
     }
 
-    public List<Customer> getAllCustomers(){
+    public List<Customer> getAllCustomers(CustomerGateway customerGateway){
         return listAllCustomerUseCase.execute();
     }
 
-    public Customer createCustomer(Customer customer) throws EntityAlreadyExistException, InvalidCpfException {
+    public Customer createCustomer(Customer customer, CustomerGateway customerGateway) throws EntityAlreadyExistException, InvalidCpfException {
         return createCustomerUseCase.execute(customer);
     }
 
-    public Customer updateCustomerByCpf(Customer customer, String cpf) throws EntityAlreadyExistException {
+    public Customer updateCustomerByCpf(Customer customer, String cpf, CustomerGateway customerGateway) throws EntityAlreadyExistException {
         if (updateCustomerUseCase.execute(customer) != null) {
             return getCustomerByCPFUseCase.execute(cpf);
         }

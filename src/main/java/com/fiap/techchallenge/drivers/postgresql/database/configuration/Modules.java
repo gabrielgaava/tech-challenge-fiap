@@ -12,11 +12,11 @@ import com.fiap.techchallenge.domain.payment.usecase.UpdatePaymentUseCase;
 import com.fiap.techchallenge.domain.product.usecase.CreateProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.DeleteProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.ListAllProductsUseCase;
-import com.fiap.techchallenge.drivers.postgresql.CustomerRepository;
-import com.fiap.techchallenge.drivers.postgresql.OderRepository;
-import com.fiap.techchallenge.drivers.postgresql.PaymentRepository;
-import com.fiap.techchallenge.drivers.postgresql.ProductRepository;
-import com.fiap.techchallenge.gateway.ICheckoutGateway;
+import com.fiap.techchallenge.drivers.postgresql.CustomerPostgreDriver;
+import com.fiap.techchallenge.drivers.postgresql.OrderPostgreDriver;
+import com.fiap.techchallenge.drivers.postgresql.PaymentPostgreDriver;
+import com.fiap.techchallenge.drivers.postgresql.ProductPostgreDriver;
+import com.fiap.techchallenge.gateway.CheckoutGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,102 +27,102 @@ public class Modules {
   // ========================= CUSTOMERS =========================
 
   @Bean
-  public CreateCustomerUseCase createCustomerUseCase(CustomerRepository repository) {
+  public CreateCustomerUseCase createCustomerUseCase(CustomerPostgreDriver repository) {
     return new CreateCustomerUseCase(repository);
   }
 
   @Bean
-  public GetCustomerByCPFUseCase getCustomerByCPFUseCase(CustomerRepository repository) {
+  public GetCustomerByCPFUseCase getCustomerByCPFUseCase(CustomerPostgreDriver repository) {
     return new GetCustomerByCPFUseCase(repository);
   }
 
   @Bean
-  public ListAllCustomerUseCase listAllCustomerUseCase(CustomerRepository repository) {
+  public ListAllCustomerUseCase listAllCustomerUseCase(CustomerPostgreDriver repository) {
     return new ListAllCustomerUseCase(repository);
   }
 
   @Bean
-  public UpdateCustomerUseCase updateCustomerUseCase(CustomerRepository repository) {
+  public UpdateCustomerUseCase updateCustomerUseCase(CustomerPostgreDriver repository) {
     return new UpdateCustomerUseCase(repository);
   }
 
   // ========================= PRODUCTS =========================
 
   @Bean
-  public CreateProductUseCase createProductUseCase(ProductRepository repository) {
+  public CreateProductUseCase createProductUseCase(ProductPostgreDriver repository) {
     return new CreateProductUseCase(repository);
   }
 
   @Bean
-  public DeleteProductUseCase deleteProductUseCase(ProductRepository repository) {
+  public DeleteProductUseCase deleteProductUseCase(ProductPostgreDriver repository) {
     return new DeleteProductUseCase(repository);
   }
 
   @Bean
-  public ListAllProductsUseCase listAllProductsUseCase(ProductRepository repository) {
+  public ListAllProductsUseCase listAllProductsUseCase(ProductPostgreDriver repository) {
     return new ListAllProductsUseCase(repository);
   }
 
   // ========================= ORDERS =========================
 
   @Bean
-  public GetOrderUseCase getOrderUseCase(OderRepository oderRepository) {
-    return new GetOrderUseCase(oderRepository, new CalculateOrderWaitTimeUseCase());
+  public GetOrderUseCase getOrderUseCase(OrderPostgreDriver orderPostgreDriver) {
+    return new GetOrderUseCase(orderPostgreDriver, new CalculateOrderWaitTimeUseCase());
   }
 
   @Bean
-  public ListOrdersWithFiltersUseCase listOrdersWithFiltersUseCase(OderRepository oderRepository) {
-    return new ListOrdersWithFiltersUseCase(oderRepository, new CalculateOrderWaitTimeUseCase());
+  public ListOrdersWithFiltersUseCase listOrdersWithFiltersUseCase(OrderPostgreDriver orderPostgreDriver) {
+    return new ListOrdersWithFiltersUseCase(orderPostgreDriver, new CalculateOrderWaitTimeUseCase());
   }
 
   @Bean
-  public UpdateOrderStatusUseCase updateOrderStatusUseCase(OderRepository oderRepository) {
-    return new UpdateOrderStatusUseCase(oderRepository);
+  public UpdateOrderStatusUseCase updateOrderStatusUseCase(OrderPostgreDriver orderPostgreDriver) {
+    return new UpdateOrderStatusUseCase(orderPostgreDriver);
   }
 
   @Bean
-  public CheckoutOrderUseCase checkoutOrderUseCase(OderRepository oderRepository, CustomerRepository customerRepository, PaymentRepository paymentRepository, ICheckoutGateway gateway) {
+  public CheckoutOrderUseCase checkoutOrderUseCase(OrderPostgreDriver orderPostgreDriver, CustomerPostgreDriver customerPostgreDriver, PaymentPostgreDriver paymentPostgreDriver, CheckoutGateway gateway) {
     return new CheckoutOrderUseCase(
-        oderRepository,
-        customerRepository,
-        paymentRepository,
+            orderPostgreDriver,
+            customerPostgreDriver,
+            paymentPostgreDriver,
         gateway
     );
   }
 
   @Bean
-  public GetOrderHistoryUseCase getOrderHistoryUseCase(OderRepository oderRepository) {
-    return new GetOrderHistoryUseCase(oderRepository);
+  public GetOrderHistoryUseCase getOrderHistoryUseCase(OrderPostgreDriver orderPostgreDriver) {
+    return new GetOrderHistoryUseCase(orderPostgreDriver);
   }
 
   @Bean
-  public CreateOrderUseCase createOrderUseCase(OderRepository oderRepository, ProductRepository productRepository) {
-    return new CreateOrderUseCase(oderRepository, productRepository);
+  public CreateOrderUseCase createOrderUseCase(OrderPostgreDriver orderPostgreDriver, ProductPostgreDriver productPostgreDriver) {
+    return new CreateOrderUseCase(orderPostgreDriver, productPostgreDriver);
   }
 
   // ========================= PAYMENTS =========================
 
   @Bean
-  public CreatePaymentUseCase createPaymentUseCase(PaymentRepository paymentRepository) {
-    return new CreatePaymentUseCase(paymentRepository);
+  public CreatePaymentUseCase createPaymentUseCase(PaymentPostgreDriver paymentPostgreDriver) {
+    return new CreatePaymentUseCase(paymentPostgreDriver);
   }
 
   @Bean
-  public GetPaymentUseCase getPaymentUseCase(PaymentRepository paymentRepository) {
-    return new GetPaymentUseCase(paymentRepository);
+  public GetPaymentUseCase getPaymentUseCase(PaymentPostgreDriver paymentPostgreDriver) {
+    return new GetPaymentUseCase(paymentPostgreDriver);
   }
 
   @Bean
-  public UpdatePaymentUseCase updatePaymentUseCase(PaymentRepository paymentRepository) {
-    return new UpdatePaymentUseCase(paymentRepository);
+  public UpdatePaymentUseCase updatePaymentUseCase(PaymentPostgreDriver paymentPostgreDriver) {
+    return new UpdatePaymentUseCase(paymentPostgreDriver);
   }
 
   @Bean
-  public HandleExternalPaymentUseCase handleExternalPaymentUseCase(PaymentRepository paymentRepository, OderRepository oderRepository) {
+  public HandleExternalPaymentUseCase handleExternalPaymentUseCase(PaymentPostgreDriver paymentPostgreDriver, OrderPostgreDriver orderPostgreDriver) {
     return new HandleExternalPaymentUseCase(
-        paymentRepository,
-        new GetOrderUseCase(oderRepository, new CalculateOrderWaitTimeUseCase()),
-        new UpdateOrderStatusUseCase(oderRepository)
+            paymentPostgreDriver,
+        new GetOrderUseCase(orderPostgreDriver, new CalculateOrderWaitTimeUseCase()),
+        new UpdateOrderStatusUseCase(orderPostgreDriver)
     );
   }
 

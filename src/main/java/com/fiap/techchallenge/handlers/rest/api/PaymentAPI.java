@@ -2,6 +2,8 @@ package com.fiap.techchallenge.handlers.rest.api;
 
 import com.fiap.techchallenge.controller.PaymentController;
 import com.fiap.techchallenge.domain.payment.Payment;
+import com.fiap.techchallenge.drivers.postgresql.PaymentPostgreDriver;
+import com.fiap.techchallenge.gateway.PaymentGateway;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,9 +20,11 @@ import java.util.UUID;
 public class PaymentAPI {
 
   private final PaymentController paymentController;
+  private final PaymentGateway paymentGateway;
 
-  public PaymentAPI(PaymentController paymentController) {
+  public PaymentAPI(PaymentController paymentController, PaymentPostgreDriver postgreDriver) {
     this.paymentController = paymentController;
+    this.paymentGateway = postgreDriver;
   }
 
   @Operation(
@@ -34,9 +38,9 @@ public class PaymentAPI {
       @Valid @RequestParam(required = false) boolean isExternal
   ) {
     if (isExternal) {
-      return ResponseEntity.ok(paymentController.getPayment(paymentId));
+      return ResponseEntity.ok(paymentController.getPayment(paymentId, this.paymentGateway));
     }
-    return ResponseEntity.ok(paymentController.getPayment(UUID.fromString(paymentId)));
+    return ResponseEntity.ok(paymentController.getPayment(UUID.fromString(paymentId), this.paymentGateway));
   }
 
 }
