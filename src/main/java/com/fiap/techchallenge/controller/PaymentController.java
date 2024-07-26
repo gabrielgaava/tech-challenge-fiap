@@ -17,11 +17,11 @@ public class PaymentController {
 
 
   public Payment getPayment(String paymentId, PaymentGateway paymentGateway){
-      return getPaymentUseCase.execute(paymentId);
+      return getPaymentUseCase.execute(paymentId, paymentGateway);
   }
 
   public Payment getPayment(UUID paymentId, PaymentGateway paymentGateway){
-    return getPaymentUseCase.execute(paymentId);
+    return getPaymentUseCase.execute(paymentId, paymentGateway);
   }
 
 }

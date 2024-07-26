@@ -10,18 +10,18 @@ import java.util.regex.Pattern;
 
 public class CreateCustomerUseCase  {
 
-  private final CustomerGateway customerRepository;
+  private final CustomerGateway customerGateway;
 
-  public CreateCustomerUseCase(CustomerGateway customerRepository) {
-    this.customerRepository = customerRepository;
+  public CreateCustomerUseCase(CustomerGateway customerGateway) {
+    this.customerGateway = customerGateway;
   }
 
-  public Customer execute(Customer customer) throws InvalidCpfException, EntityAlreadyExistException {
+  public Customer execute(Customer customer, CustomerGateway customerGateway) throws InvalidCpfException, EntityAlreadyExistException {
     customer.setId(UUID.randomUUID());
 
     // Validating CPF
     if(Pattern.matches("\\d{11}", customer.getCpf())) {
-      int createFlag = customerRepository.create(customer);
+      int createFlag = customerGateway.create(customer);
       if (createFlag == 1) return customer;
       else if(createFlag == -1) throw new EntityAlreadyExistException("CPF or email already exist and must be unique");
     }

@@ -11,14 +11,14 @@ import static com.fiap.techchallenge.domain.order.OrderStatus.*;
 
 public class UpdateOrderStatusUseCase  {
 
-  private final OrderGateway orderRepository;
+  private final OrderGateway orderGateway;
 
-  public UpdateOrderStatusUseCase(OrderGateway repositoryPort) {
-    this.orderRepository = repositoryPort;
+  public UpdateOrderStatusUseCase(OrderGateway GatewayPort) {
+    this.orderGateway = GatewayPort;
   }
 
-  public boolean execute(UUID id, OrderStatus status) throws OrderAlreadyWithStatusException, EntityNotFoundException {
-    var order = orderRepository.getById(id);
+  public boolean execute(UUID id, OrderStatus status, OrderGateway orderGateway) throws OrderAlreadyWithStatusException, EntityNotFoundException {
+    var order = orderGateway.getById(id);
 
     // Order Not Found in Database
     if (order == null) throw new EntityNotFoundException("Order", id);
@@ -81,7 +81,7 @@ public class UpdateOrderStatusUseCase  {
     if (order.getStatus().equals(status))
       throw new OrderAlreadyWithStatusException(id, status);
 
-    return orderRepository.updateStatus(order, status, order.getStatus()) == 2;
+    return orderGateway.updateStatus(order, status, order.getStatus()) == 2;
   }
 
 }

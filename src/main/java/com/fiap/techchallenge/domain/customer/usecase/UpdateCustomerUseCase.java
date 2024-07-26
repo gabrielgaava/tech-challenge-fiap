@@ -7,14 +7,14 @@ import com.fiap.techchallenge.domain.exception.EntityAlreadyExistException;
 
 public class UpdateCustomerUseCase  {
 
-  private final CustomerGateway customerRepository;
+  private final CustomerGateway customerGateway;
 
-  public UpdateCustomerUseCase(CustomerGateway customerRepository) {
-    this.customerRepository = customerRepository;
+  public UpdateCustomerUseCase(CustomerGateway customerGateway) {
+    this.customerGateway = customerGateway;
   }
 
   public Customer execute(Customer customer) throws EntityAlreadyExistException {
-    int updateFlag = customerRepository.update(customer);
+    int updateFlag = customerGateway.update(customer);
 
     if (updateFlag == 1)
       return customer;

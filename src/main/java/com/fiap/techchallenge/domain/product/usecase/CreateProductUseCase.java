@@ -9,18 +9,18 @@ import java.util.UUID;
 
 public class CreateProductUseCase {
 
-  private final ProductGateway productRepository;
+  private final ProductGateway productGateway;
 
-  public CreateProductUseCase(ProductGateway productRepository) {
-    this.productRepository = productRepository;
+  public CreateProductUseCase(ProductGateway productGateway) {
+    this.productGateway = productGateway;
   }
 
-  public Product execute(Product product)
+  public Product execute(Product product, ProductGateway productGateway)
   {
     product.setId(UUID.randomUUID());
     product.setPrice(formatToTwoDecimalPlaces(product.getPrice()));
 
-    if(productRepository.create(product) == 1)
+    if(this.productGateway.create(product) == 1)
       return product;
 
     else return null;

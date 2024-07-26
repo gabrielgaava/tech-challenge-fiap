@@ -32,20 +32,20 @@ public class CustomerController {
     }
 
     public Customer getCustomerByCpf(String cpf, CustomerGateway customerGateway){
-        return getCustomerByCPFUseCase.execute(cpf);
+        return getCustomerByCPFUseCase.execute(cpf, customerGateway);
     }
 
     public List<Customer> getAllCustomers(CustomerGateway customerGateway){
-        return listAllCustomerUseCase.execute();
+        return listAllCustomerUseCase.execute(customerGateway);
     }
 
     public Customer createCustomer(Customer customer, CustomerGateway customerGateway) throws EntityAlreadyExistException, InvalidCpfException {
-        return createCustomerUseCase.execute(customer);
+        return createCustomerUseCase.execute(customer, customerGateway);
     }
 
     public Customer updateCustomerByCpf(Customer customer, String cpf, CustomerGateway customerGateway) throws EntityAlreadyExistException {
         if (updateCustomerUseCase.execute(customer) != null) {
-            return getCustomerByCPFUseCase.execute(cpf);
+            return getCustomerByCPFUseCase.execute(cpf, customerGateway);
         }
         return null;
     }

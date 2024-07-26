@@ -5,14 +5,14 @@ import com.fiap.techchallenge.gateway.CustomerGateway;
 
 public class GetCustomerByCPFUseCase  {
 
-  private final CustomerGateway customerRepository;
+  private final CustomerGateway customerGateway;
 
-  public GetCustomerByCPFUseCase(CustomerGateway customerRepository) {
-    this.customerRepository = customerRepository;
+  public GetCustomerByCPFUseCase(CustomerGateway customerGateway) {
+    this.customerGateway = customerGateway;
   }
 
-  public Customer execute(String cpf) {
-    return customerRepository.getByCpf(cpf);
+  public Customer execute(String cpf, CustomerGateway customerGateway) {
+    return customerGateway.getByCpf(cpf);
   }
 
 }

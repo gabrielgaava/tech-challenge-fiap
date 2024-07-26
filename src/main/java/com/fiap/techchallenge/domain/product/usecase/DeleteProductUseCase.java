@@ -6,20 +6,20 @@ import java.util.UUID;
 
 public class DeleteProductUseCase {
 
-  private final ProductGateway productRepository;
+  private final ProductGateway productGateway;
 
-  public DeleteProductUseCase(ProductGateway productRepository) {
-    this.productRepository = productRepository;
+  public DeleteProductUseCase(ProductGateway productGateway) {
+    this.productGateway = productGateway;
   }
 
-  public Boolean execute(String id) {
+  public Boolean execute(String id, ProductGateway productGateway) {
 
-    var product = productRepository.getById(UUID.fromString(id));
+    var product = this.productGateway.getById(UUID.fromString(id));
 
     if(product == null)
       return false;
 
-    int deleteFlag = productRepository.delete(UUID.fromString(id));
+    int deleteFlag = this.productGateway.delete(UUID.fromString(id));
     return deleteFlag == 1;
 
   }

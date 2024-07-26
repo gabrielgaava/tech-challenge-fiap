@@ -5,14 +5,14 @@ import com.fiap.techchallenge.gateway.PaymentGateway;
 
 public class CreatePaymentUseCase {
 
-  private final PaymentGateway paymentRepository;
+  private final PaymentGateway paymentGateway;
 
-  public CreatePaymentUseCase(PaymentGateway paymentRepository) {
-    this.paymentRepository = paymentRepository;
+  public CreatePaymentUseCase(PaymentGateway paymentGateway) {
+    this.paymentGateway = paymentGateway;
   }
 
   public Payment execute(Payment payment) {
-    if(paymentRepository.create(payment) == 1) return payment;
+    if(paymentGateway.create(payment) == 1) return payment;
     return null;
   }
 

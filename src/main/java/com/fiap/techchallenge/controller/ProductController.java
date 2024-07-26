@@ -26,14 +26,14 @@ public class ProductController {
     }
 
     public List<Product> getProducts(Product.ProductFilters filters, ProductGateway productGateway){
-        return listAllProductsUseCase.execute(filters);
+        return listAllProductsUseCase.execute(filters, productGateway);
     }
 
     public Product createProduct(Product product, ProductGateway productGateway){
-        return createProductUseCase.execute(product);
+        return createProductUseCase.execute(product, productGateway);
     }
 
     public Boolean deleteProduct (String id, ProductGateway productGateway){
-        return (deleteProductUseCase.execute(id));
+        return (deleteProductUseCase.execute(id, productGateway));
     }
 }

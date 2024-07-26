@@ -1,6 +1,9 @@
 package com.fiap.techchallenge.drivers.postgresql;
 
-import com.fiap.techchallenge.domain.order.*;
+import com.fiap.techchallenge.domain.order.Order;
+import com.fiap.techchallenge.domain.order.OrderFilters;
+import com.fiap.techchallenge.domain.order.OrderHistory;
+import com.fiap.techchallenge.domain.order.OrderStatus;
 import com.fiap.techchallenge.domain.product.ProductAndQuantity;
 import com.fiap.techchallenge.drivers.postgresql.mapper.OrderMapper;
 import com.fiap.techchallenge.gateway.OrderGateway;
@@ -13,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Repository("PGOrderRepository")
+@Repository("PGOrderGateway")
 public class OrderPostgreDriver implements OrderGateway {
 
     private final JdbcTemplate jdbcTemplate;

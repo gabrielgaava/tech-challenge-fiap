@@ -1,8 +1,8 @@
 package com.fiap.techchallenge.drivers.postgresql;
 
 import com.fiap.techchallenge.domain.payment.Payment;
-import com.fiap.techchallenge.gateway.PaymentGateway;
 import com.fiap.techchallenge.drivers.postgresql.mapper.PaymentMapper;
+import com.fiap.techchallenge.gateway.PaymentGateway;
 import com.fiap.techchallenge.utils.ParseUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
-@Repository("PGPaymentRepository")
+@Repository("PGPaymentGateway")
 public class PaymentPostgreDriver implements PaymentGateway {
 
   private final JdbcTemplate jdbcTemplate;

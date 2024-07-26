@@ -7,14 +7,14 @@ import java.util.List;
 
 public class ListAllCustomerUseCase {
 
-  private final CustomerGateway customerRepository;
+  private final CustomerGateway customerGateway;
 
-  public ListAllCustomerUseCase(CustomerGateway customerRepository) {
-    this.customerRepository = customerRepository;
+  public ListAllCustomerUseCase(CustomerGateway customerGateway) {
+    this.customerGateway = customerGateway;
   }
 
-  public List<Customer> execute() {
-    return customerRepository.getAll();
+  public List<Customer> execute(CustomerGateway customerGateway) {
+    return customerGateway.getAll();
   }
 
 }

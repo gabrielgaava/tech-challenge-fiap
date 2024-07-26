@@ -9,15 +9,15 @@ import java.util.UUID;
 
 public class GetOrderHistoryUseCase  {
 
-  private final OrderGateway orderRepository;
+  private final OrderGateway orderGateway;
 
-  public GetOrderHistoryUseCase(OrderGateway orderRepository) {
-    this.orderRepository = orderRepository;
+  public GetOrderHistoryUseCase(OrderGateway orderGateway) {
+    this.orderGateway = orderGateway;
   }
 
-  public List<OrderHistory> execute(UUID id) throws EntityNotFoundException {
+  public List<OrderHistory> execute(UUID id, OrderGateway orderGateway) throws EntityNotFoundException {
 
-    var history = orderRepository.getOrderHistoryByOrderId(id);
+    var history = orderGateway.getOrderHistoryByOrderId(id);
     if (history == null) throw new EntityNotFoundException("Order", id);
 
     return history;

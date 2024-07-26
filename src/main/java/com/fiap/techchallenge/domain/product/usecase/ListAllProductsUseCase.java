@@ -7,14 +7,14 @@ import java.util.List;
 
 public class ListAllProductsUseCase{
 
-  private final ProductGateway productRepository;
+  private final ProductGateway productGateway;
 
-  public ListAllProductsUseCase(ProductGateway productRepository) {
-    this.productRepository = productRepository;
+  public ListAllProductsUseCase(ProductGateway productGateway) {
+    this.productGateway = productGateway;
   }
 
-  public List<Product> execute(Product.ProductFilters filters)
+  public List<Product> execute(Product.ProductFilters filters, ProductGateway productGateway)
   {
-    return productRepository.getAll(filters);
+    return this.productGateway.getAll(filters);
   }
 }

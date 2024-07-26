@@ -9,26 +9,26 @@ import java.util.List;
 
 public class ListOrdersWithFiltersUseCase  {
 
-  private final OrderGateway repository;
+  private final OrderGateway Gateway;
   private final CalculateOrderWaitTimeUseCase calculateOrderWaitTimeUseCase;
 
-  public ListOrdersWithFiltersUseCase(OrderGateway repository, CalculateOrderWaitTimeUseCase useCase) {
-    this.repository = repository;
+  public ListOrdersWithFiltersUseCase(OrderGateway Gateway, CalculateOrderWaitTimeUseCase useCase) {
+    this.Gateway = Gateway;
     this.calculateOrderWaitTimeUseCase = useCase;
   }
 
-  public List<Order> execute(OrderFilters filters)
+  public List<Order> execute(OrderFilters filters, OrderGateway orderGateway)
   {
     List<Order> orders;
 
     if(filters.hasNoParameters()) {
       OrderFilters defaultFilters = new OrderFilters(null, OrderSortFields.CREATED_AT, SortDirection.ASC);
-      orders = repository.getAll(defaultFilters);
+      orders = Gateway.getAll(defaultFilters);
       orders = this.getDefaultListOrders(orders);
     }
 
     else {
-      orders = repository.getAll(filters);
+      orders = Gateway.getAll(filters);
     }
 
     return this.calculateOrdersWaitTime(orders);

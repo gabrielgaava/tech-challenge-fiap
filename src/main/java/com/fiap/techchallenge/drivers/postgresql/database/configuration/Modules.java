@@ -27,40 +27,40 @@ public class Modules {
   // ========================= CUSTOMERS =========================
 
   @Bean
-  public CreateCustomerUseCase createCustomerUseCase(CustomerPostgreDriver repository) {
-    return new CreateCustomerUseCase(repository);
+  public CreateCustomerUseCase createCustomerUseCase(CustomerPostgreDriver Gateway) {
+    return new CreateCustomerUseCase(Gateway);
   }
 
   @Bean
-  public GetCustomerByCPFUseCase getCustomerByCPFUseCase(CustomerPostgreDriver repository) {
-    return new GetCustomerByCPFUseCase(repository);
+  public GetCustomerByCPFUseCase getCustomerByCPFUseCase(CustomerPostgreDriver Gateway) {
+    return new GetCustomerByCPFUseCase(Gateway);
   }
 
   @Bean
-  public ListAllCustomerUseCase listAllCustomerUseCase(CustomerPostgreDriver repository) {
-    return new ListAllCustomerUseCase(repository);
+  public ListAllCustomerUseCase listAllCustomerUseCase(CustomerPostgreDriver Gateway) {
+    return new ListAllCustomerUseCase(Gateway);
   }
 
   @Bean
-  public UpdateCustomerUseCase updateCustomerUseCase(CustomerPostgreDriver repository) {
-    return new UpdateCustomerUseCase(repository);
+  public UpdateCustomerUseCase updateCustomerUseCase(CustomerPostgreDriver Gateway) {
+    return new UpdateCustomerUseCase(Gateway);
   }
 
   // ========================= PRODUCTS =========================
 
   @Bean
-  public CreateProductUseCase createProductUseCase(ProductPostgreDriver repository) {
-    return new CreateProductUseCase(repository);
+  public CreateProductUseCase createProductUseCase(ProductPostgreDriver Gateway) {
+    return new CreateProductUseCase(Gateway);
   }
 
   @Bean
-  public DeleteProductUseCase deleteProductUseCase(ProductPostgreDriver repository) {
-    return new DeleteProductUseCase(repository);
+  public DeleteProductUseCase deleteProductUseCase(ProductPostgreDriver Gateway) {
+    return new DeleteProductUseCase(Gateway);
   }
 
   @Bean
-  public ListAllProductsUseCase listAllProductsUseCase(ProductPostgreDriver repository) {
-    return new ListAllProductsUseCase(repository);
+  public ListAllProductsUseCase listAllProductsUseCase(ProductPostgreDriver Gateway) {
+    return new ListAllProductsUseCase(Gateway);
   }
 
   // ========================= ORDERS =========================

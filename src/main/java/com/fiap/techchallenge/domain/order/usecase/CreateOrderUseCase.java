@@ -15,15 +15,15 @@ import static java.math.RoundingMode.HALF_EVEN;
 
 public class CreateOrderUseCase  {
 
-  private final OrderGateway orderRepository;
-  private final ProductGateway productRepository;
+  private final OrderGateway orderGateway;
+  private final ProductGateway productGateway;
 
-  public CreateOrderUseCase(OrderGateway orderRepository, ProductGateway productRepository) {
-    this.orderRepository = orderRepository;
-    this.productRepository = productRepository;
+  public CreateOrderUseCase(OrderGateway orderGateway, ProductGateway productGateway) {
+    this.orderGateway = orderGateway;
+    this.productGateway = productGateway;
   }
 
-  public Order execute(Order order) throws EntityNotFoundException {
+  public Order execute(Order order, OrderGateway orderGateway) throws EntityNotFoundException {
 
     // The order must have at least one product to be created
     if (order.getProducts() == null || order.getProducts().isEmpty())
@@ -35,7 +35,7 @@ public class CreateOrderUseCase  {
       if (item.getQuantity() <= 0)
         throw new IllegalArgumentException("Quantity must be greater than zero");
 
-      var product = productRepository.getById(item.getProduct().getId());
+      var product = productGateway.getById(item.getProduct().getId());
 
       if (product == null) {
         throw new EntityNotFoundException("Product", item.getProduct().getId());
@@ -58,7 +58,7 @@ public class CreateOrderUseCase  {
     order.setCreatedAt(LocalDateTime.now());
 
     // Successfully created all data in database
-    if (orderRepository.create(order) == 1)
+    if (orderGateway.create(order) == 1)
       return order;
 
       // Error trying to storage data

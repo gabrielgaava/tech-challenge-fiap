@@ -6,6 +6,8 @@ import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.domain.payment.usecase.HandleExternalPaymentUseCase;
+import com.fiap.techchallenge.drivers.postgresql.OrderPostgreDriver;
+import com.fiap.techchallenge.gateway.OrderGateway;
 import com.fiap.techchallenge.handlers.rest.exceptions.PaymentErrorException;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.common.IdentificationRequest;
@@ -29,9 +31,11 @@ public class MercadoPagoController {
 
     private final HandleExternalPaymentUseCase handleExternalPaymentUseCase;
     private final String GATEWAY_NAME = "MERCADOPAGO";
+    private final OrderGateway orderGateway;
 
-    public MercadoPagoController(HandleExternalPaymentUseCase handleExternalPaymentUseCase) {
+    public MercadoPagoController(HandleExternalPaymentUseCase handleExternalPaymentUseCase, OrderPostgreDriver postgreDriver) {
         this.handleExternalPaymentUseCase = handleExternalPaymentUseCase;
+        this.orderGateway = postgreDriver;
     }
 
     public Payment checkoutOrder(Order order, Customer customer) throws PaymentErrorException {
@@ -75,11 +79,11 @@ public class MercadoPagoController {
         var response = client.get(Long.valueOf(paymentId));
         boolean approved = response.getStatus().equals(PaymentStatus.APPROVED);
 
-        this.handleExternalPaymentUseCase.execute(paymentId, approved);
+        this.handleExternalPaymentUseCase.execute(paymentId, approved, this.orderGateway);
     }
 
     public Payment paymentNotification(String id) throws PaymentErrorException {
-        return handleExternalPaymentUseCase.execute(id, true);
+        return handleExternalPaymentUseCase.execute(id, true, orderGateway);
     }
 
     private MPRequestOptions getMPRequestOptions(Order order) {

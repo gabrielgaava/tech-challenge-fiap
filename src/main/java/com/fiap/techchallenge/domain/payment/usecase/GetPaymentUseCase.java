@@ -7,18 +7,18 @@ import java.util.UUID;
 
 public class GetPaymentUseCase {
 
-  private final PaymentGateway paymentRepository;
+  private final PaymentGateway paymentGateway;
 
-  public GetPaymentUseCase(PaymentGateway paymentRepository) {
-    this.paymentRepository = paymentRepository;
+  public GetPaymentUseCase(PaymentGateway paymentGateway) {
+    this.paymentGateway = paymentGateway;
   }
 
-  public Payment execute(UUID id) {
-    return this.paymentRepository.get(id);
+  public Payment execute(UUID id, PaymentGateway paymentGateway) {
+    return this.paymentGateway.get(id);
   }
 
-  public Payment execute(String externalId) {
-    return this.paymentRepository.getByExternalId(externalId);
+  public Payment execute(String externalId, PaymentGateway paymentGateway) {
+    return this.paymentGateway.getByExternalId(externalId);
   }
 
 }

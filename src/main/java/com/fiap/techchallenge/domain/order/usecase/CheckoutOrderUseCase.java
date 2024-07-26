@@ -19,20 +19,20 @@ import static com.fiap.techchallenge.domain.order.OrderStatus.RECEIVED;
 
 public class CheckoutOrderUseCase {
 
-  private final OrderGateway orderRepository;
-  private final CustomerGateway customerRepository;
-  private final PaymentGateway paymentRepository;
+  private final OrderGateway orderGateway;
+  private final CustomerGateway customerGateway;
+  private final PaymentGateway paymentGateway;
   private final CheckoutGateway checkoutGateway;
 
-  public CheckoutOrderUseCase(OrderGateway orderRepository, CustomerGateway customerRepository, PaymentGateway paymentRepository, CheckoutGateway checkoutGateway) {
-    this.orderRepository = orderRepository;;
-    this.customerRepository = customerRepository;
-    this.paymentRepository = paymentRepository;
+  public CheckoutOrderUseCase(OrderGateway orderGateway, CustomerGateway customerGateway, PaymentGateway paymentGateway, CheckoutGateway checkoutGateway) {
+    this.orderGateway = orderGateway;;
+    this.customerGateway = customerGateway;
+    this.paymentGateway = paymentGateway;
     this.checkoutGateway = checkoutGateway;
   }
 
-  public Payment execute(UUID id) throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException {
-    Order order = orderRepository.getById(id);
+  public Payment execute(UUID id, OrderGateway orderGateway) throws EntityNotFoundException, OrderNotReadyException, MercadoPagoUnavailableException {
+    Order order = orderGateway.getById(id);
     Customer customer = null;
 
     if (order == null || order.getStatus() == null) {
@@ -49,13 +49,13 @@ public class CheckoutOrderUseCase {
     }
 
     if (order.getCustomerId() != null) {
-      customer = customerRepository.getByID(order.getCustomerId());
+      customer = customerGateway.getByID(order.getCustomerId());
     }
 
     try {
       Payment payment = checkoutGateway.checkoutOrder(order, customer);
-      orderRepository.updateStatus(order, RECEIVED, order.getStatus());
-      paymentRepository.create(payment);
+      orderGateway.updateStatus(order, RECEIVED, order.getStatus());
+      paymentGateway.create(payment);
       return payment;
     } catch (PaymentErrorException e) {
       throw new MercadoPagoUnavailableException();

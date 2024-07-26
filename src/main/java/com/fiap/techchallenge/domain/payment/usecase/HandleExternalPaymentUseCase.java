@@ -7,6 +7,7 @@ import com.fiap.techchallenge.domain.order.OrderStatus;
 import com.fiap.techchallenge.domain.order.usecase.GetOrderUseCase;
 import com.fiap.techchallenge.domain.order.usecase.UpdateOrderStatusUseCase;
 import com.fiap.techchallenge.domain.payment.Payment;
+import com.fiap.techchallenge.gateway.OrderGateway;
 import com.fiap.techchallenge.gateway.PaymentGateway;
 import com.fiap.techchallenge.domain.payment.PaymentStatus;
 import com.fiap.techchallenge.handlers.rest.exceptions.PaymentErrorException;
@@ -15,27 +16,27 @@ import java.time.LocalDateTime;
 
 public class HandleExternalPaymentUseCase {
 
-  private final PaymentGateway paymentRepository;
+  private final PaymentGateway paymentGateway;
   private final GetOrderUseCase getOrderUseCase;
   private final UpdateOrderStatusUseCase updateOrderStatusUseCase;
 
   public HandleExternalPaymentUseCase(
-      PaymentGateway paymentRepository,
+      PaymentGateway paymentGateway,
       GetOrderUseCase getOrderUseCase,
       UpdateOrderStatusUseCase updateOrderStatusUseCase
   ) {
-    this.paymentRepository = paymentRepository;
+    this.paymentGateway = paymentGateway;
     this.getOrderUseCase = getOrderUseCase;
     this.updateOrderStatusUseCase = updateOrderStatusUseCase;
   }
 
-  public Payment execute(String externalPaymentId, boolean success) throws PaymentErrorException {
+  public Payment execute(String externalPaymentId, boolean success, OrderGateway orderGateway) throws PaymentErrorException {
 
-    Payment payment = paymentRepository.getByExternalId(externalPaymentId);
+    Payment payment = paymentGateway.getByExternalId(externalPaymentId);
 
     try
     {
-      Order order = getOrderUseCase.execute(payment.getOrderId());
+      Order order = getOrderUseCase.execute(payment.getOrderId(), orderGateway);
       PaymentStatus paymentStatus = success ? PaymentStatus.APPROVED : PaymentStatus.REFUSED;
       OrderStatus orderStatus = success ? OrderStatus.IN_PREPARATION : order.getStatus();
 
@@ -43,10 +44,10 @@ public class HandleExternalPaymentUseCase {
 
       if(success) {
         payment.setPayedAt(LocalDateTime.now());
-        updateOrderStatusUseCase.execute(order.getId(), orderStatus);
+        updateOrderStatusUseCase.execute(order.getId(), orderStatus, orderGateway);
       }
 
-      paymentRepository.update(payment);
+      paymentGateway.update(payment);
       return payment;
     }
 

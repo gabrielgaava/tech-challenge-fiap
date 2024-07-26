@@ -5,14 +5,14 @@ import com.fiap.techchallenge.gateway.PaymentGateway;
 
 public class UpdatePaymentUseCase  {
 
-  private final PaymentGateway paymentRepository;
+  private final PaymentGateway paymentGateway;
 
-  public UpdatePaymentUseCase(PaymentGateway paymentRepository) {
-    this.paymentRepository = paymentRepository;
+  public UpdatePaymentUseCase(PaymentGateway paymentGateway) {
+    this.paymentGateway = paymentGateway;
   }
 
   public Payment execute(Payment payment) {
-    if(paymentRepository.update(payment)) return payment;
+    if(paymentGateway.update(payment)) return payment;
     return null;
   }
 

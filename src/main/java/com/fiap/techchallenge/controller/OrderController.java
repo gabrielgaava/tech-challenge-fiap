@@ -41,27 +41,27 @@ public class OrderController {
     }
 
     public List<Order> getOrders(OrderFilters filters, OrderGateway orderGateway){
-       return listOrdersWithFiltersUseCase.execute(filters);
+       return listOrdersWithFiltersUseCase.execute(filters, orderGateway);
     }
 
     public Order getOrder(String id, OrderGateway orderGateway) throws EntityNotFoundException {
-        return getOrderUseCase.execute(UUID.fromString(id));
+        return getOrderUseCase.execute(UUID.fromString(id), orderGateway);
     }
 
     public List<OrderHistory> getOrderHistory(UUID id, OrderGateway orderGateway) throws EntityNotFoundException {
-        return getOrderHistoryUseCase.execute(id);
+        return getOrderHistoryUseCase.execute(id, orderGateway);
     }
 
     public Order createOrder(Order order, OrderGateway orderGateway) throws EntityNotFoundException {
-        return createOrderUseCase.execute(order);
+        return createOrderUseCase.execute(order, orderGateway);
     }
 
     public boolean updateStatus(UUID orderId, OrderStatus status, OrderGateway orderGateway) throws EntityNotFoundException, OrderAlreadyWithStatusException {
-        return updateOrderStatusUseCase.execute(orderId, status);
+        return updateOrderStatusUseCase.execute(orderId, status, orderGateway);
     }
 
     public Payment payOrder(UUID orderId, OrderGateway orderGateway) throws MercadoPagoUnavailableException, EntityNotFoundException, OrderNotReadyException {
-        return checkoutOrderUseCase.execute(orderId);
+        return checkoutOrderUseCase.execute(orderId, orderGateway);
     }
 
 }
