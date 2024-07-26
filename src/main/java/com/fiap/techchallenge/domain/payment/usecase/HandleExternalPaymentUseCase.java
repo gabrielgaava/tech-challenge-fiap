@@ -1,20 +1,19 @@
-package com.fiap.techchallenge.domain.payment.usecase.impl;
+package com.fiap.techchallenge.domain.payment.usecase;
 
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.domain.order.OrderStatus;
-import com.fiap.techchallenge.domain.order.usecase.impl.GetOrderUseCase;
-import com.fiap.techchallenge.domain.order.usecase.impl.UpdateOrderStatusUseCase;
+import com.fiap.techchallenge.domain.order.usecase.GetOrderUseCase;
+import com.fiap.techchallenge.domain.order.usecase.UpdateOrderStatusUseCase;
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.gateway.PaymentGateway;
 import com.fiap.techchallenge.domain.payment.PaymentStatus;
-import com.fiap.techchallenge.domain.payment.usecase.IHandleExternalPaymentUseCase;
 import com.fiap.techchallenge.handlers.webhook.mercadopago.exception.PaymentErrorException;
 
 import java.time.LocalDateTime;
 
-public class HandleExternalPaymentUseCase implements IHandleExternalPaymentUseCase {
+public class HandleExternalPaymentUseCase {
 
   private final PaymentGateway paymentRepository;
   private final GetOrderUseCase getOrderUseCase;
@@ -30,7 +29,6 @@ public class HandleExternalPaymentUseCase implements IHandleExternalPaymentUseCa
     this.updateOrderStatusUseCase = updateOrderStatusUseCase;
   }
 
-  @Override
   public Payment execute(String externalPaymentId, boolean success) throws PaymentErrorException {
 
     Payment payment = paymentRepository.getByExternalId(externalPaymentId);

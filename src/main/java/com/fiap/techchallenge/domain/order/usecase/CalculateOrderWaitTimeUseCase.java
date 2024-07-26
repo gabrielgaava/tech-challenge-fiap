@@ -1,15 +1,14 @@
-package com.fiap.techchallenge.domain.order.usecase.impl;
+package com.fiap.techchallenge.domain.order.usecase;
 
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.domain.order.OrderStatus;
-import com.fiap.techchallenge.domain.order.usecase.ICalculateOrderWaitTimeUseCase;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 import static com.fiap.techchallenge.domain.order.OrderStatus.CREATED;
 
-public class CalculateOrderWaitTimeUseCase implements ICalculateOrderWaitTimeUseCase {
+public class CalculateOrderWaitTimeUseCase {
 
   public long execute(Order order) {
     OrderStatus status = order.getStatus();

@@ -1,16 +1,15 @@
-package com.fiap.techchallenge.domain.order.usecase.impl;
+package com.fiap.techchallenge.domain.order.usecase;
 
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.gateway.OrderGateway;
 import com.fiap.techchallenge.domain.order.OrderStatus;
-import com.fiap.techchallenge.domain.order.usecase.IUpdateOrderStatusUseCase;
 
 import java.util.UUID;
 
 import static com.fiap.techchallenge.domain.order.OrderStatus.*;
 
-public class UpdateOrderStatusUseCase implements IUpdateOrderStatusUseCase {
+public class UpdateOrderStatusUseCase  {
 
   private final OrderGateway orderRepository;
 

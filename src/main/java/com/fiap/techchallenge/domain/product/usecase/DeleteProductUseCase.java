@@ -1,11 +1,10 @@
-package com.fiap.techchallenge.domain.product.usecase.impl;
+package com.fiap.techchallenge.domain.product.usecase;
 
 import com.fiap.techchallenge.gateway.ProductGateway;
-import com.fiap.techchallenge.domain.product.usecase.IDeleteProductUseCase;
 
 import java.util.UUID;
 
-public class DeleteProductUseCase implements IDeleteProductUseCase {
+public class DeleteProductUseCase {
 
   private final ProductGateway productRepository;
 
@@ -13,7 +12,6 @@ public class DeleteProductUseCase implements IDeleteProductUseCase {
     this.productRepository = productRepository;
   }
 
-  @Override
   public Boolean execute(String id) {
 
     var product = productRepository.getById(UUID.fromString(id));

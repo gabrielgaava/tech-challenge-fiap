@@ -1,12 +1,11 @@
-package com.fiap.techchallenge.domain.customer.usecase.impl;
+package com.fiap.techchallenge.domain.customer.usecase;
 
 import com.fiap.techchallenge.domain.customer.Customer;
 import com.fiap.techchallenge.gateway.CustomerGateway;
-import com.fiap.techchallenge.domain.customer.usecase.IListAllCustomerUseCase;
 
 import java.util.List;
 
-public class ListAllCustomerUseCase implements IListAllCustomerUseCase {
+public class ListAllCustomerUseCase {
 
   private final CustomerGateway customerRepository;
 

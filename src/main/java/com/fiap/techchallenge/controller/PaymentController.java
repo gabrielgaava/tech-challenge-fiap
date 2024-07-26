@@ -1,16 +1,16 @@
 package com.fiap.techchallenge.controller;
 
 import com.fiap.techchallenge.domain.payment.Payment;
-import com.fiap.techchallenge.domain.payment.usecase.IGetPaymentUseCase;
+import com.fiap.techchallenge.domain.payment.usecase.GetPaymentUseCase;
 
 import java.util.UUID;
 
 
 public class PaymentController {
 
-  private final IGetPaymentUseCase getPaymentUseCase;
+  private final GetPaymentUseCase getPaymentUseCase;
 
-  public PaymentController(IGetPaymentUseCase getPaymentUseCase) {
+  public PaymentController(GetPaymentUseCase getPaymentUseCase) {
     this.getPaymentUseCase = getPaymentUseCase;
   }
 

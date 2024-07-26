@@ -16,20 +16,20 @@ import java.util.UUID;
 
 public class OrderController {
 
-    private final IGetOrderUseCase getOrderUseCase;
-    private final IListOrdersWithFiltersUseCase listOrdersWithFiltersUseCase;
-    private final IUpdateOrderStatusUseCase updateOrderStatusUseCase;
-    private final ICheckoutOrderUseCase checkoutOrderUseCase;
-    private final IGetOrderHistoryUseCase getOrderHistoryUseCase;
-    private final ICreateOrderUseCase createOrderUseCase;
+    private final GetOrderUseCase getOrderUseCase;
+    private final ListOrdersWithFiltersUseCase listOrdersWithFiltersUseCase;
+    private final UpdateOrderStatusUseCase updateOrderStatusUseCase;
+    private final CheckoutOrderUseCase checkoutOrderUseCase;
+    private final GetOrderHistoryUseCase getOrderHistoryUseCase;
+    private final CreateOrderUseCase createOrderUseCase;
 
     public OrderController(
-       IGetOrderUseCase getOrderUseCase,
-       IListOrdersWithFiltersUseCase listOrdersWithFiltersUseCase,
-       IUpdateOrderStatusUseCase updateOrderStatusUseCase,
-       ICheckoutOrderUseCase checkoutOrderUseCase,
-       IGetOrderHistoryUseCase getOrderHistoryUseCase,
-       ICreateOrderUseCase createOrderUseCase
+       GetOrderUseCase getOrderUseCase,
+       ListOrdersWithFiltersUseCase listOrdersWithFiltersUseCase,
+       UpdateOrderStatusUseCase updateOrderStatusUseCase,
+       CheckoutOrderUseCase checkoutOrderUseCase,
+       GetOrderHistoryUseCase getOrderHistoryUseCase,
+       CreateOrderUseCase createOrderUseCase
     ) {
         this.getOrderUseCase = getOrderUseCase;
         this.listOrdersWithFiltersUseCase = listOrdersWithFiltersUseCase;

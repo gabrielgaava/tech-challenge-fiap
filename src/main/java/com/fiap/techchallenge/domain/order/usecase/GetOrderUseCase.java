@@ -1,13 +1,12 @@
-package com.fiap.techchallenge.domain.order.usecase.impl;
+package com.fiap.techchallenge.domain.order.usecase;
 
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.gateway.OrderGateway;
-import com.fiap.techchallenge.domain.order.usecase.IGetOrderUseCase;
 
 import java.util.UUID;
 
-public class GetOrderUseCase implements IGetOrderUseCase {
+public class GetOrderUseCase  {
 
   private final OrderGateway repository;
   private final CalculateOrderWaitTimeUseCase calculateOrderWaitTimeUseCase;

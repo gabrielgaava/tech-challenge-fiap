@@ -1,10 +1,9 @@
-package com.fiap.techchallenge.domain.customer.usecase.impl;
+package com.fiap.techchallenge.domain.customer.usecase;
 
 import com.fiap.techchallenge.domain.customer.Customer;
 import com.fiap.techchallenge.gateway.CustomerGateway;
-import com.fiap.techchallenge.domain.customer.usecase.IGetCustomerByCPFUseCase;
 
-public class GetCustomerByCPFUseCase implements IGetCustomerByCPFUseCase {
+public class GetCustomerByCPFUseCase  {
 
   private final CustomerGateway customerRepository;
 

@@ -1,23 +1,23 @@
 package com.fiap.techchallenge.controller;
 
 import com.fiap.techchallenge.domain.product.Product;
-import com.fiap.techchallenge.domain.product.usecase.ICreateProductUseCase;
-import com.fiap.techchallenge.domain.product.usecase.IDeleteProductUseCase;
-import com.fiap.techchallenge.domain.product.usecase.IListAllProductsUseCase;
+import com.fiap.techchallenge.domain.product.usecase.CreateProductUseCase;
+import com.fiap.techchallenge.domain.product.usecase.DeleteProductUseCase;
+import com.fiap.techchallenge.domain.product.usecase.ListAllProductsUseCase;
 
 import java.util.List;
 
 public class ProductController {
 
-    private final ICreateProductUseCase createProductUseCase;
-    private final IDeleteProductUseCase deleteProductUseCase;
-    private final IListAllProductsUseCase listAllProductsUseCase;
+    private final CreateProductUseCase createProductUseCase;
+    private final DeleteProductUseCase deleteProductUseCase;
+    private final ListAllProductsUseCase listAllProductsUseCase;
 
     public ProductController
     (
-        ICreateProductUseCase createProductUseCase,
-        IDeleteProductUseCase deleteProductUseCase,
-        IListAllProductsUseCase listAllProductsUseCase
+        CreateProductUseCase createProductUseCase,
+        DeleteProductUseCase deleteProductUseCase,
+        ListAllProductsUseCase listAllProductsUseCase
     ) {
         this.createProductUseCase = createProductUseCase;
         this.deleteProductUseCase = deleteProductUseCase;

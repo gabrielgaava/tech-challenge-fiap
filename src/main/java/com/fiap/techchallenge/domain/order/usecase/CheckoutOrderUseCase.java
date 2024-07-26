@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.domain.order.usecase.impl;
+package com.fiap.techchallenge.domain.order.usecase;
 
 import com.fiap.techchallenge.domain.customer.Customer;
 import com.fiap.techchallenge.gateway.CustomerGateway;
@@ -8,7 +8,6 @@ import com.fiap.techchallenge.domain.exception.OrderNotReadyException;
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.gateway.OrderGateway;
 import com.fiap.techchallenge.gateway.ICheckoutGateway;
-import com.fiap.techchallenge.domain.order.usecase.ICheckoutOrderUseCase;
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.gateway.PaymentGateway;
 import com.fiap.techchallenge.handlers.webhook.mercadopago.exception.PaymentErrorException;
@@ -18,7 +17,7 @@ import java.util.UUID;
 import static com.fiap.techchallenge.domain.order.OrderStatus.CREATED;
 import static com.fiap.techchallenge.domain.order.OrderStatus.RECEIVED;
 
-public class CheckoutOrderUseCase implements ICheckoutOrderUseCase {
+public class CheckoutOrderUseCase {
 
   private final OrderGateway orderRepository;
   private final CustomerGateway customerRepository;

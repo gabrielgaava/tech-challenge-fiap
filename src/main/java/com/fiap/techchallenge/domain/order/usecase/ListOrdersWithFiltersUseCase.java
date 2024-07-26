@@ -1,14 +1,13 @@
-package com.fiap.techchallenge.domain.order.usecase.impl;
+package com.fiap.techchallenge.domain.order.usecase;
 
 import com.fiap.techchallenge.domain.order.*;
-import com.fiap.techchallenge.domain.order.usecase.IListOrdersWithFiltersUseCase;
 import com.fiap.techchallenge.gateway.OrderGateway;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ListOrdersWithFiltersUseCase implements IListOrdersWithFiltersUseCase {
+public class ListOrdersWithFiltersUseCase  {
 
   private final OrderGateway repository;
   private final CalculateOrderWaitTimeUseCase calculateOrderWaitTimeUseCase;
@@ -18,7 +17,6 @@ public class ListOrdersWithFiltersUseCase implements IListOrdersWithFiltersUseCa
     this.calculateOrderWaitTimeUseCase = useCase;
   }
 
-  @Override
   public List<Order> execute(OrderFilters filters)
   {
     List<Order> orders;

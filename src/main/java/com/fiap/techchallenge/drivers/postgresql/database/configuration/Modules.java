@@ -1,26 +1,19 @@
 package com.fiap.techchallenge.drivers.postgresql.database.configuration;
 
-import com.fiap.techchallenge.domain.customer.usecase.impl.CreateCustomerUseCase;
-import com.fiap.techchallenge.domain.customer.usecase.impl.GetCustomerByCPFUseCase;
-import com.fiap.techchallenge.domain.customer.usecase.impl.ListAllCustomerUseCase;
-import com.fiap.techchallenge.domain.customer.usecase.impl.UpdateCustomerUseCase;
+import com.fiap.techchallenge.domain.customer.usecase.CreateCustomerUseCase;
+import com.fiap.techchallenge.domain.customer.usecase.GetCustomerByCPFUseCase;
+import com.fiap.techchallenge.domain.customer.usecase.ListAllCustomerUseCase;
+import com.fiap.techchallenge.domain.customer.usecase.UpdateCustomerUseCase;
 import com.fiap.techchallenge.gateway.ICheckoutGateway;
 import com.fiap.techchallenge.domain.order.usecase.*;
 import com.fiap.techchallenge.domain.order.usecase.impl.*;
-import com.fiap.techchallenge.domain.payment.usecase.ICreatePaymentUseCase;
-import com.fiap.techchallenge.domain.payment.usecase.IGetPaymentUseCase;
-import com.fiap.techchallenge.domain.payment.usecase.IHandleExternalPaymentUseCase;
-import com.fiap.techchallenge.domain.payment.usecase.IUpdatePaymentUseCase;
-import com.fiap.techchallenge.domain.payment.usecase.impl.CreatePaymentUseCase;
-import com.fiap.techchallenge.domain.payment.usecase.impl.GetPaymentUseCase;
-import com.fiap.techchallenge.domain.payment.usecase.impl.HandleExternalPaymentUseCase;
-import com.fiap.techchallenge.domain.payment.usecase.impl.UpdatePaymentUseCase;
-import com.fiap.techchallenge.domain.product.usecase.ICreateProductUseCase;
-import com.fiap.techchallenge.domain.product.usecase.IDeleteProductUseCase;
-import com.fiap.techchallenge.domain.product.usecase.IListAllProductsUseCase;
-import com.fiap.techchallenge.domain.product.usecase.impl.CreateProductUseCase;
-import com.fiap.techchallenge.domain.product.usecase.impl.DeleteProductUseCase;
-import com.fiap.techchallenge.domain.product.usecase.impl.ListAllProductsUseCase;
+import com.fiap.techchallenge.domain.payment.usecase.CreatePaymentUseCase;
+import com.fiap.techchallenge.domain.payment.usecase.GetPaymentUseCase;
+import com.fiap.techchallenge.domain.payment.usecase.HandleExternalPaymentUseCase;
+import com.fiap.techchallenge.domain.payment.usecase.UpdatePaymentUseCase;
+import com.fiap.techchallenge.domain.product.usecase.CreateProductUseCase;
+import com.fiap.techchallenge.domain.product.usecase.DeleteProductUseCase;
+import com.fiap.techchallenge.domain.product.usecase.ListAllProductsUseCase;
 import com.fiap.techchallenge.drivers.postgresql.CustomerRepository;
 import com.fiap.techchallenge.drivers.postgresql.OderRepository;
 import com.fiap.techchallenge.drivers.postgresql.PaymentRepository;
@@ -57,17 +50,17 @@ public class Modules {
   // ========================= PRODUCTS =========================
 
   @Bean
-  public ICreateProductUseCase createProductUseCase(ProductRepository repository) {
+  public CreateProductUseCase createProductUseCase(ProductRepository repository) {
     return new CreateProductUseCase(repository);
   }
 
   @Bean
-  public IDeleteProductUseCase deleteProductUseCase(ProductRepository repository) {
+  public DeleteProductUseCase deleteProductUseCase(ProductRepository repository) {
     return new DeleteProductUseCase(repository);
   }
 
   @Bean
-  public IListAllProductsUseCase listAllProductsUseCase(ProductRepository repository) {
+  public ListAllProductsUseCase listAllProductsUseCase(ProductRepository repository) {
     return new ListAllProductsUseCase(repository);
   }
 
@@ -111,22 +104,22 @@ public class Modules {
   // ========================= PAYMENTS =========================
 
   @Bean
-  public ICreatePaymentUseCase createPaymentUseCase(PaymentRepository paymentRepository) {
+  public CreatePaymentUseCase createPaymentUseCase(PaymentRepository paymentRepository) {
     return new CreatePaymentUseCase(paymentRepository);
   }
 
   @Bean
-  public IGetPaymentUseCase getPaymentUseCase(PaymentRepository paymentRepository) {
+  public GetPaymentUseCase getPaymentUseCase(PaymentRepository paymentRepository) {
     return new GetPaymentUseCase(paymentRepository);
   }
 
   @Bean
-  public IUpdatePaymentUseCase updatePaymentUseCase(PaymentRepository paymentRepository) {
+  public UpdatePaymentUseCase updatePaymentUseCase(PaymentRepository paymentRepository) {
     return new UpdatePaymentUseCase(paymentRepository);
   }
 
   @Bean
-  public IHandleExternalPaymentUseCase handleExternalPaymentUseCase(PaymentRepository paymentRepository, OderRepository oderRepository) {
+  public HandleExternalPaymentUseCase handleExternalPaymentUseCase(PaymentRepository paymentRepository, OderRepository oderRepository) {
     return new HandleExternalPaymentUseCase(
         paymentRepository,
         new GetOrderUseCase(oderRepository, new CalculateOrderWaitTimeUseCase()),

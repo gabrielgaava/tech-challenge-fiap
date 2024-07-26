@@ -1,10 +1,9 @@
-package com.fiap.techchallenge.domain.payment.usecase.impl;
+package com.fiap.techchallenge.domain.payment.usecase;
 
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.gateway.PaymentGateway;
-import com.fiap.techchallenge.domain.payment.usecase.IUpdatePaymentUseCase;
 
-public class UpdatePaymentUseCase implements IUpdatePaymentUseCase {
+public class UpdatePaymentUseCase  {
 
   private final PaymentGateway paymentRepository;
 
@@ -12,7 +11,6 @@ public class UpdatePaymentUseCase implements IUpdatePaymentUseCase {
     this.paymentRepository = paymentRepository;
   }
 
-  @Override
   public Payment execute(Payment payment) {
     if(paymentRepository.update(payment)) return payment;
     return null;

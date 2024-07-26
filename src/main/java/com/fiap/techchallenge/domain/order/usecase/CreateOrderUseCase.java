@@ -1,9 +1,8 @@
-package com.fiap.techchallenge.domain.order.usecase.impl;
+package com.fiap.techchallenge.domain.order.usecase;
 
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.gateway.OrderGateway;
-import com.fiap.techchallenge.domain.order.usecase.ICreateOrderUseCase;
 import com.fiap.techchallenge.domain.product.ProductAndQuantity;
 import com.fiap.techchallenge.gateway.ProductGateway;
 
@@ -14,7 +13,7 @@ import java.util.UUID;
 import static com.fiap.techchallenge.domain.order.OrderStatus.CREATED;
 import static java.math.RoundingMode.HALF_EVEN;
 
-public class CreateOrderUseCase implements ICreateOrderUseCase {
+public class CreateOrderUseCase  {
 
   private final OrderGateway orderRepository;
   private final ProductGateway productRepository;

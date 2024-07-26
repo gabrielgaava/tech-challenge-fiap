@@ -5,7 +5,7 @@ import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.domain.payment.Payment;
-import com.fiap.techchallenge.domain.payment.usecase.IHandleExternalPaymentUseCase;
+import com.fiap.techchallenge.domain.payment.usecase.HandleExternalPaymentUseCase;
 import com.fiap.techchallenge.handlers.webhook.mercadopago.exception.PaymentErrorException;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.common.IdentificationRequest;
@@ -27,10 +27,10 @@ import java.util.UUID;
 @Service
 public class MercadoPagoController {
 
-    private final IHandleExternalPaymentUseCase handleExternalPaymentUseCase;
+    private final HandleExternalPaymentUseCase handleExternalPaymentUseCase;
     private final String GATEWAY_NAME = "MERCADOPAGO";
 
-    public MercadoPagoController(IHandleExternalPaymentUseCase handleExternalPaymentUseCase) {
+    public MercadoPagoController(HandleExternalPaymentUseCase handleExternalPaymentUseCase) {
         this.handleExternalPaymentUseCase = handleExternalPaymentUseCase;
     }
 

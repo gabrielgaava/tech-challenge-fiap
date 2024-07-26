@@ -1,14 +1,13 @@
-package com.fiap.techchallenge.domain.product.usecase.impl;
+package com.fiap.techchallenge.domain.product.usecase;
 
 import com.fiap.techchallenge.domain.product.Product;
 import com.fiap.techchallenge.gateway.ProductGateway;
-import com.fiap.techchallenge.domain.product.usecase.ICreateProductUseCase;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.UUID;
 
-public class CreateProductUseCase implements ICreateProductUseCase {
+public class CreateProductUseCase {
 
   private final ProductGateway productRepository;
 

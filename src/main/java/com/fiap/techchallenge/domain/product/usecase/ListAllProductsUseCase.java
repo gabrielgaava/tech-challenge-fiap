@@ -1,12 +1,11 @@
-package com.fiap.techchallenge.domain.product.usecase.impl;
+package com.fiap.techchallenge.domain.product.usecase;
 
 import com.fiap.techchallenge.domain.product.Product;
 import com.fiap.techchallenge.gateway.ProductGateway;
-import com.fiap.techchallenge.domain.product.usecase.IListAllProductsUseCase;
 
 import java.util.List;
 
-public class ListAllProductsUseCase implements IListAllProductsUseCase {
+public class ListAllProductsUseCase{
 
   private final ProductGateway productRepository;
 
@@ -18,5 +17,4 @@ public class ListAllProductsUseCase implements IListAllProductsUseCase {
   {
     return productRepository.getAll(filters);
   }
-
 }
