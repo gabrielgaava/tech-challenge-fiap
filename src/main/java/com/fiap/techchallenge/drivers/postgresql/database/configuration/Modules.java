@@ -12,9 +12,8 @@ import com.fiap.techchallenge.domain.payment.usecase.UpdatePaymentUseCase;
 import com.fiap.techchallenge.domain.product.usecase.CreateProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.DeleteProductUseCase;
 import com.fiap.techchallenge.domain.product.usecase.ListAllProductsUseCase;
-import com.fiap.techchallenge.drivers.api.MercadoPagoCheckoutDriver;
+import com.fiap.techchallenge.drivers.api.MercadoPagoDriver;
 import com.fiap.techchallenge.drivers.postgresql.*;
-import com.fiap.techchallenge.gateway.CheckoutGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -82,12 +81,12 @@ public class Modules {
   public CheckoutOrderUseCase checkoutOrderUseCase(OrderPostgreDriver orderPostgreDriver,
                                                    CustomerPostgreDriver customerPostgreDriver,
                                                    PaymentPostgreDriver paymentPostgreDriver,
-                                                   MercadoPagoCheckoutDriver mercadoPagoCheckoutDriver) {
+                                                   MercadoPagoDriver mercadoPagoDriver) {
     return new CheckoutOrderUseCase(
             orderPostgreDriver,
             customerPostgreDriver,
             paymentPostgreDriver,
-            mercadoPagoCheckoutDriver
+            mercadoPagoDriver
     );
   }
 

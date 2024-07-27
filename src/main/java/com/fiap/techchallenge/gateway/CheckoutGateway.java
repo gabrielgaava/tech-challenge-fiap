@@ -10,6 +10,6 @@ import com.mercadopago.exceptions.MPException;
 public interface CheckoutGateway {
 
   Payment checkoutOrder(Order order, Customer customer) throws PaymentErrorException;
-  void checkPaymentUpdate(String paymentId, CheckoutGateway mercadoPagoGateway) throws MPException, MPApiException, PaymentErrorException;
-  Payment paymentNotification(String id, CheckoutGateway mercadoPagoGateway) throws PaymentErrorException;
+  void checkPaymentUpdate(String paymentId, CheckoutGateway checkoutGateway) throws MPException, MPApiException, PaymentErrorException;
+  Payment paymentNotification(String id, CheckoutGateway checkoutGateway) throws PaymentErrorException;
 }
