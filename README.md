@@ -10,8 +10,8 @@ Este projeto é uma aplicação Java 21 usando Gradle para automação de builds
 ## Indices
 1. [Pré-requisitos](#1--pré-requisitos)
 2. [Estrutura Geral](#2--estrutura-do-projeto)
-3. [Executando o Projeto com Docker](#3--configuração-e-execução-do-projeto)
-4. [Executando com Kubernetes](#4--kubernetes)
+3. [Executando o Projeto com Docker](#3--configuração-e-execução-do-projeto-com-docker)
+4. [Executando com Kubernetes](#4--kubernetes-k8s)
 5. [Configurações adicionais](#5--configurações)
 6. [Limpeza e parada dos serviços](#6--limpeza-e-parada-dos-serviços)
 7. [Swagger e Debug](#7--swagger-e-debug)
