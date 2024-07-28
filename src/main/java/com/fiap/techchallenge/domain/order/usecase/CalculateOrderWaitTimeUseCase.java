@@ -13,6 +13,10 @@ public class CalculateOrderWaitTimeUseCase {
   public long execute(Order order) {
     OrderStatus status = order.getStatus();
 
+    if (order.getPaidAt() == null) {
+      return 0;
+    }
+
     // Invalid states to count waiting time
     if (status.equals(CREATED)
         || status.equals(OrderStatus.FINISHED)

@@ -77,9 +77,12 @@ public class ListOrdersWithFiltersUseCase  {
    * @return the list of orders with time calculated in seconds
    */
   private List<Order> calculateOrdersWaitTime(List<Order> orders) {
-    for(Order order : orders) {
-      var waitTime = calculateOrderWaitTimeUseCase.execute(order);
-      order.setWaitingTimeInSeconds(waitTime);
+
+    if(!orders.isEmpty()) {
+      for (Order order : orders) {
+        var waitTime = calculateOrderWaitTimeUseCase.execute(order);
+        order.setWaitingTimeInSeconds(waitTime);
+      }
     }
 
     return orders;
