@@ -11,13 +11,13 @@ public class EntityNotFoundException extends Exception {
     private final String id;
 
     public EntityNotFoundException(String entity, UUID id) {
-        super("Entity " + entity + "with id " + id.toString() + " not found.");
+        super("Entity " + entity + " with id " + id.toString() + " not found.");
         this.entity = entity;
         this.id = id.toString();
     }
 
     public EntityNotFoundException(String entity, String id) {
-        super("Entity " + entity + "with id " + id + " not found.");
+        super("Entity " + entity + " with id " + id + " not found.");
         this.entity = entity;
         this.id = id;
     }
