@@ -1,10 +1,13 @@
 package com.fiap.techchallenge.domain.order.usecase;
 
+import com.fiap.techchallenge.domain.customer.Customer;
 import com.fiap.techchallenge.domain.exception.EntityNotFoundException;
 import com.fiap.techchallenge.domain.order.Order;
+import com.fiap.techchallenge.gateway.CustomerGateway;
 import com.fiap.techchallenge.gateway.OrderGateway;
 import com.fiap.techchallenge.domain.product.ProductAndQuantity;
 import com.fiap.techchallenge.gateway.ProductGateway;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -17,13 +20,24 @@ public class CreateOrderUseCase  {
 
   private final OrderGateway orderGateway;
   private final ProductGateway productGateway;
+  private final CustomerGateway customerGateway;
 
-  public CreateOrderUseCase(OrderGateway orderGateway, ProductGateway productGateway) {
+  public CreateOrderUseCase(OrderGateway orderGateway, ProductGateway productGateway, CustomerGateway customerGateway) {
     this.orderGateway = orderGateway;
     this.productGateway = productGateway;
+    this.customerGateway = customerGateway;
   }
 
   public Order execute(Order order, OrderGateway orderGateway) throws EntityNotFoundException {
+
+    // Must be a valid and existent customer
+    if(order.getCustomerId() != null) {
+      Customer customer = customerGateway.getByID(order.getCustomerId());
+
+      if(customer == null) {
+        throw new EntityNotFoundException("Customer", order.getCustomerId());
+      }
+    }
 
     // The order must have at least one product to be created
     if (order.getProducts() == null || order.getProducts().isEmpty())

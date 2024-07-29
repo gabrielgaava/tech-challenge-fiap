@@ -96,8 +96,8 @@ public class Modules {
   }
 
   @Bean
-  public CreateOrderUseCase createOrderUseCase(OrderPostgreDriver orderPostgreDriver, ProductPostgreDriver productPostgreDriver) {
-    return new CreateOrderUseCase(orderPostgreDriver, productPostgreDriver);
+  public CreateOrderUseCase createOrderUseCase(OrderPostgreDriver orderPostgreDriver, ProductPostgreDriver productPostgreDriver, CustomerPostgreDriver customerPostgreDriver) {
+    return new CreateOrderUseCase(orderPostgreDriver, productPostgreDriver, customerPostgreDriver);
   }
 
   // ========================= PAYMENTS =========================

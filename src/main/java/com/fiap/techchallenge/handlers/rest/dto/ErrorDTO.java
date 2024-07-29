@@ -19,4 +19,9 @@ public class ErrorDTO {
         this.message = message;
     }
 
+    public ErrorDTO(String message, String details) {
+        this.message = message;
+        this.details = details;
+    }
+
 }

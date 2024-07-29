@@ -39,7 +39,8 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorDTO> handleOrderAlreadyWithStatus(EntityNotFoundException exception) {
-        return ResponseEntity.notFound().build();
+        ErrorDTO errorResponse = new ErrorDTO(exception.getEntity() + " not found", exception.getMessage());
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 
     @ExceptionHandler(MandatoryFieldException.class)
