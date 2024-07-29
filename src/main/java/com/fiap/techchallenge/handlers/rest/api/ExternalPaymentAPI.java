@@ -6,7 +6,9 @@ import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.domain.payment.Payment;
 import com.fiap.techchallenge.drivers.api.MercadoPagoDriver;
 import com.fiap.techchallenge.gateway.CheckoutGateway;
+import com.fiap.techchallenge.handlers.rest.dto.PaymentWebhookDTO;
 import com.fiap.techchallenge.handlers.rest.exceptions.PaymentErrorException;
+import com.fiap.techchallenge.presenters.PaymentPresenter;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -59,9 +61,9 @@ public class ExternalPaymentAPI {
             @Parameter(name = "id", schema = @Schema(implementation = String.class)),
     })
     @PostMapping("/fake")
-    public ResponseEntity<?> fakePaymentNotification(@RequestParam String id) throws PaymentErrorException {
+    public ResponseEntity<PaymentWebhookDTO> fakePaymentNotification(@RequestParam String id) throws PaymentErrorException {
 
         Payment payment = externalPaymentController.paymentNotification(id, this.checkoutGateway);
-        return ResponseEntity.ok(payment);
+        return ResponseEntity.ok(PaymentPresenter.toPaymentWebhookDTO(payment));
     }
 }
