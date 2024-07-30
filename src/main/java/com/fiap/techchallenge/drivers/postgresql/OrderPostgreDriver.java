@@ -1,9 +1,6 @@
 package com.fiap.techchallenge.drivers.postgresql;
 
-import com.fiap.techchallenge.domain.order.Order;
-import com.fiap.techchallenge.domain.order.OrderFilters;
-import com.fiap.techchallenge.domain.order.OrderHistory;
-import com.fiap.techchallenge.domain.order.OrderStatus;
+import com.fiap.techchallenge.domain.order.*;
 import com.fiap.techchallenge.domain.product.ProductAndQuantity;
 import com.fiap.techchallenge.drivers.postgresql.mapper.OrderMapper;
 import com.fiap.techchallenge.gateway.OrderGateway;
@@ -35,7 +32,8 @@ public class OrderPostgreDriver implements OrderGateway {
         }
 
         if(filters.getOrderBy() != null) {
-            sql += " ORDER BY " + filters.getOrderBy().toString().toLowerCase() + " " + filters.getDirection();
+            String direction = filters.getDirection() != null ? filters.getDirection().toString() : SortDirection.ASC.toString();
+            sql += " ORDER BY " + filters.getOrderBy().toString().toLowerCase() + " " + direction;
         }
 
         return jdbcTemplate.query(sql, OrderMapper.listMapper);

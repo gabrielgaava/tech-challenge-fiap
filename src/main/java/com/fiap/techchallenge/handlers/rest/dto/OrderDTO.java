@@ -25,6 +25,7 @@ public class OrderDTO {
 	private BigDecimal amount;
 	private OrderStatus status;
 	private LocalDateTime createdAt;
+	private LocalDateTime paidAt;
 	private long waitingTimeInSeconds;
 	private List < ProductAndQuantity > products;
 	private List < OrderHistory > history;
@@ -39,5 +40,6 @@ public class OrderDTO {
 		this.waitingTimeInSeconds = order.getWaitingTimeInSeconds();
 		this.products = order.getProducts();
 		this.history = order.getHistory();
+		this.paidAt = order.getPaidAt();
 	}
 }

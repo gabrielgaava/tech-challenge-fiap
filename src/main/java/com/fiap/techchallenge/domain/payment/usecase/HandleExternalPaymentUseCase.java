@@ -34,6 +34,10 @@ public class HandleExternalPaymentUseCase {
 
     Payment payment = paymentGateway.getByExternalId(externalPaymentId);
 
+    if (payment == null) {
+      throw new PaymentErrorException(externalPaymentId, "MercadoPago");
+    }
+
     try
     {
       Order order = getOrderUseCase.execute(payment.getOrderId(), orderGateway);
@@ -43,7 +47,9 @@ public class HandleExternalPaymentUseCase {
       payment.setStatus(paymentStatus.toString());
 
       if(success) {
-        payment.setPayedAt(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+        payment.setPayedAt(now);
+        order.setPaidAt(now);
         updateOrderStatusUseCase.execute(order.getId(), orderStatus, orderGateway);
       }
 

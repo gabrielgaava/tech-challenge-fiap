@@ -5,6 +5,7 @@ import com.fiap.techchallenge.domain.exception.OrderAlreadyWithStatusException;
 import com.fiap.techchallenge.gateway.OrderGateway;
 import com.fiap.techchallenge.domain.order.OrderStatus;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static com.fiap.techchallenge.domain.order.OrderStatus.*;
@@ -40,6 +41,7 @@ public class UpdateOrderStatusUseCase  {
       case IN_PREPARATION: {
         if (order.getStatus() != RECEIVED)
           throw new IllegalArgumentException("Order must be in 'RECEIVED' status");
+        order.setPaidAt(LocalDateTime.now());
         break;
       }
 
