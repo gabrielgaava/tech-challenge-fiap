@@ -1,6 +1,8 @@
 # Tech Challenge FIAP 2024 - Galega Burger
 Este projeto é uma aplicação Java 21 usando Gradle para automação de builds e Flyway para migração de banco de dados. Ele é configurado para rodar em um ambiente Docker, utilizando `docker compose` para orquestrar os contêineres do banco de dados PostgreSQL e da aplicação.
 
+Video Fase 2: https://youtu.be/3O_Ujf5kH8w
+
 | Nome:                              | Matrícula: | E-mail:                   |
 |------------------------------------|------------|---------------------------|
 | Alexandre Casella Speltri          | RM354896   | alexandreporks@gmail.com  |
