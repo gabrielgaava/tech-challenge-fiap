@@ -13,7 +13,7 @@ COPY src /home/gradle/src/src
 # Build the application
 RUN gradle build -x test
 
-# Use a lighter base imagedsdad
+# Use a lighter base image
 FROM amazoncorretto:21-alpine
 
 # Set the working directory
