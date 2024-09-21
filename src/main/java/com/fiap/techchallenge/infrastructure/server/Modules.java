@@ -1,4 +1,4 @@
-package com.fiap.techchallenge.drivers.postgresql.database.configuration;
+package com.fiap.techchallenge.infrastructure.server;
 
 import com.fiap.techchallenge.domain.customer.usecase.CreateCustomerUseCase;
 import com.fiap.techchallenge.domain.customer.usecase.GetCustomerByCPFUseCase;
