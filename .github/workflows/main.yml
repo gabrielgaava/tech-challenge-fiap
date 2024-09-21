@@ -42,7 +42,7 @@ jobs:
       # Substitui os placeholders pelas credenciais reais do GitHub Secrets
       - name: Replace Secrets
         run: |
-          cd ./src/main/resources/deployments/postgres-secrets.yaml
+          cd src/main/resources/deployment/
           ls -la
           sed -i 's/POSTGRES_HOST_PLACEHOLDER/${{ secrets.POSTGRES_HOST }}/g' postgres-secrets.yaml
           sed -i 's/POSTGRES_DB_PLACEHOLDER/${{ secrets.POSTGRES_DB }}/g' postgres-secrets.yaml
