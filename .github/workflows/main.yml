@@ -1,5 +1,5 @@
 ---
-name: Build and Push Golang Image to AWS ECR
+name: Push and Deployt to AWS
 on:
   push:
     branches:
