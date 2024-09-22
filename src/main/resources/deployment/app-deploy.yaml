@@ -41,28 +41,27 @@ spec:
           # Setting Enviornmental Variables
           env:
             # Setting Database host address from configMap
-            - name: DB_HOST
+            - name: DATABASE_HOST
               valueFrom:
                 configMapKeyRef:
                   name: postgres-conf
                   key: host
 
-            # Setting Database name from configMap
-            - name: SPRING_DATASOURCE_USERNAME
+            - name: DATABASE_NAME
               valueFrom:
                 configMapKeyRef:
                   name: postgres-conf
-                  key: datasource
+                  key: name
 
-            # Setting Database username from Secret
-            - name: SPRING_DATASOURCE_PASSWORD
+            # Setting Database name from configMap
+            - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
                   key: postgres_user
 
-            # Setting Database password from Secret
-            - name: POSTGRES_PASSWORD
+            # Setting Database username from Secret
+            - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
@@ -70,9 +69,6 @@ spec:
 
             - name: SPRING_DATASOURCE_DRIVER-CLASS-NAME
               value: "org.postgresql.Driver"
-
-            - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}"
 
             - name: MERCADOPAGO_ACCESS_KEY
               valueFrom:
