@@ -81,3 +81,6 @@ spec:
                 secretKeyRef:
                   name: mercadopago-credentials
                   key: public_key
+
+            - name: LOGGING_LEVEL_ORG_FLYWAYDB
+              value: DEBUG
