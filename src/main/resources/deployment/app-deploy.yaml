@@ -37,24 +37,51 @@ spec:
           image: 793862496606.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-fiap:latest
           ports:
             - containerPort: 8080
-          env:   # Setting Enviornmental Variables
-            - name: DB_HOST   # Setting Database host address from configMap
+
+          # Setting Enviornmental Variables
+          env:
+            # Setting Database host address from configMap
+            - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: postgres-conf  # name of configMap
+                  name: postgres-conf
                   key: host
-            - name: DB_NAME  # Setting Database name from configMap
+
+            # Setting Database name from configMap
+            - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 configMapKeyRef:
                   name: postgres-conf
                   key: name
-            - name: POSTGRES_USER  # Setting Database username from Secret
+
+            # Setting Database username from Secret
+            - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-credentials # Secret Name
+                  name: postgres-credentials
                   key: postgres_user
-            - name: POSTGRES_PASSWORD # Setting Database password from Secret
+
+            # Setting Database password from Secret
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
                   key: postgres_password
+
+            - name: SPRING_DATASOURCE_DRIVER-CLASS-NAME
+              value: "org.postgresql.Driver"
+
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}"
+
+            - name: MERCADOPAGO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mercadopago-credentials
+                  key: access_key
+
+            - name: MERCADOPAGO_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mercadopago-credentials
+                  key: public_key
