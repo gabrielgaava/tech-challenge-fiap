@@ -43,7 +43,7 @@ jobs:
       - name: Replace Secrets
         run: |
           cd src/main/resources/deployment/
-          sed -i 's/POSTGRES_DATASOURCE_PLACEHOLDER/${{ secrets.POSTGRES_DATASOURCE }}/g' postgres-secrets.yaml
+          sed -i 's/POSTGRES_DATASOURCE_PLACEHOLDER/${{ secrets.SPRING_DATASOURCE_URL }}/g' postgres-secrets.yaml
           sed -i 's/POSTGRES_HOST_PLACEHOLDER/${{ secrets.POSTGRES_HOST }}/g' postgres-secrets.yaml
           sed -i 's/POSTGRES_DB_PLACEHOLDER/${{ secrets.POSTGRES_DB }}/g' postgres-secrets.yaml
           sed -i 's/POSTGRES_USER_PLACEHOLDER/${{ secrets.POSTGRES_USER }}/g' postgres-secrets.yaml
