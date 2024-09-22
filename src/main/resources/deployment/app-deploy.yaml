@@ -52,7 +52,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: postgres-conf
-                  key: name
+                  key: datasource
 
             # Setting Database username from Secret
             - name: SPRING_DATASOURCE_PASSWORD
