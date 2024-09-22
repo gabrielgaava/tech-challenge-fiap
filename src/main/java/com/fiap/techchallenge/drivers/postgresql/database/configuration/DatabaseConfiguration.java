@@ -25,7 +25,7 @@ public class DatabaseConfiguration {
     String dataSourceUrl = "jdbc:postgresql://" + host + ":5432/" + databaseName;
 
     dataSource.setDriverClassName("org.postgresql.Driver");
-    dataSource.setUrl(env.getProperty(dataSourceUrl));
+    dataSource.setUrl(dataSourceUrl);
     dataSource.setUsername(env.getProperty("spring.datasource.username"));
     dataSource.setPassword(env.getProperty("spring.datasource.password"));
     return dataSource;
