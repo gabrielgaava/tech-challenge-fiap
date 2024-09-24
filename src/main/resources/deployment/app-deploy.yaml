@@ -73,13 +73,13 @@ spec:
 
             - name: MERCADOPAGO_ACCESS_KEY
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   name: mercadopago-credentials
                   key: access_key
 
             - name: MERCADOPAGO_PUBLIC_KEY
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   name: mercadopago-credentials
                   key: public_key
 
