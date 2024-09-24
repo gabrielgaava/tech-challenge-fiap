@@ -21,6 +21,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: fargate-application
   name: spring-rest-api
 spec:
   selector:
