@@ -6,6 +6,7 @@ metadata:
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
     service.beta.kubernetes.io/aws-load-balancer-scheme: "internal"
+    service.beta.kubernetes.io/aws-load-balancer-subnets: "subnet-05683cf192f681df3,subnet-0c8f8f96763aa583e"
   labels:
     name: spring-rest-api
 spec:
