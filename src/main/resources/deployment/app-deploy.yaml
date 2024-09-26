@@ -4,9 +4,9 @@ kind: Service
 metadata:
   name: spring-rest-api
   annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
-    service.beta.kubernetes.io/aws-load-balancer-scheme: "internal"
-    service.beta.kubernetes.io/aws-load-balancer-subnets: "subnet-05683cf192f681df3,subnet-0c8f8f96763aa583e"
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"  # Load Balancer Interno
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"       # Network Load Balancer
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internal" # (Opcional) Especifica que o LB é interno
   labels:
     name: spring-rest-api
 spec:
