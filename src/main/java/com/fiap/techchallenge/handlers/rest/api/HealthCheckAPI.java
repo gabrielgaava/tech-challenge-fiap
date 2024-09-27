@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.handlers.rest.api;
 
+import com.fiap.techchallenge.handlers.rest.dto.HealthCheckDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,9 @@ public class HealthCheckAPI {
 
     @Operation(summary = "Returns current API status")
     @GetMapping("/healthcheck")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("API is up and running");
+    public ResponseEntity<HealthCheckDTO> test() {
+        HealthCheckDTO response = new HealthCheckDTO("OK", "API is up and running");
+        return ResponseEntity.ok(response);
     }
 
 }
