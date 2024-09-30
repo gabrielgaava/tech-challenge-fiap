@@ -58,6 +58,7 @@ public class CheckoutOrderUseCase {
       paymentGateway.create(payment);
       return payment;
     } catch (PaymentErrorException e) {
+      System.out.println(e.getMessage());
       throw new MercadoPagoUnavailableException();
     }
 
