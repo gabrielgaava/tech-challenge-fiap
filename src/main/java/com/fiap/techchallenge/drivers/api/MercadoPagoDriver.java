@@ -67,8 +67,14 @@ public class MercadoPagoDriver implements CheckoutGateway {
             return payment;
         }
 
-        catch (MPException | MPApiException e) {
+        catch (MPException e) {
             System.out.println(e.getMessage());
+            throw new PaymentErrorException(order.getId().toString(), GATEWAY_NAME);
+        }
+
+        catch (MPApiException e) {
+            var response = e.getApiResponse();
+            System.out.println(response.getContent());
             throw new PaymentErrorException(order.getId().toString(), GATEWAY_NAME);
         }
 
