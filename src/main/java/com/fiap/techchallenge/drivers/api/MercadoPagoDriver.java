@@ -1,7 +1,10 @@
 package com.fiap.techchallenge.drivers.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fiap.techchallenge.domain.customer.Customer;
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.domain.payment.Payment;
@@ -19,6 +22,7 @@ import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.payment.PaymentStatus;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -50,13 +54,16 @@ public class MercadoPagoDriver implements CheckoutGateway {
         PaymentCreateRequest request = this.createPaymentRequest(order, customer);
 
         try {
-            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper mapper = Jackson2ObjectMapperBuilder.json()
+                .modules(new JavaTimeModule())
+                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
+                .build();
+
             System.out.println("Request: " + mapper.writeValueAsString(request));
         }
 
         catch (JsonProcessingException e) {
             System.out.println(e.getMessage());
-            throw new PaymentErrorException(order.getId().toString(), GATEWAY_NAME);
         }
 
         try {
