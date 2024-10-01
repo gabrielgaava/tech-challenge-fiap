@@ -1,5 +1,7 @@
 package com.fiap.techchallenge.drivers.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fiap.techchallenge.domain.customer.Customer;
 import com.fiap.techchallenge.domain.order.Order;
 import com.fiap.techchallenge.domain.payment.Payment;
@@ -46,6 +48,16 @@ public class MercadoPagoDriver implements CheckoutGateway {
 
         MPRequestOptions requestHeaders = this.getMPRequestOptions(order);
         PaymentCreateRequest request = this.createPaymentRequest(order, customer);
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            System.out.println("Request: " + mapper.writeValueAsString(request));
+        }
+
+        catch (JsonProcessingException e) {
+            System.out.println(e.getMessage());
+            throw new PaymentErrorException(order.getId().toString(), GATEWAY_NAME);
+        }
 
         try {
             var response = client.create(request, requestHeaders);
@@ -97,6 +109,7 @@ public class MercadoPagoDriver implements CheckoutGateway {
 
     private MPRequestOptions getMPRequestOptions(Order order) {
         Map<String, String> customHeaders = new HashMap<>();
+        System.out.println("Order ID > " + order.getId().toString());
         customHeaders.put("x-idempotency-key", order.getId().toString());
 
         return MPRequestOptions.builder()
